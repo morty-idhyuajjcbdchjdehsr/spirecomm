@@ -52,3 +52,10 @@ class Card:
 
     def __eq__(self, other):
         return self.uuid == other.uuid
+
+    def __str__(self):
+        # return f"card(name={self.name},id={self.card_id},cost={self.cost})"
+        cost = self.cost
+        if self.cost==-1:
+            cost = "x"
+        return f"{self.name}({cost},{self.has_target})"

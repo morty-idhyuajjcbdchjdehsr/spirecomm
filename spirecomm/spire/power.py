@@ -27,3 +27,6 @@ class Power:
 
     def __eq__(self, other):
         return self.power_id == other.power_id and self.amount == other.amount
+
+    def __str__(self):
+        return f"{self.power_name}"

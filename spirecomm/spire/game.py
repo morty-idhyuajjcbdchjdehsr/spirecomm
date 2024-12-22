@@ -139,3 +139,31 @@ class Game:
             if potion.potion_id != "Potion Slot":
                 potions.append(potion)
         return potions
+
+    def __str__(self):
+        return (f"Game State:\n"
+                f"Current Action: {self.current_action}\n"
+                f"Current HP: {self.current_hp}/{self.max_hp}\n"
+                f"Floor: {self.floor}, Act: {self.act}\n"
+                f"Gold: {self.gold}, Seed: {self.seed}\n"
+                f"Character: {self.character.__str__()}, Ascension Level: {self.ascension_level}\n"
+                f"Relics: {self.relics.__str__()}\n"
+                f"Deck: {self.deck.__str__()}\n"
+                f"Potions: {self.potions}\n"
+                f"Map: {self.map}\n"
+                f"In Combat: {self.in_combat}\n"
+                f"Player: {self.player.__str__()}\n"
+                f"Monsters: {self.monsters.__str__()}\n"
+                f"Draw Pile: {self.draw_pile}\n"
+                f"Discard Pile: {self.discard_pile}\n"
+                f"Exhaust Pile: {self.exhaust_pile}\n"
+                f"Hand: {self.hand}\n"
+                f"Limbo: {self.limbo}\n"
+                f"Card in Play: {self.card_in_play}\n"
+                f"Turn: {self.turn}, Cards Discarded This Turn: {self.cards_discarded_this_turn}\n"
+                f"Screen: {self.screen}, Screen Up: {self.screen_up}\n"
+                f"Screen Type: {self.screen_type}, Room Phase: {self.room_phase}, Room Type: {self.room_type}\n"
+                f"Choices: {self.choice_list}, Choices Available: {self.choice_available}\n"
+                f"End Available: {self.end_available}, Potion Available: {self.potion_available}\n"
+                f"Play Available: {self.play_available}, Proceed Available: {self.proceed_available}\n"
+                f"Cancel Available: {self.cancel_available}\n")

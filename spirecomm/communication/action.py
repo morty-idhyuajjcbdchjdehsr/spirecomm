@@ -1,3 +1,5 @@
+import time
+
 from spirecomm.spire.screen import ScreenType, RewardType
 
 
@@ -43,7 +45,7 @@ class PlayCardAction(Action):
         if self.card is not None:
             self.card_index = coordinator.last_game_state.hand.index(self.card)
         if self.card_index == -1:
-            raise Exception("Specified card for CardAction is not in hand")
+            raise Exception(f"Specified card for CardAction is not in hand,card is {self.card}")
         hand_card_index = self.card_index + 1
         if self.target_monster is not None:
             self.target_index = self.target_monster.monster_index
@@ -112,6 +114,7 @@ class ChooseAction(Action):
         self.name = name
 
     def execute(self, coordinator):
+        # time.sleep(1)
         if self.name is not None:
             coordinator.send_message("{} {}".format(self.command, self.name))
         else:

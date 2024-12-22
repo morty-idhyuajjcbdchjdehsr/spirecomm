@@ -20,6 +20,7 @@ def read_stdin(input_queue):
         stdin_input = ""
         while True:
             input_char = sys.stdin.read(1)
+            # print(input_char)
             if input_char == '\n':
                 break
             else:
@@ -159,8 +160,10 @@ class Coordinator:
         :return: whether a message was received
         """
         message = self.get_next_raw_message(block)
+        # print("message is:",message)
         if message is not None:
             communication_state = json.loads(message)
+            # print(communication_state)
             self.last_error = communication_state.get("error", None)
             self.game_is_ready = communication_state.get("ready_for_command")
             if self.last_error is None:
@@ -205,6 +208,7 @@ class Coordinator:
         :return: True if the game was a victory, else False
         :rtype: bool
         """
+
         self.clear_actions()
         while not self.game_is_ready:
             self.receive_game_state_update(block=True, perform_callbacks=False)
@@ -212,6 +216,7 @@ class Coordinator:
             StartGameAction(player_class, ascension_level, seed).execute(self)
             self.receive_game_state_update(block=True)
         while self.in_game:
+            # print("in game")
             self.execute_next_action_if_ready()
             self.receive_game_state_update()
         if self.last_game_state.screen_type == ScreenType.GAME_OVER:

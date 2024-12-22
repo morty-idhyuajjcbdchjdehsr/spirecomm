@@ -1,0 +1,3002 @@
+2024-12-19 20:37:53,856 - ERROR - An error occurred: Error code: 403 - {'error': {'message': '免费API限制模型输入token小于4096，如有更多需求，请访问 https://api.chatanywhere.tech/#/shop 购买付费API。The number of prompt tokens for free accounts is limited to 4096. If you have additional requirements, please visit https://api.chatanywhere.tech/#/shop to purchase a premium key.', 'type': 'chatanywhere_error', 'param': None, 'code': '403 FORBIDDEN'}}
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 39, in <module>
+    result = coordinator.play_one_game(PlayerClass.IRONCLAD)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 180, in receive_game_state_update
+    new_action = self.state_change_callback(self.last_game_state)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 66, in get_next_action_in_game
+    return self.get_play_card_action()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 176, in get_play_card_action
+    responses = self.react_agent.invoke(
+                ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\__init__.py", line 1936, in invoke
+    for chunk in self.stream(
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\__init__.py", line 1656, in stream
+    for _ in runner.tick(
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\runner.py", line 167, in tick
+    run_with_retry(
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\retry.py", line 40, in run_with_retry
+    return task.proc.invoke(task.input, config)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\utils\runnable.py", line 408, in invoke
+    input = step.invoke(input, config, **kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\utils\runnable.py", line 176, in invoke
+    ret = context.run(self.func, input, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\prebuilt\chat_agent_executor.py", line 558, in call_model
+    response = model_runnable.invoke(state, config)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\runnables\base.py", line 3024, in invoke
+    input = context.run(step.invoke, input, config)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 286, in invoke
+    self.generate_prompt(
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 786, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 643, in generate
+    raise e
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 633, in generate
+    self._generate_with_cache(
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 851, in _generate_with_cache
+    result = self._generate(
+             ^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_openai\chat_models\base.py", line 689, in _generate
+    response = self.client.create(**payload)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_utils\_utils.py", line 275, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\resources\chat\completions.py", line 829, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_base_client.py", line 1280, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_base_client.py", line 957, in request
+    return self._request(
+           ^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_base_client.py", line 1061, in _request
+    raise self._make_status_error_from_response(err.response) from None
+openai.PermissionDeniedError: Error code: 403 - {'error': {'message': '免费API限制模型输入token小于4096，如有更多需求，请访问 https://api.chatanywhere.tech/#/shop 购买付费API。The number of prompt tokens for free accounts is limited to 4096. If you have additional requirements, please visit https://api.chatanywhere.tech/#/shop to purchase a premium key.', 'type': 'chatanywhere_error', 'param': None, 'code': '403 FORBIDDEN'}}
+During task with name 'agent' and id '2cb86f5f-0b82-2151-6916-57361b48e2a1'
+2024-12-19 20:43:41,567 - ERROR - An error occurred: 'Card' object has no attribute 'monster_id'
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 39, in <module>
+    result = coordinator.play_one_game(PlayerClass.IRONCLAD)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 180, in receive_game_state_update
+    new_action = self.state_change_callback(self.last_game_state)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 66, in get_next_action_in_game
+    return self.get_play_card_action()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 191, in get_play_card_action
+    target = next((monster for monster in self.game.hand if monster.monster_id == target_id), None)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 191, in <genexpr>
+    target = next((monster for monster in self.game.hand if monster.monster_id == target_id), None)
+                                                            ^^^^^^^^^^^^^^^^^^
+AttributeError: 'Card' object has no attribute 'monster_id'
+2024-12-19 20:45:54,108 - ERROR - An error occurred: 'NoneType' object has no attribute 'can_be_executed'
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 39, in <module>
+    result = coordinator.play_one_game(PlayerClass.IRONCLAD)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 220, in play_one_game
+    self.execute_next_action_if_ready()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 112, in execute_next_action_if_ready
+    if len(self.action_queue) > 0 and self.action_queue[0].can_be_executed(self):
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'can_be_executed'
+2024-12-19 20:49:01,661 - ERROR - An error occurred: can only concatenate str (not "type") to str
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 39, in <module>
+    result = coordinator.play_one_game(PlayerClass.IRONCLAD)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 180, in receive_game_state_update
+    new_action = self.state_change_callback(self.last_game_state)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 66, in get_next_action_in_game
+    return self.get_play_card_action()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 188, in get_play_card_action
+    file.write("is_to_end_turn 's type:" + type(is_to_end_turn) + "\n")
+               ~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~
+TypeError: can only concatenate str (not "type") to str
+2024-12-19 20:52:58,171 - ERROR - An error occurred: 'NoneType' object has no attribute 'can_be_executed'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 39, in <module>
+    result = coordinator.play_one_game(PlayerClass.IRONCLAD)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 220, in play_one_game
+    self.execute_next_action_if_ready()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 112, in execute_next_action_if_ready
+    if len(self.action_queue) > 0 and self.action_queue[0].can_be_executed(self):
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'can_be_executed'
+2024-12-19 20:57:13,076 - ERROR - An error occurred: Specified card for CardAction is not in hand
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 39, in <module>
+    result = coordinator.play_one_game(PlayerClass.IRONCLAD)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 220, in play_one_game
+    self.execute_next_action_if_ready()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 113, in execute_next_action_if_ready
+    self.execute_next_action()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 105, in execute_next_action
+    action.execute(self)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\action.py", line 48, in execute
+    raise Exception("Specified card for CardAction is not in hand")
+Exception: Specified card for CardAction is not in hand
+2024-12-19 21:00:19,074 - ERROR - An error occurred: Got invalid JSON object. Error: Expecting ',' delimiter: line 3 column 2 (char 25)
+For troubleshooting, visit: https://python.langchain.com/docs/troubleshooting/errors/OUTPUT_PARSING_FAILURE 
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\utils\json.py", line 180, in parse_and_check_json_markdown
+    json_obj = parse_json_markdown(text)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\utils\json.py", line 144, in parse_json_markdown
+    return _parse_json(json_str, parser=parser)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\utils\json.py", line 160, in _parse_json
+    return parser(json_str)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\utils\json.py", line 118, in parse_partial_json
+    return json.loads(s, strict=strict)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\json\__init__.py", line 359, in loads
+    return cls(**kw).decode(s)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\json\decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\json\decoder.py", line 353, in raw_decode
+    obj, end = self.scan_once(s, idx)
+               ^^^^^^^^^^^^^^^^^^^^^^
+json.decoder.JSONDecodeError: Expecting ',' delimiter: line 3 column 2 (char 25)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 39, in <module>
+    result = coordinator.play_one_game(PlayerClass.IRONCLAD)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 180, in receive_game_state_update
+    new_action = self.state_change_callback(self.last_game_state)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 66, in get_next_action_in_game
+    return self.get_play_card_action()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 173, in get_play_card_action
+    jsonfile = output_parser.parse(responses["messages"][-1].content)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain\output_parsers\structured.py", line 97, in parse
+    return parse_and_check_json_markdown(text, expected_keys)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\utils\json.py", line 183, in parse_and_check_json_markdown
+    raise OutputParserException(msg) from e
+langchain_core.exceptions.OutputParserException: Got invalid JSON object. Error: Expecting ',' delimiter: line 3 column 2 (char 25)
+For troubleshooting, visit: https://python.langchain.com/docs/troubleshooting/errors/OUTPUT_PARSING_FAILURE 
+2024-12-19 21:05:37,976 - ERROR - An error occurred: Specified card for CardAction is not in hand
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 39, in <module>
+    result = coordinator.play_one_game(PlayerClass.IRONCLAD)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 220, in play_one_game
+    self.execute_next_action_if_ready()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 113, in execute_next_action_if_ready
+    self.execute_next_action()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 105, in execute_next_action
+    action.execute(self)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\action.py", line 48, in execute
+    raise Exception("Specified card for CardAction is not in hand")
+Exception: Specified card for CardAction is not in hand
+2024-12-19 21:13:04,289 - ERROR - An error occurred: 'hand'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 39, in <module>
+    result = coordinator.play_one_game(PlayerClass.IRONCLAD)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 180, in receive_game_state_update
+    new_action = self.state_change_callback(self.last_game_state)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 66, in get_next_action_in_game
+    return self.get_play_card_action()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 157, in get_play_card_action
+    messages = template1.format_messages(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\prompts\chat.py", line 1228, in format_messages
+    message = message_template.format_messages(**kwargs)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\prompts\chat.py", line 612, in format_messages
+    return [self.format(**kwargs)]
+            ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\prompts\chat.py", line 647, in format
+    text = self.prompt.format(**kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\prompts\prompt.py", line 183, in format
+    return DEFAULT_FORMATTER_MAPPING[self.template_format](self.template, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\string.py", line 190, in format
+    return self.vformat(format_string, args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\utils\formatting.py", line 33, in vformat
+    return super().vformat(format_string, args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\string.py", line 194, in vformat
+    result, _ = self._vformat(format_string, args, kwargs, used_args, 2)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\string.py", line 234, in _vformat
+    obj, arg_used = self.get_field(field_name, args, kwargs)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\string.py", line 299, in get_field
+    obj = self.get_value(first, args, kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\string.py", line 256, in get_value
+    return kwargs[key]
+           ~~~~~~^^^^^
+KeyError: 'hand'
+2024-12-19 21:15:01,991 - ERROR - An error occurred: Specified card for CardAction is not in hand
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 39, in <module>
+    result = coordinator.play_one_game(PlayerClass.IRONCLAD)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 220, in play_one_game
+    self.execute_next_action_if_ready()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 113, in execute_next_action_if_ready
+    self.execute_next_action()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 105, in execute_next_action
+    action.execute(self)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\action.py", line 48, in execute
+    raise Exception("Specified card for CardAction is not in hand")
+Exception: Specified card for CardAction is not in hand
+2024-12-19 21:19:15,457 - ERROR - An error occurred: Specified card for CardAction is not in hand
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 39, in <module>
+    result = coordinator.play_one_game(PlayerClass.IRONCLAD)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 220, in play_one_game
+    self.execute_next_action_if_ready()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 113, in execute_next_action_if_ready
+    self.execute_next_action()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 105, in execute_next_action
+    action.execute(self)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\action.py", line 48, in execute
+    raise Exception("Specified card for CardAction is not in hand")
+Exception: Specified card for CardAction is not in hand
+2024-12-19 21:25:32,699 - ERROR - An error occurred: Specified card for CardAction is not in hand
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 39, in <module>
+    result = coordinator.play_one_game(PlayerClass.IRONCLAD)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 220, in play_one_game
+    self.execute_next_action_if_ready()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 113, in execute_next_action_if_ready
+    self.execute_next_action()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 105, in execute_next_action
+    action.execute(self)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\action.py", line 48, in execute
+    raise Exception("Specified card for CardAction is not in hand")
+Exception: Specified card for CardAction is not in hand
+2024-12-19 21:38:56,646 - ERROR - An error occurred: Error code: 403 - {'error': {'message': '免费API限制模型输入token小于4096，如有更多需求，请访问 https://api.chatanywhere.tech/#/shop 购买付费API。The number of prompt tokens for free accounts is limited to 4096. If you have additional requirements, please visit https://api.chatanywhere.tech/#/shop to purchase a premium key.', 'type': 'chatanywhere_error', 'param': None, 'code': '403 FORBIDDEN'}}
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 39, in <module>
+    result = coordinator.play_one_game(PlayerClass.IRONCLAD)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 180, in receive_game_state_update
+    new_action = self.state_change_callback(self.last_game_state)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 66, in get_next_action_in_game
+    return self.get_play_card_action()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 177, in get_play_card_action
+    responses = self.react_agent.invoke(
+                ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\__init__.py", line 1936, in invoke
+    for chunk in self.stream(
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\__init__.py", line 1656, in stream
+    for _ in runner.tick(
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\runner.py", line 167, in tick
+    run_with_retry(
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\retry.py", line 40, in run_with_retry
+    return task.proc.invoke(task.input, config)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\utils\runnable.py", line 408, in invoke
+    input = step.invoke(input, config, **kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\utils\runnable.py", line 176, in invoke
+    ret = context.run(self.func, input, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\prebuilt\chat_agent_executor.py", line 558, in call_model
+    response = model_runnable.invoke(state, config)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\runnables\base.py", line 3024, in invoke
+    input = context.run(step.invoke, input, config)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 286, in invoke
+    self.generate_prompt(
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 786, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 643, in generate
+    raise e
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 633, in generate
+    self._generate_with_cache(
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 851, in _generate_with_cache
+    result = self._generate(
+             ^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_openai\chat_models\base.py", line 689, in _generate
+    response = self.client.create(**payload)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_utils\_utils.py", line 275, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\resources\chat\completions.py", line 829, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_base_client.py", line 1280, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_base_client.py", line 957, in request
+    return self._request(
+           ^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_base_client.py", line 1061, in _request
+    raise self._make_status_error_from_response(err.response) from None
+openai.PermissionDeniedError: Error code: 403 - {'error': {'message': '免费API限制模型输入token小于4096，如有更多需求，请访问 https://api.chatanywhere.tech/#/shop 购买付费API。The number of prompt tokens for free accounts is limited to 4096. If you have additional requirements, please visit https://api.chatanywhere.tech/#/shop to purchase a premium key.', 'type': 'chatanywhere_error', 'param': None, 'code': '403 FORBIDDEN'}}
+During task with name 'agent' and id '593c8413-84e4-979e-8de8-52524d17e9a1'
+2024-12-19 21:44:38,162 - ERROR - An error occurred: Got invalid JSON object. Error: Expecting ',' delimiter: line 3 column 2 (char 24)
+For troubleshooting, visit: https://python.langchain.com/docs/troubleshooting/errors/OUTPUT_PARSING_FAILURE 
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\utils\json.py", line 180, in parse_and_check_json_markdown
+    json_obj = parse_json_markdown(text)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\utils\json.py", line 144, in parse_json_markdown
+    return _parse_json(json_str, parser=parser)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\utils\json.py", line 160, in _parse_json
+    return parser(json_str)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\utils\json.py", line 118, in parse_partial_json
+    return json.loads(s, strict=strict)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\json\__init__.py", line 359, in loads
+    return cls(**kw).decode(s)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\json\decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\json\decoder.py", line 353, in raw_decode
+    obj, end = self.scan_once(s, idx)
+               ^^^^^^^^^^^^^^^^^^^^^^
+json.decoder.JSONDecodeError: Expecting ',' delimiter: line 3 column 2 (char 24)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 39, in <module>
+    result = coordinator.play_one_game(PlayerClass.IRONCLAD)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 180, in receive_game_state_update
+    new_action = self.state_change_callback(self.last_game_state)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 66, in get_next_action_in_game
+    return self.get_play_card_action()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 180, in get_play_card_action
+    jsonfile = output_parser.parse(responses["messages"][-1].content)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain\output_parsers\structured.py", line 97, in parse
+    return parse_and_check_json_markdown(text, expected_keys)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\utils\json.py", line 183, in parse_and_check_json_markdown
+    raise OutputParserException(msg) from e
+langchain_core.exceptions.OutputParserException: Got invalid JSON object. Error: Expecting ',' delimiter: line 3 column 2 (char 24)
+For troubleshooting, visit: https://python.langchain.com/docs/troubleshooting/errors/OUTPUT_PARSING_FAILURE 
+2024-12-19 21:51:39,594 - ERROR - An error occurred: Selected card cannot be played with the selected target.
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 39, in <module>
+    result = coordinator.play_one_game(PlayerClass.IRONCLAD)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 52, in handle_error
+    raise Exception(error)
+Exception: Selected card cannot be played with the selected target.
+2024-12-19 22:03:19,268 - ERROR - An error occurred: Error code: 403 - {'error': {'message': '免费API限制模型输入token小于4096，如有更多需求，请访问 https://api.chatanywhere.tech/#/shop 购买付费API。The number of prompt tokens for free accounts is limited to 4096. If you have additional requirements, please visit https://api.chatanywhere.tech/#/shop to purchase a premium key.', 'type': 'chatanywhere_error', 'param': None, 'code': '403 FORBIDDEN'}}
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 39, in <module>
+    result = coordinator.play_one_game(PlayerClass.IRONCLAD)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 180, in receive_game_state_update
+    new_action = self.state_change_callback(self.last_game_state)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 66, in get_next_action_in_game
+    return self.get_play_card_action()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 175, in get_play_card_action
+    responses = self.react_agent.invoke(
+                ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\__init__.py", line 1936, in invoke
+    for chunk in self.stream(
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\__init__.py", line 1656, in stream
+    for _ in runner.tick(
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\runner.py", line 167, in tick
+    run_with_retry(
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\retry.py", line 40, in run_with_retry
+    return task.proc.invoke(task.input, config)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\utils\runnable.py", line 408, in invoke
+    input = step.invoke(input, config, **kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\utils\runnable.py", line 176, in invoke
+    ret = context.run(self.func, input, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\prebuilt\chat_agent_executor.py", line 558, in call_model
+    response = model_runnable.invoke(state, config)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\runnables\base.py", line 3024, in invoke
+    input = context.run(step.invoke, input, config)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 286, in invoke
+    self.generate_prompt(
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 786, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 643, in generate
+    raise e
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 633, in generate
+    self._generate_with_cache(
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 851, in _generate_with_cache
+    result = self._generate(
+             ^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_openai\chat_models\base.py", line 689, in _generate
+    response = self.client.create(**payload)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_utils\_utils.py", line 275, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\resources\chat\completions.py", line 829, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_base_client.py", line 1280, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_base_client.py", line 957, in request
+    return self._request(
+           ^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_base_client.py", line 1061, in _request
+    raise self._make_status_error_from_response(err.response) from None
+openai.PermissionDeniedError: Error code: 403 - {'error': {'message': '免费API限制模型输入token小于4096，如有更多需求，请访问 https://api.chatanywhere.tech/#/shop 购买付费API。The number of prompt tokens for free accounts is limited to 4096. If you have additional requirements, please visit https://api.chatanywhere.tech/#/shop to purchase a premium key.', 'type': 'chatanywhere_error', 'param': None, 'code': '403 FORBIDDEN'}}
+During task with name 'agent' and id '156241f9-ee5e-a34f-1a9a-7206c3515398'
+2024-12-19 22:35:24,229 - ERROR - An error occurred: Selected card cannot be played with the selected target.
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 39, in <module>
+    result = coordinator.play_one_game(PlayerClass.IRONCLAD)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 52, in handle_error
+    raise Exception(error)
+Exception: Selected card cannot be played with the selected target.
+2024-12-19 22:46:59,130 - ERROR - An error occurred: Selected card cannot be played with the selected target.
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 39, in <module>
+    result = coordinator.play_one_game(PlayerClass.IRONCLAD)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 52, in handle_error
+    raise Exception(error)
+Exception: Selected card cannot be played with the selected target.
+2024-12-19 23:13:55,403 - ERROR - An error occurred: 'NoneType' object has no attribute 'can_be_executed'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 39, in <module>
+    result = coordinator.play_one_game(PlayerClass.IRONCLAD)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 220, in play_one_game
+    self.execute_next_action_if_ready()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 112, in execute_next_action_if_ready
+    if len(self.action_queue) > 0 and self.action_queue[0].can_be_executed(self):
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'can_be_executed'
+2024-12-19 23:22:09,023 - ERROR - An error occurred: 'ConversationBufferWindowMemory' object has no attribute 'get_next_version'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 39, in <module>
+    result = coordinator.play_one_game(PlayerClass.IRONCLAD)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 180, in receive_game_state_update
+    new_action = self.state_change_callback(self.last_game_state)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 67, in get_next_action_in_game
+    return self.get_play_card_action()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 174, in get_play_card_action
+    responses = self.react_agent.invoke(
+                ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\__init__.py", line 1936, in invoke
+    for chunk in self.stream(
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\__init__.py", line 1605, in stream
+    with SyncPregelLoop(
+         ^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\loop.py", line 806, in __init__
+    self.checkpointer_get_next_version = checkpointer.get_next_version
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\pydantic\main.py", line 892, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'ConversationBufferWindowMemory' object has no attribute 'get_next_version'
+2024-12-19 23:42:15,890 - ERROR - An error occurred: Selected card requires an enemy target.
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 39, in <module>
+    result = coordinator.play_one_game(PlayerClass.IRONCLAD)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 53, in handle_error
+    raise Exception(error)
+Exception: Selected card requires an enemy target.
+2024-12-20 00:12:20,818 - ERROR - An error occurred: 'NoneType' object has no attribute 'can_be_executed'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 39, in <module>
+    result = coordinator.play_one_game(PlayerClass.IRONCLAD)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 220, in play_one_game
+    self.execute_next_action_if_ready()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 112, in execute_next_action_if_ready
+    if len(self.action_queue) > 0 and self.action_queue[0].can_be_executed(self):
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'can_be_executed'
+2024-12-20 01:05:56,877 - ERROR - An error occurred: Selected card cannot be played with the selected target.
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 39, in <module>
+    result = coordinator.play_one_game(PlayerClass.IRONCLAD)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 54, in handle_error
+    raise Exception(error)
+Exception: Selected card cannot be played with the selected target.
+2024-12-20 12:09:12,263 - ERROR - An error occurred: 'NoneType' object has no attribute 'can_be_executed'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 39, in <module>
+    result = coordinator.play_one_game(PlayerClass.IRONCLAD)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 220, in play_one_game
+    self.execute_next_action_if_ready()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 112, in execute_next_action_if_ready
+    if len(self.action_queue) > 0 and self.action_queue[0].can_be_executed(self):
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'can_be_executed'
+2024-12-20 12:23:46,641 - ERROR - An error occurred: Selected card requires an enemy target.
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 39, in <module>
+    result = coordinator.play_one_game(PlayerClass.DEFECT)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 54, in handle_error
+    raise Exception(error)
+Exception: Selected card requires an enemy target.
+2024-12-20 13:37:50,006 - ERROR - An error occurred: LLMMathChain requires the numexpr package. Please install it with `pip install numexpr`.
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain\chains\llm_math\base.py", line 168, in raise_deprecation
+    import numexpr  # noqa: F401
+    ^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'numexpr'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 29, in <module>
+    agent.init_battle_llm()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 437, in init_battle_llm
+    tools = load_tools(["llm-math","wikipedia"],llm=llm)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_community\agent_toolkits\load_tools.py", line 735, in load_tools
+    tool = _LLM_TOOLS[name](llm)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_community\agent_toolkits\load_tools.py", line 192, in _get_llm_math
+    func=LLMMathChain.from_llm(llm=llm).run,
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain\chains\llm_math\base.py", line 304, in from_llm
+    return cls(llm_chain=llm_chain, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\_api\deprecation.py", line 216, in warn_if_direct_instance
+    return wrapped(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\load\serializable.py", line 125, in __init__
+    super().__init__(*args, **kwargs)
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\pydantic\main.py", line 214, in __init__
+    validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain\chains\llm_math\base.py", line 170, in raise_deprecation
+    raise ImportError(
+ImportError: LLMMathChain requires the numexpr package. Please install it with `pip install numexpr`.
+2024-12-20 13:39:01,741 - ERROR - An error occurred: LLMMathChain requires the numexpr package. Please install it with `pip install numexpr`.
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain\chains\llm_math\base.py", line 168, in raise_deprecation
+    import numexpr  # noqa: F401
+    ^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'numexpr'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 29, in <module>
+    agent.init_battle_llm()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 437, in init_battle_llm
+    tools = load_tools(["llm-math","wikipedia"],llm=llm)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_community\agent_toolkits\load_tools.py", line 735, in load_tools
+    tool = _LLM_TOOLS[name](llm)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_community\agent_toolkits\load_tools.py", line 192, in _get_llm_math
+    func=LLMMathChain.from_llm(llm=llm).run,
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain\chains\llm_math\base.py", line 304, in from_llm
+    return cls(llm_chain=llm_chain, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\_api\deprecation.py", line 216, in warn_if_direct_instance
+    return wrapped(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\load\serializable.py", line 125, in __init__
+    super().__init__(*args, **kwargs)
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\pydantic\main.py", line 214, in __init__
+    validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain\chains\llm_math\base.py", line 170, in raise_deprecation
+    raise ImportError(
+ImportError: LLMMathChain requires the numexpr package. Please install it with `pip install numexpr`.
+2024-12-20 13:40:28,279 - ERROR - An error occurred: Could not import wikipedia python package. Please install it with `pip install wikipedia`.
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_community\utilities\wikipedia.py", line 35, in validate_environment
+    import wikipedia
+ModuleNotFoundError: No module named 'wikipedia'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 29, in <module>
+    agent.init_battle_llm()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 437, in init_battle_llm
+    tools = load_tools(["wikipedia"],llm=llm)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_community\agent_toolkits\load_tools.py", line 753, in load_tools
+    tool = _get_tool_func(**sub_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_community\agent_toolkits\load_tools.py", line 322, in _get_wikipedia
+    return WikipediaQueryRun(api_wrapper=WikipediaAPIWrapper(**kwargs))
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\pydantic\main.py", line 214, in __init__
+    validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_community\utilities\wikipedia.py", line 41, in validate_environment
+    raise ImportError(
+ImportError: Could not import wikipedia python package. Please install it with `pip install wikipedia`.
+2024-12-20 13:41:51,454 - ERROR - An error occurred: Could not import wikipedia python package. Please install it with `pip install wikipedia`.
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_community\utilities\wikipedia.py", line 35, in validate_environment
+    import wikipedia
+ModuleNotFoundError: No module named 'wikipedia'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 29, in <module>
+    agent.init_battle_llm()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 437, in init_battle_llm
+    tools = load_tools(["wikipedia"],llm=llm)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_community\agent_toolkits\load_tools.py", line 753, in load_tools
+    tool = _get_tool_func(**sub_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_community\agent_toolkits\load_tools.py", line 322, in _get_wikipedia
+    return WikipediaQueryRun(api_wrapper=WikipediaAPIWrapper(**kwargs))
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\pydantic\main.py", line 214, in __init__
+    validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_community\utilities\wikipedia.py", line 41, in validate_environment
+    raise ImportError(
+ImportError: Could not import wikipedia python package. Please install it with `pip install wikipedia`.
+2024-12-20 13:46:32,354 - ERROR - An error occurred: Could not import wikipedia python package. Please install it with `pip install wikipedia`.
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_community\utilities\wikipedia.py", line 35, in validate_environment
+    import wikipedia
+ModuleNotFoundError: No module named 'wikipedia'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 29, in <module>
+    agent.init_battle_llm()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 437, in init_battle_llm
+    tools = load_tools(["wikipedia"],llm=llm)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_community\agent_toolkits\load_tools.py", line 753, in load_tools
+    tool = _get_tool_func(**sub_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_community\agent_toolkits\load_tools.py", line 322, in _get_wikipedia
+    return WikipediaQueryRun(api_wrapper=WikipediaAPIWrapper(**kwargs))
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\pydantic\main.py", line 214, in __init__
+    validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_community\utilities\wikipedia.py", line 41, in validate_environment
+    raise ImportError(
+ImportError: Could not import wikipedia python package. Please install it with `pip install wikipedia`.
+2024-12-20 13:47:45,980 - ERROR - An error occurred: Could not import wikipedia python package. Please install it with `pip install wikipedia`.
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_community\utilities\wikipedia.py", line 35, in validate_environment
+    import wikipedia
+ModuleNotFoundError: No module named 'wikipedia'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 29, in <module>
+    agent.init_battle_llm()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 437, in init_battle_llm
+    tools = load_tools(["wikipedia"],llm=llm)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_community\agent_toolkits\load_tools.py", line 753, in load_tools
+    tool = _get_tool_func(**sub_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_community\agent_toolkits\load_tools.py", line 322, in _get_wikipedia
+    return WikipediaQueryRun(api_wrapper=WikipediaAPIWrapper(**kwargs))
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\pydantic\main.py", line 214, in __init__
+    validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_community\utilities\wikipedia.py", line 41, in validate_environment
+    raise ImportError(
+ImportError: Could not import wikipedia python package. Please install it with `pip install wikipedia`.
+2024-12-20 13:51:07,492 - ERROR - An error occurred: can only concatenate list (not "str") to list
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 40, in <module>
+    result = coordinator.play_one_game(PlayerClass.THE_SILENT)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 180, in receive_game_state_update
+    new_action = self.state_change_callback(self.last_game_state)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 69, in get_next_action_in_game
+    return self.get_play_card_action()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 163, in get_play_card_action
+    file.write(responses["messages"]+"\n")
+               ~~~~~~~~~~~~~~~~~~~~~^~~~~
+TypeError: can only concatenate list (not "str") to list
+2024-12-20 13:52:59,675 - ERROR - An error occurred: write() argument must be str, not list
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 40, in <module>
+    result = coordinator.play_one_game(PlayerClass.THE_SILENT)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 180, in receive_game_state_update
+    new_action = self.state_change_callback(self.last_game_state)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 69, in get_next_action_in_game
+    return self.get_play_card_action()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 163, in get_play_card_action
+    file.write(responses["messages"])
+TypeError: write() argument must be str, not list
+2024-12-20 13:56:30,039 - ERROR - An error occurred: write() argument must be str, not HumanMessage
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 40, in <module>
+    result = coordinator.play_one_game(PlayerClass.THE_SILENT)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 180, in receive_game_state_update
+    new_action = self.state_change_callback(self.last_game_state)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 69, in get_next_action_in_game
+    return self.get_play_card_action()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 164, in get_play_card_action
+    file.write(response)
+TypeError: write() argument must be str, not HumanMessage
+2024-12-20 13:59:59,072 - ERROR - An error occurred: Selected card requires an enemy target.
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 40, in <module>
+    result = coordinator.play_one_game(PlayerClass.THE_SILENT)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 55, in handle_error
+    raise Exception(error)
+Exception: Selected card requires an enemy target.
+2024-12-20 14:07:09,673 - ERROR - An error occurred: BaseModel.__str__() missing 1 required positional argument: 'self'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 40, in <module>
+    result = coordinator.play_one_game(PlayerClass.THE_SILENT)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 180, in receive_game_state_update
+    new_action = self.state_change_callback(self.last_game_state)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 69, in get_next_action_in_game
+    return self.get_play_card_action()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 165, in get_play_card_action
+    file.write(type(response).__str__()+response.__str__())
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: BaseModel.__str__() missing 1 required positional argument: 'self'
+2024-12-20 21:45:27,808 - ERROR - An error occurred: 'NoneType' object has no attribute 'invoke'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 40, in <module>
+    result = coordinator.play_one_game(PlayerClass.THE_SILENT)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 180, in receive_game_state_update
+    new_action = self.state_change_callback(self.last_game_state)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in get_next_action_in_game
+    return self.handle_screen()
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 257, in handle_screen
+    return self.choose_card_reward()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 351, in choose_card_reward
+    responses = self.choose_card_agent.invoke(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'invoke'
+2024-12-20 21:47:26,419 - ERROR - An error occurred: 'list' object has no attribute 'name'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 41, in <module>
+    result = coordinator.play_one_game(PlayerClass.THE_SILENT)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 180, in receive_game_state_update
+    new_action = self.state_change_callback(self.last_game_state)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in get_next_action_in_game
+    return self.handle_screen()
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 257, in handle_screen
+    return self.choose_card_reward()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 380, in choose_card_reward
+    return CardRewardAction(card_to_choose)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\action.py", line 200, in __init__
+    name = card.name
+           ^^^^^^^^^
+AttributeError: 'list' object has no attribute 'name'
+2024-12-20 21:50:40,765 - ERROR - An error occurred: list index out of range
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 41, in <module>
+    result = coordinator.play_one_game(PlayerClass.THE_SILENT)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 180, in receive_game_state_update
+    new_action = self.state_change_callback(self.last_game_state)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in get_next_action_in_game
+    return self.handle_screen()
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 257, in handle_screen
+    return self.choose_card_reward()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 380, in choose_card_reward
+    return CardRewardAction(card_to_choose[0])
+                            ~~~~~~~~~~~~~~^^^
+IndexError: list index out of range
+2024-12-20 21:57:40,649 - ERROR - An error occurred: Must provide a card for CardRewardAction if not choosing the Singing Bowl
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 41, in <module>
+    result = coordinator.play_one_game(PlayerClass.THE_SILENT)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 180, in receive_game_state_update
+    new_action = self.state_change_callback(self.last_game_state)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in get_next_action_in_game
+    return self.handle_screen()
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 257, in handle_screen
+    return self.choose_card_reward()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 379, in choose_card_reward
+    return CardRewardAction(card_to_choose)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\action.py", line 202, in __init__
+    raise Exception("Must provide a card for CardRewardAction if not choosing the Singing Bowl")
+Exception: Must provide a card for CardRewardAction if not choosing the Singing Bowl
+2024-12-20 22:01:17,121 - ERROR - An error occurred: Must provide a card for CardRewardAction if not choosing the Singing Bowl
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 41, in <module>
+    result = coordinator.play_one_game(PlayerClass.THE_SILENT)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 180, in receive_game_state_update
+    new_action = self.state_change_callback(self.last_game_state)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in get_next_action_in_game
+    return self.handle_screen()
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 257, in handle_screen
+    return self.choose_card_reward()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 379, in choose_card_reward
+    return CardRewardAction(card_to_choose)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\action.py", line 202, in __init__
+    raise Exception("Must provide a card for CardRewardAction if not choosing the Singing Bowl")
+Exception: Must provide a card for CardRewardAction if not choosing the Singing Bowl
+2024-12-20 22:03:53,202 - ERROR - An error occurred: Must provide a card for CardRewardAction if not choosing the Singing Bowl
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 41, in <module>
+    result = coordinator.play_one_game(PlayerClass.THE_SILENT)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 180, in receive_game_state_update
+    new_action = self.state_change_callback(self.last_game_state)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in get_next_action_in_game
+    return self.handle_screen()
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 257, in handle_screen
+    return self.choose_card_reward()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 379, in choose_card_reward
+    return CardRewardAction(card_to_choose)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\action.py", line 202, in __init__
+    raise Exception("Must provide a card for CardRewardAction if not choosing the Singing Bowl")
+Exception: Must provide a card for CardRewardAction if not choosing the Singing Bowl
+2024-12-20 22:07:27,859 - ERROR - An error occurred: Must provide a card for CardRewardAction if not choosing the Singing Bowl
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 41, in <module>
+    result = coordinator.play_one_game(PlayerClass.THE_SILENT)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 180, in receive_game_state_update
+    new_action = self.state_change_callback(self.last_game_state)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in get_next_action_in_game
+    return self.handle_screen()
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 257, in handle_screen
+    return self.choose_card_reward()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 379, in choose_card_reward
+    return CardRewardAction(card_to_choose)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\action.py", line 202, in __init__
+    raise Exception("Must provide a card for CardRewardAction if not choosing the Singing Bowl")
+Exception: Must provide a card for CardRewardAction if not choosing the Singing Bowl
+2024-12-20 22:11:39,910 - ERROR - An error occurred: Must provide a card for CardRewardAction if not choosing the Singing Bowl
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 41, in <module>
+    result = coordinator.play_one_game(PlayerClass.THE_SILENT)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 180, in receive_game_state_update
+    new_action = self.state_change_callback(self.last_game_state)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in get_next_action_in_game
+    return self.handle_screen()
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 257, in handle_screen
+    return self.choose_card_reward()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 379, in choose_card_reward
+    return CardRewardAction(card_to_choose)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\action.py", line 202, in __init__
+    raise Exception("Must provide a card for CardRewardAction if not choosing the Singing Bowl")
+Exception: Must provide a card for CardRewardAction if not choosing the Singing Bowl
+2024-12-20 22:32:21,354 - ERROR - An error occurred: Must provide a card for CardRewardAction if not choosing the Singing Bowl
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 38, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 180, in receive_game_state_update
+    new_action = self.state_change_callback(self.last_game_state)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in get_next_action_in_game
+    return self.handle_screen()
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 257, in handle_screen
+    return self.choose_card_reward()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 380, in choose_card_reward
+    return CardRewardAction(card_to_choose)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\action.py", line 202, in __init__
+    raise Exception("Must provide a card for CardRewardAction if not choosing the Singing Bowl")
+Exception: Must provide a card for CardRewardAction if not choosing the Singing Bowl
+2024-12-20 23:00:06,779 - ERROR - An error occurred: Selected card requires an enemy target.
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 38, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 57, in handle_error
+    raise Exception(error)
+Exception: Selected card requires an enemy target.
+2024-12-20 23:37:35,231 - ERROR - An error occurred: Selected card cannot be played with the selected target.
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 38, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 57, in handle_error
+    raise Exception(error)
+Exception: Selected card cannot be played with the selected target.
+2024-12-21 10:33:56,249 - ERROR - An error occurred: Selected card requires an enemy target.
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 38, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 59, in handle_error
+    raise Exception(error)
+Exception: Selected card requires an enemy target.
+2024-12-21 12:22:11,342 - ERROR - An error occurred: Selected card requires an enemy target.
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 38, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 59, in handle_error
+    raise Exception(error)
+Exception: Selected card requires an enemy target.
+2024-12-21 12:38:10,783 - ERROR - An error occurred: Selected card requires an enemy target.
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 38, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 59, in handle_error
+    raise Exception(error)
+Exception: Selected card requires an enemy target.
+2024-12-21 12:53:05,413 - ERROR - An error occurred: Selected card cannot be played with the selected target.
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 38, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 59, in handle_error
+    raise Exception(error)
+Exception: Selected card cannot be played with the selected target.
+2024-12-21 13:21:24,041 - ERROR - An error occurred: Invalid command: [{'url':. Possible commands: [play, end, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 38, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 59, in handle_error
+    raise Exception(error)
+Exception: Invalid command: [{'url':. Possible commands: [play, end, key, click, wait, state]
+2024-12-21 13:27:30,671 - ERROR - An error occurred: Invalid command: [{'url':. Possible commands: [play, end, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 38, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 59, in handle_error
+    raise Exception(error)
+Exception: Invalid command: [{'url':. Possible commands: [play, end, key, click, wait, state]
+2024-12-21 14:31:56,983 - ERROR - An error occurred: Selected card requires an enemy target.
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 38, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 60, in handle_error
+    raise Exception(error)
+Exception: Selected card requires an enemy target.
+2024-12-21 15:06:26,690 - ERROR - An error occurred: Expecting ',' delimiter: line 3 column 2 (char 24)
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 38, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 180, in receive_game_state_update
+    new_action = self.state_change_callback(self.last_game_state)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 74, in get_next_action_in_game
+    return self.get_play_card_action()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 167, in get_play_card_action
+    jsonfile = json.loads(json_text)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\json\decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\json\decoder.py", line 353, in raw_decode
+    obj, end = self.scan_once(s, idx)
+               ^^^^^^^^^^^^^^^^^^^^^^
+json.decoder.JSONDecodeError: Expecting ',' delimiter: line 3 column 2 (char 24)
+2024-12-21 15:16:44,346 - ERROR - An error occurred: Must provide a card for CardRewardAction if not choosing the Singing Bowl
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 38, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 180, in receive_game_state_update
+    new_action = self.state_change_callback(self.last_game_state)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 66, in get_next_action_in_game
+    return self.handle_screen()
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 277, in handle_screen
+    return self.choose_card_reward()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 408, in choose_card_reward
+    return CardRewardAction(card_to_choose)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\action.py", line 202, in __init__
+    raise Exception("Must provide a card for CardRewardAction if not choosing the Singing Bowl")
+Exception: Must provide a card for CardRewardAction if not choosing the Singing Bowl
+2024-12-21 15:29:09,783 - ERROR - An error occurred: Selected card requires an enemy target.
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 38, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 60, in handle_error
+    raise Exception(error)
+Exception: Selected card requires an enemy target.
+2024-12-21 15:50:14,975 - ERROR - An error occurred: Selected card cannot be played with the selected target.
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 38, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 60, in handle_error
+    raise Exception(error)
+Exception: Selected card cannot be played with the selected target.
+2024-12-21 16:16:21,234 - ERROR - An error occurred: Must provide a card for CardRewardAction if not choosing the Singing Bowl
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 38, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 180, in receive_game_state_update
+    new_action = self.state_change_callback(self.last_game_state)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 66, in get_next_action_in_game
+    return self.handle_screen()
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 278, in handle_screen
+    return self.choose_card_reward()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 406, in choose_card_reward
+    return CardRewardAction(card_to_choose)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\action.py", line 202, in __init__
+    raise Exception("Must provide a card for CardRewardAction if not choosing the Singing Bowl")
+Exception: Must provide a card for CardRewardAction if not choosing the Singing Bowl
+2024-12-21 16:36:16,161 - ERROR - An error occurred: Selected card requires an enemy target.
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 38, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 60, in handle_error
+    raise Exception(error)
+Exception: Selected card requires an enemy target.
+2024-12-21 16:39:20,471 - ERROR - An error occurred: Must provide a card for CardRewardAction if not choosing the Singing Bowl
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 39, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 180, in receive_game_state_update
+    new_action = self.state_change_callback(self.last_game_state)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 66, in get_next_action_in_game
+    return self.handle_screen()
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 278, in handle_screen
+    return self.choose_card_reward()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 406, in choose_card_reward
+    return CardRewardAction(card_to_choose)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\action.py", line 202, in __init__
+    raise Exception("Must provide a card for CardRewardAction if not choosing the Singing Bowl")
+Exception: Must provide a card for CardRewardAction if not choosing the Singing Bowl
+2024-12-21 18:32:28,594 - ERROR - An error occurred: Selected card requires an enemy target.
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 41, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 60, in handle_error
+    raise Exception(error)
+Exception: Selected card requires an enemy target.
+2024-12-21 18:38:02,846 - ERROR - An error occurred: Expecting ',' delimiter: line 1 column 8193 (char 8192)
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 41, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 214, in play_one_game
+    self.receive_game_state_update(block=True, perform_callbacks=False)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 165, in receive_game_state_update
+    communication_state = json.loads(message)
+                          ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\json\decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\json\decoder.py", line 353, in raw_decode
+    obj, end = self.scan_once(s, idx)
+               ^^^^^^^^^^^^^^^^^^^^^^
+json.decoder.JSONDecodeError: Expecting ',' delimiter: line 1 column 8193 (char 8192)
+2024-12-21 18:38:20,852 - ERROR - An error occurred: Expecting value: line 1 column 1 (char 0)
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 41, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 214, in play_one_game
+    self.receive_game_state_update(block=True, perform_callbacks=False)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 165, in receive_game_state_update
+    communication_state = json.loads(message)
+                          ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\json\decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\json\decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+2024-12-21 18:38:51,186 - ERROR - An error occurred: Expecting ':' delimiter: line 1 column 8195 (char 8194)
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 41, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 214, in play_one_game
+    self.receive_game_state_update(block=True, perform_callbacks=False)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 165, in receive_game_state_update
+    communication_state = json.loads(message)
+                          ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\json\decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\json\decoder.py", line 353, in raw_decode
+    obj, end = self.scan_once(s, idx)
+               ^^^^^^^^^^^^^^^^^^^^^^
+json.decoder.JSONDecodeError: Expecting ':' delimiter: line 1 column 8195 (char 8194)
+2024-12-21 18:42:11,057 - ERROR - An error occurred: 'NoneType' object has no attribute 'can_be_executed'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 41, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 220, in play_one_game
+    self.execute_next_action_if_ready()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 112, in execute_next_action_if_ready
+    if len(self.action_queue) > 0 and self.action_queue[0].can_be_executed(self):
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'can_be_executed'
+2024-12-21 18:42:56,810 - ERROR - An error occurred: 'NoneType' object has no attribute 'can_be_executed'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 41, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 220, in play_one_game
+    self.execute_next_action_if_ready()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 112, in execute_next_action_if_ready
+    if len(self.action_queue) > 0 and self.action_queue[0].can_be_executed(self):
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'can_be_executed'
+2024-12-21 18:43:50,706 - ERROR - An error occurred: 'NoneType' object has no attribute 'can_be_executed'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 41, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 220, in play_one_game
+    self.execute_next_action_if_ready()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 112, in execute_next_action_if_ready
+    if len(self.action_queue) > 0 and self.action_queue[0].can_be_executed(self):
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'can_be_executed'
+2024-12-21 18:44:01,947 - ERROR - An error occurred: Invalid command: start. Possible commands: [choose, return, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 41, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 60, in handle_error
+    raise Exception(error)
+Exception: Invalid command: start. Possible commands: [choose, return, key, click, wait, state]
+2024-12-21 18:45:14,236 - ERROR - An error occurred: Expecting value: line 1 column 1 (char 0)
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 41, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 214, in play_one_game
+    self.receive_game_state_update(block=True, perform_callbacks=False)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 165, in receive_game_state_update
+    communication_state = json.loads(message)
+                          ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\json\decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\json\decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+2024-12-21 19:49:07,909 - ERROR - An error occurred: 'NoneType' object has no attribute 'can_be_executed'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 41, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 220, in play_one_game
+    self.execute_next_action_if_ready()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 112, in execute_next_action_if_ready
+    if len(self.action_queue) > 0 and self.action_queue[0].can_be_executed(self):
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'can_be_executed'
+2024-12-21 19:49:11,818 - ERROR - An error occurred: Expecting value: line 1 column 1 (char 0)
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 41, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 165, in receive_game_state_update
+    communication_state = json.loads(message)
+                          ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\json\decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\json\decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+2024-12-21 19:55:46,097 - ERROR - An error occurred: 'NoneType' object has no attribute 'to_dict'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 41, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 180, in receive_game_state_update
+    new_action = self.state_change_callback(self.last_game_state)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 66, in get_next_action_in_game
+    return self.handle_screen()
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 290, in handle_screen
+    return self.make_map_choice()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 463, in make_map_choice
+    tree_dict = current_node.to_dict()
+                ^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'to_dict'
+2024-12-21 20:00:16,583 - ERROR - An error occurred: 'NoneType' object has no attribute 'can_be_executed'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 41, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 220, in play_one_game
+    self.execute_next_action_if_ready()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 112, in execute_next_action_if_ready
+    if len(self.action_queue) > 0 and self.action_queue[0].can_be_executed(self):
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'can_be_executed'
+2024-12-21 20:00:28,175 - ERROR - An error occurred: 'NoneType' object has no attribute 'can_be_executed'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 41, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 220, in play_one_game
+    self.execute_next_action_if_ready()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 112, in execute_next_action_if_ready
+    if len(self.action_queue) > 0 and self.action_queue[0].can_be_executed(self):
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'can_be_executed'
+2024-12-21 20:09:44,865 - ERROR - An error occurred: 'NoneType' object has no attribute 'can_be_executed'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 41, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 220, in play_one_game
+    self.execute_next_action_if_ready()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 112, in execute_next_action_if_ready
+    if len(self.action_queue) > 0 and self.action_queue[0].can_be_executed(self):
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'can_be_executed'
+2024-12-21 20:09:52,782 - ERROR - An error occurred: 'NoneType' object has no attribute 'can_be_executed'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 41, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 220, in play_one_game
+    self.execute_next_action_if_ready()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 112, in execute_next_action_if_ready
+    if len(self.action_queue) > 0 and self.action_queue[0].can_be_executed(self):
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'can_be_executed'
+2024-12-21 20:22:59,396 - ERROR - An error occurred: unsupported operand type(s) for +: 'dict' and 'str'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 41, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 180, in receive_game_state_update
+    new_action = self.state_change_callback(self.last_game_state)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 67, in get_next_action_in_game
+    return self.handle_screen()
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 291, in handle_screen
+    return self.make_map_choice()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 478, in make_map_choice
+    file.write(current_node.to_dict() + "\n")
+               ~~~~~~~~~~~~~~~~~~~~~~~^~~~~~
+TypeError: unsupported operand type(s) for +: 'dict' and 'str'
+2024-12-21 20:23:49,910 - ERROR - An error occurred: 'NoneType' object has no attribute 'can_be_executed'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 41, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 220, in play_one_game
+    self.execute_next_action_if_ready()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 112, in execute_next_action_if_ready
+    if len(self.action_queue) > 0 and self.action_queue[0].can_be_executed(self):
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'can_be_executed'
+2024-12-22 00:05:28,173 - ERROR - An error occurred: Invalid command: . Possible commands: [start, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: . Possible commands: [start, state]
+2024-12-22 00:05:31,779 - ERROR - An error occurred: Invalid command: . Possible commands: [start, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: . Possible commands: [start, state]
+2024-12-22 00:05:35,111 - ERROR - An error occurred: Invalid command: . Possible commands: [choose, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: . Possible commands: [choose, key, click, wait, state]
+2024-12-22 00:05:37,924 - ERROR - An error occurred: Invalid command: . Possible commands: [choose, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: . Possible commands: [choose, key, click, wait, state]
+2024-12-22 00:05:40,934 - ERROR - An error occurred: Invalid command: . Possible commands: [choose, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: . Possible commands: [choose, key, click, wait, state]
+2024-12-22 00:05:44,251 - ERROR - An error occurred: Invalid command: . Possible commands: [choose, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: . Possible commands: [choose, key, click, wait, state]
+2024-12-22 00:05:47,609 - ERROR - An error occurred: Invalid command: . Possible commands: [choose, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: . Possible commands: [choose, key, click, wait, state]
+2024-12-22 00:05:49,367 - ERROR - An error occurred: Invalid command: . Possible commands: [choose, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: . Possible commands: [choose, key, click, wait, state]
+2024-12-22 00:05:53,647 - ERROR - An error occurred: Invalid command: . Possible commands: [choose, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: . Possible commands: [choose, key, click, wait, state]
+2024-12-22 00:05:58,099 - ERROR - An error occurred: Invalid command: . Possible commands: [choose, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: . Possible commands: [choose, key, click, wait, state]
+2024-12-22 00:05:59,968 - ERROR - An error occurred: Invalid command: . Possible commands: [choose, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: . Possible commands: [choose, key, click, wait, state]
+2024-12-22 00:06:03,179 - ERROR - An error occurred: Invalid command: ```. Possible commands: [choose, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: ```. Possible commands: [choose, key, click, wait, state]
+2024-12-22 00:06:07,098 - ERROR - An error occurred: Invalid command: ```. Possible commands: [choose, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: ```. Possible commands: [choose, key, click, wait, state]
+2024-12-22 00:06:49,916 - ERROR - An error occurred: Invalid command: . Possible commands: [start, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: . Possible commands: [start, state]
+2024-12-22 00:06:53,191 - ERROR - An error occurred: Invalid command: . Possible commands: [start, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: . Possible commands: [start, state]
+2024-12-22 00:06:56,620 - ERROR - An error occurred: Invalid command: . Possible commands: [choose, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: . Possible commands: [choose, key, click, wait, state]
+2024-12-22 00:06:59,939 - ERROR - An error occurred: Invalid command: . Possible commands: [choose, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: . Possible commands: [choose, key, click, wait, state]
+2024-12-22 00:07:02,578 - ERROR - An error occurred: Invalid command: . Possible commands: [choose, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: . Possible commands: [choose, key, click, wait, state]
+2024-12-22 00:07:04,907 - ERROR - An error occurred: Invalid command: . Possible commands: [choose, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: . Possible commands: [choose, key, click, wait, state]
+2024-12-22 00:07:09,490 - ERROR - An error occurred: Invalid command: . Possible commands: [choose, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: . Possible commands: [choose, key, click, wait, state]
+2024-12-22 00:07:11,085 - ERROR - An error occurred: Invalid command: . Possible commands: [choose, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: . Possible commands: [choose, key, click, wait, state]
+2024-12-22 00:07:14,554 - ERROR - An error occurred: Invalid command: . Possible commands: [choose, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: . Possible commands: [choose, key, click, wait, state]
+2024-12-22 00:07:18,816 - ERROR - An error occurred: Invalid command: start. Possible commands: [choose, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: start. Possible commands: [choose, key, click, wait, state]
+2024-12-22 00:07:20,360 - ERROR - An error occurred: Invalid command: . Possible commands: [choose, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: . Possible commands: [choose, key, click, wait, state]
+2024-12-22 00:07:23,799 - ERROR - An error occurred: Invalid command: . Possible commands: [choose, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: . Possible commands: [choose, key, click, wait, state]
+2024-12-22 00:07:27,270 - ERROR - An error occurred: Invalid command: {. Possible commands: [choose, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: {. Possible commands: [choose, key, click, wait, state]
+2024-12-22 00:07:31,516 - ERROR - An error occurred: Invalid command: . Possible commands: [choose, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: . Possible commands: [choose, key, click, wait, state]
+2024-12-22 00:07:35,020 - ERROR - An error occurred: Invalid command: ```. Possible commands: [choose, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: ```. Possible commands: [choose, key, click, wait, state]
+2024-12-22 00:07:36,920 - ERROR - An error occurred: Invalid command: . Possible commands: [choose, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: . Possible commands: [choose, key, click, wait, state]
+2024-12-22 00:07:40,168 - ERROR - An error occurred: Invalid command: . Possible commands: [choose, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: . Possible commands: [choose, key, click, wait, state]
+2024-12-22 00:07:43,569 - ERROR - An error occurred: Invalid command: . Possible commands: [choose, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: . Possible commands: [choose, key, click, wait, state]
+2024-12-22 00:08:20,528 - ERROR - An error occurred: Invalid command: . Possible commands: [start, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: . Possible commands: [start, state]
+2024-12-22 00:08:22,076 - ERROR - An error occurred: Invalid command: . Possible commands: [start, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: . Possible commands: [start, state]
+2024-12-22 00:08:25,529 - ERROR - An error occurred: Invalid command: . Possible commands: [choose, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: . Possible commands: [choose, key, click, wait, state]
+2024-12-22 00:08:29,730 - ERROR - An error occurred: Invalid command: . Possible commands: [choose, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: . Possible commands: [choose, key, click, wait, state]
+2024-12-22 00:08:31,820 - ERROR - An error occurred: Invalid command: . Possible commands: [choose, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: . Possible commands: [choose, key, click, wait, state]
+2024-12-22 00:08:34,725 - ERROR - An error occurred: Invalid command: . Possible commands: [choose, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: . Possible commands: [choose, key, click, wait, state]
+2024-12-22 00:08:38,010 - ERROR - An error occurred: Invalid command: . Possible commands: [choose, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: . Possible commands: [choose, key, click, wait, state]
+2024-12-22 00:08:41,488 - ERROR - An error occurred: Invalid command: . Possible commands: [choose, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: . Possible commands: [choose, key, click, wait, state]
+2024-12-22 00:08:43,219 - ERROR - An error occurred: Invalid command: . Possible commands: [choose, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: . Possible commands: [choose, key, click, wait, state]
+2024-12-22 00:08:48,295 - ERROR - An error occurred: Invalid command: . Possible commands: [choose, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: . Possible commands: [choose, key, click, wait, state]
+2024-12-22 00:08:50,048 - ERROR - An error occurred: Invalid command: . Possible commands: [choose, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: . Possible commands: [choose, key, click, wait, state]
+2024-12-22 00:08:54,333 - ERROR - An error occurred: Invalid command: . Possible commands: [choose, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: . Possible commands: [choose, key, click, wait, state]
+2024-12-22 00:08:57,031 - ERROR - An error occurred: Invalid command: {. Possible commands: [choose, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: {. Possible commands: [choose, key, click, wait, state]
+2024-12-22 00:09:01,445 - ERROR - An error occurred: Invalid command: . Possible commands: [choose, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: . Possible commands: [choose, key, click, wait, state]
+2024-12-22 00:09:05,148 - ERROR - An error occurred: Invalid command: ```. Possible commands: [choose, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: ```. Possible commands: [choose, key, click, wait, state]
+2024-12-22 00:11:49,778 - ERROR - An error occurred: Invalid command: . Possible commands: [start, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: . Possible commands: [start, state]
+2024-12-22 00:11:53,775 - ERROR - An error occurred: Invalid command: . Possible commands: [start, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: . Possible commands: [start, state]
+2024-12-22 00:11:55,798 - ERROR - An error occurred: Invalid command: . Possible commands: [choose, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: . Possible commands: [choose, key, click, wait, state]
+2024-12-22 00:11:59,341 - ERROR - An error occurred: Invalid command: . Possible commands: [choose, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: . Possible commands: [choose, key, click, wait, state]
+2024-12-22 00:12:03,601 - ERROR - An error occurred: Invalid command: . Possible commands: [choose, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: . Possible commands: [choose, key, click, wait, state]
+2024-12-22 00:12:06,097 - ERROR - An error occurred: Invalid command: . Possible commands: [choose, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: . Possible commands: [choose, key, click, wait, state]
+2024-12-22 00:12:09,641 - ERROR - An error occurred: Invalid command: . Possible commands: [choose, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: . Possible commands: [choose, key, click, wait, state]
+2024-12-22 00:12:13,139 - ERROR - An error occurred: Invalid command: . Possible commands: [choose, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: . Possible commands: [choose, key, click, wait, state]
+2024-12-22 00:12:18,742 - ERROR - An error occurred: Invalid command: . Possible commands: [choose, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: . Possible commands: [choose, key, click, wait, state]
+2024-12-22 00:12:22,161 - ERROR - An error occurred: Invalid command: . Possible commands: [choose, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: . Possible commands: [choose, key, click, wait, state]
+2024-12-22 00:12:26,124 - ERROR - An error occurred: Invalid command: . Possible commands: [choose, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: . Possible commands: [choose, key, click, wait, state]
+2024-12-22 00:12:31,570 - ERROR - An error occurred: Invalid command: . Possible commands: [choose, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: . Possible commands: [choose, key, click, wait, state]
+2024-12-22 00:12:35,308 - ERROR - An error occurred: Invalid command: }. Possible commands: [choose, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: }. Possible commands: [choose, key, click, wait, state]
+2024-12-22 00:12:40,046 - ERROR - An error occurred: Invalid command: . Possible commands: [choose, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: . Possible commands: [choose, key, click, wait, state]
+2024-12-22 00:12:47,653 - ERROR - An error occurred: Invalid command: . Possible commands: [choose, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: . Possible commands: [choose, key, click, wait, state]
+2024-12-22 00:12:51,820 - ERROR - An error occurred: Invalid command: . Possible commands: [choose, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: . Possible commands: [choose, key, click, wait, state]
+2024-12-22 00:12:58,702 - ERROR - An error occurred: Invalid command: . Possible commands: [choose, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 217, in play_one_game
+    self.receive_game_state_update(block=True)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Invalid command: . Possible commands: [choose, key, click, wait, state]
+2024-12-22 14:56:22,142 - ERROR - An error occurred: 'NoneType' object has no attribute 'can_be_executed'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 50, in <module>
+    result = coordinator.play_one_game(PlayerClass.DEFECT)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 220, in play_one_game
+    self.execute_next_action_if_ready()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 112, in execute_next_action_if_ready
+    if len(self.action_queue) > 0 and self.action_queue[0].can_be_executed(self):
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'can_be_executed'
+2024-12-22 15:17:47,690 - ERROR - An error occurred: Selected card cannot be played with the selected target.
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 50, in <module>
+    result = coordinator.play_one_game(PlayerClass.DEFECT)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 63, in handle_error
+    raise Exception(error)
+Exception: Selected card cannot be played with the selected target.
+2024-12-22 15:19:50,603 - ERROR - An error occurred: Expecting value: line 1 column 1 (char 0)
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 50, in <module>
+    result = coordinator.play_one_game(PlayerClass.DEFECT)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 214, in play_one_game
+    self.receive_game_state_update(block=True, perform_callbacks=False)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 165, in receive_game_state_update
+    communication_state = json.loads(message)
+                          ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\json\decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\json\decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)

@@ -49,6 +49,8 @@ class Orb:
         orb = Orb(name, orb_id, evoke_amount, passive_amount)
         return orb
 
+    def __str__(self):
+        return f"{self.name}"
 
 class Character:
 
@@ -74,6 +76,9 @@ class Player(Character):
         player.powers = [Power.from_json(json_power) for json_power in json_object["powers"]]
         player.orbs = [Orb.from_json(orb) for orb in json_object["orbs"]]
         return player
+
+    def __str__(self):
+        return f"Player(energy={self.energy},block={self.block})"
 
 
 class Monster(Character):
@@ -121,3 +126,18 @@ class Monster(Character):
                         return False
                 return True
         return False
+
+    def __str__(self):
+        str = f"{self.monster_id}( {self.current_hp}/{self.max_hp} ,{self.intent}"
+        if self.intent == Intent.ATTACK or self.intent == Intent.ATTACK_BUFF or self.intent == Intent.ATTACK_DEFEND or self.intent == Intent.ATTACK_DEFEND:
+            str+= f" {self.move_adjusted_damage}*{self.move_hits}"
+
+        str += f",{self.get_lists_str(self.powers)})"
+        return str
+
+    def get_lists_str(self,lists):
+        str = "[ "
+        for item in lists:
+            str += (item.__str__()+', ')
+        str = str + " ]"
+        return str
