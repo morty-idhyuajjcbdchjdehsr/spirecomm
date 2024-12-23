@@ -160,10 +160,9 @@ class Coordinator:
         :return: whether a message was received
         """
         message = self.get_next_raw_message(block)
-        # print("message is:",message)
+
         if message is not None:
             communication_state = json.loads(message)
-            # print(communication_state)
             self.last_error = communication_state.get("error", None)
             self.game_is_ready = communication_state.get("ready_for_command")
             if self.last_error is None:

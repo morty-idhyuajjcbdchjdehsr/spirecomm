@@ -3000,3 +3000,246 @@ Traceback (most recent call last):
   File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\json\decoder.py", line 355, in raw_decode
     raise JSONDecodeError("Expecting value", s, err.value) from None
 json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+2024-12-22 15:55:57,396 - ERROR - An error occurred: Selected card requires an enemy target.
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 64, in handle_error
+    raise Exception(error)
+Exception: Selected card requires an enemy target.
+2024-12-22 16:10:12,984 - ERROR - An error occurred: Selected card requires an enemy target.
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 41, in <module>
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 64, in handle_error
+    raise Exception(error)
+Exception: Selected card requires an enemy target.
+
+ the card must have a target!!!!!!!!!
+
+
+ the card must have a target!!!!!!!!!
+
+2024-12-22 17:35:57,399 - ERROR - An error occurred: Invalid command: play. Possible commands: [proceed, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 176, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 64, in handle_error
+    raise Exception(error)
+Exception: Invalid command: play. Possible commands: [proceed, key, click, wait, state]
+2024-12-22 18:22:42,090 - ERROR - An error occurred: Invalid command: play. Possible commands: [proceed, key, click, wait, state]
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 220, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 175, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 64, in handle_error
+    raise Exception(error)
+Exception: Invalid command: play. Possible commands: [proceed, key, click, wait, state]
+2024-12-22 23:04:54,996 - ERROR - An error occurred: Expecting ',' delimiter: line 3 column 2 (char 24)
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 220, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 179, in receive_game_state_update
+    new_action = self.state_change_callback(self.last_game_state)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 88, in get_next_action_in_game
+    return self.get_play_card_action()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 184, in get_play_card_action
+    jsonfile = json.loads(json_text)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\json\decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\json\decoder.py", line 353, in raw_decode
+    obj, end = self.scan_once(s, idx)
+               ^^^^^^^^^^^^^^^^^^^^^^
+json.decoder.JSONDecodeError: Expecting ',' delimiter: line 3 column 2 (char 24)
+unable to parse json_text:{
+	"isToEndTurn": "No"
+	"cardName": "Strike"
+	"targetIndex": 0
+	"explanation": "I will play 'Strike' targeting SpikeSlime_S to try and reduce its HP since it has low health remaining. Playing an attack card is beneficial in this situation to quickly eliminate the weaker enemy before it becomes stronger."
+}
+unable to parse json_text:{
+	"isToEndTurn": "No"
+	"cardName": "Rage",
+	"targetIndex": -1,
+	"explanation": "Playing Rage is beneficial as it will grant you 6 block and apply 1 Vulnerable to the enemy. Given that you have 0 energy and no other options, this can help mitigate some of the incoming damage from the SpikeSlime_S."
+}
+
+ the card must have a target!!!!!!!!!
+
+unable to parse json_text:{
+	"isToEndTurn": "No"
+	"cardName": "Power Through"
+	"targetIndex": -1
+	"explanation": "Playing 'Power Through' would be beneficial as it provides 15 block, helping to mitigate potential damage from the enemies. Given the current low block and HP, prioritizing defense in this turn is important to sustain longer in the combat."
+}
+unable to parse json_text:{
+	"isToEndTurn": "No"
+	"cardName": "Perfected Strike"
+	"targetIndex": 1
+	"explanation": "I will play Perfected Strike card to target the Cultist enemy. This card deals damage based on the number of cards containing 'Strike' in the discard pile, which currently has 1 'Strike' card. Targeting the Cultist, who has higher HP, will help to reduce their health significantly."
+}
+unable to parse json_text:{
+	"isToEndTurn": "No"
+	"cardName": "Die Die Die"
+	"targetIndex": -1
+	"explanation": "The enemy JawWorm has low health, using Die Die Die card with 3 energy will deal significant damage and help in eliminating the enemy quickly. Since it's an AOE card, it will damage the enemy even if it has block."
+}
+2024-12-23 00:03:31,689 - ERROR - An error occurred: 'NoneType' object has no attribute 'can_be_executed'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 219, in play_one_game
+    self.execute_next_action_if_ready()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 112, in execute_next_action_if_ready
+    if len(self.action_queue) > 0 and self.action_queue[0].can_be_executed(self):
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'can_be_executed'
+2024-12-23 01:09:39,113 - ERROR - An error occurred: 'ConversationSummaryBufferMemory' object has no attribute 'get_next_version'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 42, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 220, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 179, in receive_game_state_update
+    new_action = self.state_change_callback(self.last_game_state)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 88, in get_next_action_in_game
+    return self.get_play_card_action()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 175, in get_play_card_action
+    responses = self.battle_agent.invoke(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\__init__.py", line 1936, in invoke
+    for chunk in self.stream(
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\__init__.py", line 1605, in stream
+    with SyncPregelLoop(
+         ^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\loop.py", line 806, in __init__
+    self.checkpointer_get_next_version = checkpointer.get_next_version
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\pydantic\main.py", line 856, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'ConversationSummaryBufferMemory' object has no attribute 'get_next_version'
+
+ the card must have a target!!!!!!!!!
+
+
+ the card must have a target!!!!!!!!!
+
+
+ the card must have a target!!!!!!!!!
+
+
+ the card must have a target!!!!!!!!!
+
+
+ the card must have a target!!!!!!!!!
+
+
+ the card must have a target!!!!!!!!!
+
+
+ the card must have a target!!!!!!!!!
+
+
+ the card must have a target!!!!!!!!!
+
+
+ the card must have a target!!!!!!!!!
+
+
+ the card must have a target!!!!!!!!!
+
+
+ the card must have a target!!!!!!!!!
+
+
+ the card must have a target!!!!!!!!!
+
+
+ the card must have a target!!!!!!!!!
+
+
+ the card must have a target!!!!!!!!!
+
+2024-12-23 13:48:28,147 - ERROR - An error occurred: Selected card cannot be played with the selected target.
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 50, in <module>
+    result = coordinator.play_one_game(PlayerClass.DEFECT)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 220, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 175, in receive_game_state_update
+    new_action = self.error_callback(self.last_error)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 64, in handle_error
+    raise Exception(error)
+Exception: Selected card cannot be played with the selected target.
+
+ the card must have a target!!!!!!!!!
+

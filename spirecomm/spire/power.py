@@ -29,4 +29,4 @@ class Power:
         return self.power_id == other.power_id and self.amount == other.amount
 
     def __str__(self):
-        return f"{self.power_name}"
+        return f"{self.power_name}({self.amount})"

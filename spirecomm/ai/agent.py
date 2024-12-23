@@ -3,7 +3,7 @@ import os
 import time
 import random
 
-from langchain.memory import ConversationBufferWindowMemory
+from langchain.memory import ConversationBufferWindowMemory, ConversationSummaryBufferMemory
 from langchain.output_parsers import ResponseSchema, StructuredOutputParser
 from langchain_community.agent_toolkits.load_tools import load_tools
 from langchain_community.tools import TavilySearchResults
@@ -31,6 +31,7 @@ from langgraph.checkpoint.memory import MemorySaver
 class SimpleAgent:
 
     def __init__(self, chosen_class=PlayerClass.THE_SILENT):
+        self.llm = None
         self.make_map_choice_agent = None
         self.role = None
         self.battle_output_parser = None
@@ -75,6 +76,11 @@ class SimpleAgent:
                 if potion_action is not None:
                     return potion_action
             if (self.game.room_type == "MonsterRoom" and len(self.game.get_real_potions()) > 0
+                    and self.game.current_hp <= 20):
+                potion_action = self.use_next_potion()
+                if potion_action is not None:
+                    return potion_action
+            if (self.game.room_type == "MonsterRoomElite" and len(self.game.get_real_potions()) > 0
                     and self.game.current_hp <= 20):
                 potion_action = self.use_next_potion()
                 if potion_action is not None:
@@ -175,16 +181,22 @@ class SimpleAgent:
         json_text = response_text[start:end].strip()
 
         # 得到最终的 json格式文件
-        jsonfile = json.loads(json_text)
+        try:
+            jsonfile = json.loads(json_text)
+        except Exception as e:
+            with open(r'C:\Users\32685\Desktop\spirecomm\error_log.txt', 'a') as file:
+                file.write(f'unable to parse json_text:{json_text}\n')
+            return EndTurnAction()
+
         is_to_end_turn = jsonfile.get('isToEndTurn')
-        card_name = jsonfile.get('cardName')
-        card_id = jsonfile.get('cardId')
+        # card_name = jsonfile.get('cardName')
+        card_Index = jsonfile.get('cardIndex')
         target_index = jsonfile.get('targetIndex')
         explanation = jsonfile.get('explanation')
 
         with open(r'C:\Users\32685\Desktop\spirecomm\output.txt', 'a') as file:
-            file.write('--------------executing get_play_card_action---------------\n')
-            file.write(self.game.__str__())
+            # file.write('--------------executing get_play_card_action---------------\n')
+            # file.write(self.game.__str__())
             file.write('--------------human message--------------------------------\n')
             file.write(messages[0].content+"\n")
             file.write("--------------ai message-----------------------------------\n")
@@ -197,7 +209,14 @@ class SimpleAgent:
             # file.write("--------------verify json file-----------------------------------\n")
             # file.write(jsonfile.__str__())
 
-        card_to_play1 = next((card for card in self.game.hand if card.name == card_name), None)
+        with open(r'C:\Users\32685\Desktop\spirecomm\state.txt', 'w') as file:
+            file.write('--------------current state---------------\n')
+            file.write(self.game.__str__())
+
+        if 0 <= card_Index < len(playable_cards):
+            card_to_play1 = playable_cards[card_Index]
+        else:
+            card_to_play1 = playable_cards[0]
         target1 = None
         if target_index != -1:
             target1 = available_monsters[target_index]
@@ -206,7 +225,12 @@ class SimpleAgent:
             return EndTurnAction()
         if card_to_play1 is not None:
             if target1 is None:
-                return PlayCardAction(card=card_to_play1)
+                if card_to_play1.has_target:
+                    with open(r'C:\Users\32685\Desktop\spirecomm\error_log.txt', 'a') as file:
+                        file.write("\n the card must have a target!!!!!!!!!\n\n")
+                    return PlayCardAction(card=card_to_play1, target_monster=available_monsters[0])
+                else:
+                    return PlayCardAction(card=card_to_play1)
             else:
                 return PlayCardAction(card=card_to_play1, target_monster=target1)
         else:
@@ -248,15 +272,6 @@ class SimpleAgent:
                 return PlayCardAction(card=card_to_play, target_monster=target)
             else:
                 return PlayCardAction(card=card_to_play)
-
-    # @tool("is_card_has_target_tool")
-    # def is_card_has_target(self,cardName:str)->bool:
-    #     """if you want to find out whether the card you have chosen needs to be appointed a target"""
-    #     card = next((card for card in self.game.hand if card.name == cardName), None)
-    #     if card is None:
-    #         return False
-    #     else:
-    #         return card.has_target
 
     def use_next_potion(self):
         for potion in self.game.get_real_potions():
@@ -398,7 +413,13 @@ class SimpleAgent:
         json_text = response_text[start:end].strip() # json文本
 
         # 得到最终的 json格式文件
-        jsonfile = json.loads(json_text)
+        try:
+            jsonfile = json.loads(json_text)
+        except Exception as e:
+            with open(r'C:\Users\32685\Desktop\spirecomm\error_log.txt', 'a') as file:
+                file.write(f'unable to parse json_text:{json_text}\n')
+            return CancelAction()
+
         card_name = jsonfile.get('cardName')
         explanation = jsonfile.get('explanation')
 
@@ -449,7 +470,7 @@ class SimpleAgent:
             if card != cardlist[-1]:
                 str += ", "
         str += ']'
-        return str;
+        return str
 
     def generate_map_route(self):
         node_rewards = self.priorities.MAP_NODE_PRIORITIES.get(self.game.act)
@@ -476,10 +497,16 @@ class SimpleAgent:
 
     def make_map_choice(self):
 
+        with open(r'C:\Users\32685\Desktop\spirecomm\mapInfo.txt', 'a') as file:
+            file.write('--------------next_nodes---------------\n')
+            file.write(self.game.screen.next_nodes.__str__() + "\n")
+            file.write('--------------game.map.nodes-----------\n')
+            file.write(self.game.map.nodes.__str__() + "\n")
+
         # 特殊情况
         if self.game.screen.boss_available:
             return ChooseMapBossAction()
-        if len(self.game.screen.next_nodes)==1:
+        if len(self.game.screen.next_nodes) == 1:
             return ChooseMapNodeAction(self.game.screen.next_nodes[0])
 
         # llm
@@ -528,16 +555,17 @@ class SimpleAgent:
         start = response_text.rfind('```json') + len('```json\n')
         end = response_text.rfind('```')
         json_text = response_text[start:end].strip()  # json文本
+        index = 0 #默认为0
 
-        # 得到最终的 json格式文件
-        jsonfile = json.loads(json_text)
-        index = jsonfile.get('index')
+        try:
+            # 得到最终的 json格式文件
+            jsonfile = json.loads(json_text)
+            index = jsonfile.get('index')
+        except Exception as e:
+            with open(r'C:\Users\32685\Desktop\spirecomm\error_log.txt', 'a') as file:
+                file.write(f'unable to parse json_text:{json_text}\n')
 
         with open(r'C:\Users\32685\Desktop\spirecomm\mapInfo.txt', 'a') as file:
-            file.write('--------------next_nodes---------------\n')
-            file.write(self.game.screen.next_nodes.__str__() + "\n")
-            file.write('--------------game.map.nodes-----------\n')
-            file.write(self.game.map.nodes.__str__() + "\n")
             file.write('--------------tree_json----------------\n')
             file.write(tree_dict.__str__() + "\n")
 
@@ -553,7 +581,7 @@ class SimpleAgent:
                 file.write(type(response).__name__+" "+response.__str__())
                 file.write("\n\n")
 
-        if index < len(self.game.screen.next_nodes):
+        if len(self.game.screen.next_nodes) > index >= 0:
             return ChooseMapNodeAction(self.game.screen.next_nodes[index])
         else:
             return ChooseMapNodeAction(self.game.screen.next_nodes[0])
@@ -578,9 +606,10 @@ class SimpleAgent:
             name="isToEndTurn",
             description="return 'No' if you have chosen one card to play, return 'Yes' if you decide to end the turn"
         )
-        card_name_schema = ResponseSchema(
-            name="cardName",
-            description="The name of the card you choose; if you don't choose a card, just return an empty string."
+        card_index_schema = ResponseSchema(
+            name="cardIndex",
+            description="The index of the card you choose from Hand Pile; if you don't choose a card, just return -1",
+            type="Int"
         )
         target_index_schema = ResponseSchema(
             name="targetIndex",
@@ -594,13 +623,15 @@ class SimpleAgent:
         # 将所有 schema 添加到列表中
         response_schemas = [
             is_to_end_turn_schema,
-            card_name_schema,
+            card_index_schema,
             target_index_schema,
             explanation_schema
         ]
         output_parser = StructuredOutputParser(response_schemas=response_schemas)
         self.battle_output_parser =output_parser
         outputFormat = self.battle_output_parser.get_format_instructions()
+
+
 
         system_prompt2 = f"""
                 You are an AI designed to play *Slay the Spire* as the role {self.role} and make optimal card choices during combat. 
@@ -615,7 +646,7 @@ class SimpleAgent:
                    **Energy Available**: 'energy' (how much energy is available for playing cards),
                    **Relics**: [ Relic ],(the relics you have)
                    **Enemy Lists**: [ Enemy ]  (a list of enemy,each Enemy is in format: 
-                    "enermy_name( enermy_hp,enemy_intent,[enemy_status])"  )
+                    "enermy_name( enermy_hp,enemy_intent,enemy_block,[enemy_status])"  )
                    **Hand pile**: [ Card ] (list of cards available in the player’s hand, each Card is in
                       format: "card_name( card_cost,is_card_has_target )" )
                    **Draw Pile**: [ Card ] (list of cards in draw pile)
@@ -625,27 +656,30 @@ class SimpleAgent:
                 Goal:
                 take a action to maximize your chances of winning the combat:
                     Choose one card from Hand pile to play, or decide to end the turn.
-                    
+                
                 Role Guidelines:
                 {self.get_role_guidelines(self.chosen_class)}
-
+            
                 General Guidelines:
                 - before you choose a card, please figure out your combat strategy first based on the enemy you encounter.
-                - Pay attention to usage condition. some cards have specific usage conditions,for example: "Grand Finale" can only be 
-                  played if there are no cards in your draw pile. If you feel unsure about a card, you can search for it 
-                  on Wikipedia.
+                - if you don't have the relic 'Runic Dome', and your enemy's intent is UNKNOWN, it means the enemy doesn't
+                  attack this turn. Then you should prioritize attacking or enhance yourself rather than using 
+                  defensive cards.
                 - Focus on maximizing damage if the enemy’s HP is low, or if you have a strong offensive option available,
                   or you think you can terminate the enemy in this turn.
-                - Consider using defensive cards when enemy has an attack intention and the damage is bigger than your block.
+                - If enemy has high block now, you can prefer not to attack it in this turn, because in next turn it's 
+                  block will be removed.
+                - Consider using defensive cards(cards that gain blocks or weaken the enemy) when enemy has an attack 
+                  intention and the damage is bigger than your block. when facing multiple enemies, prioritize 
+                  weaken the enemy with biggest damage.
                 - prioritize Power card,as it can benefit you in all turns after.
                 - when facing multiple enemies, AOE cards should be prioritized.
-                - When you are about to attack or defend, you should prioritize non-basic cards, as they generally have
-                  better effects than basic cards("Defend" and "Strike")
-                - For cards of the same type, prioritize those with better overall effects (evaluated based on values, 
-                  additional effects, etc.)
+                - When you are about to attack or defend, you should prioritize non-basic cards(cards that are not 
+                  "Defend" or "Strike")
+                - For cards of the same type, prioritize those with best overall effects (evaluated based on its 
+                  value, additional effects, etc.)
                 - card with 0 cost can be chosen whatever your available energy is, so please prioritize it.
                 - when you have 0 energy,don't easily end your turn, you can still play 0 cost card.
-                - prioritize cards that will significantly contribute to the current state of the combat.
                 - spend your energy at most.Don't easily leave unused energy in one turn.
                 - Take into account any status effects that may alter the effectiveness of your cards 
                   (e.g., *Vulnerable*, *Frailty*, etc.).
@@ -657,21 +691,21 @@ class SimpleAgent:
                   can be applied in future turns, account for that as well.
                 - exhausting the status card is good for you, do it when you can.
                 
-                
                 Attention:
                 - Before giving your response,please check the chosen card's attribute 'is_card_has_target', 
                   if it's True,then you need to appoint a target for the card, which means 'targetIndex' 
                   in your response shouldn't be -1.
-
                 - Provide reasoning for your card choice based on the current context.
 
                 Response format:
                 {outputFormat}
                 """
         # memory = ConversationBufferWindowMemory(k=1)
+        # llm = ChatOpenAI(model="gpt-3.5-turbo-0125",temperature=0)
+        # memory = ConversationSummaryBufferMemory(llm=llm, max_token_limit=100)
 
-        llm = ChatOpenAI(model="gpt-3.5-turbo-0125",temperature=0)
-        tools = load_tools(["wikipedia"],llm=llm)
+        # tools = load_tools(["wikipedia"],llm=llm)
+        tools = []
 
         agent = create_react_agent(self.llm, tools=tools, state_modifier=system_prompt2,)
         self.battle_agent = agent
@@ -732,10 +766,10 @@ class SimpleAgent:
         # memory = ConversationBufferWindowMemory(k=1)
         memory = MemorySaver()
 
-        llm = ChatOpenAI(model="gpt-3.5-turbo-0125", temperature=0)
-        tools = load_tools(["wikipedia"],llm=llm)
-
+        # llm = ChatOpenAI(model="gpt-3.5-turbo-0125", temperature=0)
+        # tools = load_tools(["wikipedia"],llm=llm)
         # tools = [self.search_card]
+        tools = []
         agent = create_react_agent(self.llm, tools=tools, state_modifier=system_prompt, )
         self.choose_card_agent = agent
     def init_make_map_choice_llm(self):
@@ -802,8 +836,6 @@ class SimpleAgent:
         return response[-1].get('content')
 
 
-
-
     def init_llm_env(self):
         # free
         # os.environ["OPENAI_API_KEY"] = "sk-KCmRtnkbFhG5H17LiQSJ9Y76EjACuiSH0Bgjq83Ld7QiBKs4"
@@ -811,8 +843,9 @@ class SimpleAgent:
         os.environ["OPENAI_API_BASE"] = "https://api.chatanywhere.tech/v1"
         os.environ["TAVILY_API_KEY"] = "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"
         self.thread_id = ''.join(random.choices('abcdefghijklmnopqrstuvwxyz0123456789', k=10))
-        # self.llm = ChatOpenAI(model="gemini-1.5-flash-latest", temperature=0)
-        self.llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
+        self.llm = ChatOpenAI(model="gemini-1.5-flash-latest", temperature=0) #便宜
+        # self.llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)  # good
+        # self.llm = ChatOpenAI(model="gpt-3.5-turbo-ca", temperature=0)  # 史
         role = ''
         if self.chosen_class == PlayerClass.IRONCLAD:
             role = "IRONCLAD"

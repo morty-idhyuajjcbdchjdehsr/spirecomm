@@ -132,7 +132,7 @@ class Monster(Character):
         if self.intent == Intent.ATTACK or self.intent == Intent.ATTACK_BUFF or self.intent == Intent.ATTACK_DEFEND or self.intent == Intent.ATTACK_DEFEND:
             str+= f" {self.move_adjusted_damage}*{self.move_hits}"
 
-        str += f",{self.get_lists_str(self.powers)})"
+        str += f",{self.block},{self.get_lists_str(self.powers)})"
         return str
 
     def get_lists_str(self,lists):
