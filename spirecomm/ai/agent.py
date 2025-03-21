@@ -1020,11 +1020,7 @@ class SimpleAgent:
         self.map_thread_id = ''.join(random.choices('abcdefghijklmnopqrstuvwxyz0123456789', k=10))
         self.choose_card_thread_id = ''.join(random.choices('abcdefghijklmnopqrstuvwxyz0123456789', k=10))
         self.thread_id = ''.join(random.choices('abcdefghijklmnopqrstuvwxyz0123456789', k=10))
-<<<<<<< Updated upstream
-        # self.llm = ChatOpenAI(model="gemini-1.5-flash-latest", temperature=0) #便宜
-        # self.llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)  # good
-        # self.llm = ChatOpenAI(model="gpt-3.5-turbo-ca", temperature=0)  # 史
-        self.llm = ChatOpenAI(model="gpt-4o-mini-ca", temperature=0)
+
         role = ''
         if self.chosen_class == PlayerClass.IRONCLAD:
             role = "IRONCLAD"
@@ -1035,7 +1031,7 @@ class SimpleAgent:
         else:
             return "Invalid class!"
         self.role = role
-=======
+
 
         # self.llm = ChatOpenAI(model="gemini-1.5-flash-latest", temperature=0) #便宜
         # self.llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)  # good
@@ -1044,7 +1040,7 @@ class SimpleAgent:
 
         # self.llm = ChatOpenAI(model="internlm/internlm2_5-7b-chat", temperature =0) #good grid选择有问题 支持工具 shi
         # self.llm = ChatOpenAI(model="THUDM/chatglm3-6b", temperature =0) # 有点烂
-        self.llm = ChatOpenAI(model="THUDM/glm-4-9b-chat", temperature=0) # 还行，支持工具 还行
+        # self.llm = ChatOpenAI(model="THUDM/glm-4-9b-chat", temperature=0) # 还行，支持工具 还行
         # self.llm = ChatOpenAI(model="01-ai/Yi-1.5-9B-Chat-16K", temperature=0) # 一般
         # self.llm = ChatOpenAI(model="Qwen/Qwen2.5-7B-Instruct", temperature=0) # 还行
         # self.llm = ChatOpenAI(model="meta-llama/Meta-Llama-3.1-8B-Instruct", temperature=0) # 一般
@@ -1052,7 +1048,6 @@ class SimpleAgent:
         # self.llm = ChatOpenAI(model="google/gemma-2-9b-it", temperature=0) # 一般, 不支持工具
         # self.llm = ChatOpenAI(model="01-ai/Yi-1.5-6B-Chat", temperature=0) # 史
 
->>>>>>> Stashed changes
 
 
     def get_role_guidelines(self,chosen_class):
