@@ -1,27 +1,27 @@
 --------------current state---------------
 Game State:
 Current Action: None
-Current HP: 75/75
-Floor: 1, Act: 1
-Gold: 99, Seed: -9085189123042129185
-Character: PlayerClass.DEFECT, Ascension Level: 0
-Relics: [<spirecomm.spire.relic.Relic object at 0x0000021626FAFDA0>, <spirecomm.spire.relic.Relic object at 0x0000021626FAF0E0>]
-Deck: [<spirecomm.spire.card.Card object at 0x0000021626FAC1D0>, <spirecomm.spire.card.Card object at 0x0000021626FAF1A0>, <spirecomm.spire.card.Card object at 0x0000021626FAC710>, <spirecomm.spire.card.Card object at 0x0000021626FACE60>, <spirecomm.spire.card.Card object at 0x0000021626FAF3E0>, <spirecomm.spire.card.Card object at 0x0000021626FAEED0>, <spirecomm.spire.card.Card object at 0x0000021626FAD6A0>, <spirecomm.spire.card.Card object at 0x0000021626FAEB10>, <spirecomm.spire.card.Card object at 0x0000021626FAC7A0>, <spirecomm.spire.card.Card object at 0x0000021626FACDD0>]
-Potions: [<spirecomm.spire.potion.Potion object at 0x0000021626FC7B60>, <spirecomm.spire.potion.Potion object at 0x0000021626FC6D50>, <spirecomm.spire.potion.Potion object at 0x0000021626FC6360>]
-Map: <spirecomm.spire.map.Map object at 0x0000021626FAD5B0>
+Current HP: 52/70
+Floor: 4, Act: 1
+Gold: 146, Seed: -8988054313221503748
+Character: PlayerClass.THE_SILENT, Ascension Level: 0
+Relics: [<spirecomm.spire.relic.Relic object at 0x0000017CCE69FAD0>, <spirecomm.spire.relic.Relic object at 0x0000017CCE69F590>]
+Deck: [<spirecomm.spire.card.Card object at 0x0000017CCE69D6A0>, <spirecomm.spire.card.Card object at 0x0000017CCE69E2A0>, <spirecomm.spire.card.Card object at 0x0000017CCE69F5F0>, <spirecomm.spire.card.Card object at 0x0000017CCE69D850>, <spirecomm.spire.card.Card object at 0x0000017CCE657A40>, <spirecomm.spire.card.Card object at 0x0000017CCE656630>, <spirecomm.spire.card.Card object at 0x0000017CCE654FE0>, <spirecomm.spire.card.Card object at 0x0000017CCE654920>, <spirecomm.spire.card.Card object at 0x0000017CCE6547A0>, <spirecomm.spire.card.Card object at 0x0000017CCE6550A0>, <spirecomm.spire.card.Card object at 0x0000017CCE654AA0>, <spirecomm.spire.card.Card object at 0x0000017CCE654D70>, <spirecomm.spire.card.Card object at 0x0000017CCE6546B0>, <spirecomm.spire.card.Card object at 0x0000017CCE654AD0>, <spirecomm.spire.card.Card object at 0x0000017CCE656570>]
+Potions: [<spirecomm.spire.potion.Potion object at 0x0000017CCE687380>, <spirecomm.spire.potion.Potion object at 0x0000017CCE684980>, <spirecomm.spire.potion.Potion object at 0x0000017CCE687F20>]
+Map: <spirecomm.spire.map.Map object at 0x0000017CCE69CAD0>
 In Combat: True
-Player: Player(energy=2,block=0)
-Monsters: [<spirecomm.spire.character.Monster object at 0x0000021626FC7AA0>, <spirecomm.spire.character.Monster object at 0x0000021626FC7620>]
-Draw Pile: [<spirecomm.spire.card.Card object at 0x0000021626FC69F0>, <spirecomm.spire.card.Card object at 0x0000021626FC75F0>, <spirecomm.spire.card.Card object at 0x0000021626FC75C0>, <spirecomm.spire.card.Card object at 0x0000021626FC6240>, <spirecomm.spire.card.Card object at 0x0000021626FC6E40>]
-Discard Pile: [<spirecomm.spire.card.Card object at 0x0000021626FC6540>]
-Exhaust Pile: []
-Hand: [<spirecomm.spire.card.Card object at 0x0000021626FC79B0>, <spirecomm.spire.card.Card object at 0x0000021626FC7980>, <spirecomm.spire.card.Card object at 0x0000021626FC7A40>, <spirecomm.spire.card.Card object at 0x0000021626FC7950>]
+Player: Player(energy=0,block=3)
+Monsters: [<spirecomm.spire.character.Monster object at 0x0000017CCE687EF0>, <spirecomm.spire.character.Monster object at 0x0000017CCE687920>, <spirecomm.spire.character.Monster object at 0x0000017CCE685CD0>]
+Draw Pile: [<spirecomm.spire.card.Card object at 0x0000017CCE687D10>, <spirecomm.spire.card.Card object at 0x0000017CCE6871A0>, <spirecomm.spire.card.Card object at 0x0000017CCE685160>, <spirecomm.spire.card.Card object at 0x0000017CCE687DD0>, <spirecomm.spire.card.Card object at 0x0000017CCE684710>, <spirecomm.spire.card.Card object at 0x0000017CCE6854F0>, <spirecomm.spire.card.Card object at 0x0000017CCE686C30>, <spirecomm.spire.card.Card object at 0x0000017CCE687260>, <spirecomm.spire.card.Card object at 0x0000017CCE684620>, <spirecomm.spire.card.Card object at 0x0000017CCE6856D0>, <spirecomm.spire.card.Card object at 0x0000017CCE687F80>, <spirecomm.spire.card.Card object at 0x0000017CCE687410>, <spirecomm.spire.card.Card object at 0x0000017CCE684C50>, <spirecomm.spire.card.Card object at 0x0000017CCE684590>]
+Discard Pile: [<spirecomm.spire.card.Card object at 0x0000017CCE6862A0>, <spirecomm.spire.card.Card object at 0x0000017CCE687110>]
+Exhaust Pile: [<spirecomm.spire.card.Card object at 0x0000017CCE6870E0>, <spirecomm.spire.card.Card object at 0x0000017CCE685730>, <spirecomm.spire.card.Card object at 0x0000017CCE686BD0>, <spirecomm.spire.card.Card object at 0x0000017CCE687140>]
+Hand: [<spirecomm.spire.card.Card object at 0x0000017CCE686ED0>, <spirecomm.spire.card.Card object at 0x0000017CCE686D50>, <spirecomm.spire.card.Card object at 0x0000017CCE685820>, <spirecomm.spire.card.Card object at 0x0000017CCE6845C0>, <spirecomm.spire.card.Card object at 0x0000017CCE6855E0>]
 Limbo: []
 Card in Play: None
-Turn: 1, Cards Discarded This Turn: 0
-Screen: <spirecomm.spire.screen.Screen object at 0x0000021626FAE450>, Screen Up: False
+Turn: 8, Cards Discarded This Turn: 0
+Screen: <spirecomm.spire.screen.Screen object at 0x0000017CCE6577D0>, Screen Up: False
 Screen Type: ScreenType.NONE, Room Phase: RoomPhase.COMBAT, Room Type: MonsterRoom
 Choices: [], Choices Available: False
-End Available: True, Potion Available: False
+End Available: True, Potion Available: True
 Play Available: True, Proceed Available: False
 Cancel Available: False

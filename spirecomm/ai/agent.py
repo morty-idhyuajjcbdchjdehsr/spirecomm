@@ -31,6 +31,11 @@ from langgraph.checkpoint.memory import MemorySaver
 class SimpleAgent:
 
     def __init__(self, chosen_class=PlayerClass.THE_SILENT):
+        self.search_llm = None
+        self.choose_card_thread_id = None
+        self.map_thread_id = None
+        self.battle_thread_id = None
+        self.common_agent = None
         self.llm = None
         self.make_map_choice_agent = None
         self.role = None
@@ -51,17 +56,24 @@ class SimpleAgent:
 
     def change_class(self, new_class):
         self.chosen_class = new_class
+        role = ''
         if self.chosen_class == PlayerClass.THE_SILENT:
             self.priorities = SilentPriority()
+            role = "THE_SILENT"
         elif self.chosen_class == PlayerClass.IRONCLAD:
             self.priorities = IroncladPriority()
+            role = "IRONCLAD"
         elif self.chosen_class == PlayerClass.DEFECT:
             self.priorities = DefectPowerPriority()
+            role = "DEFECT"
         else:
             self.priorities = random.choice(list(PlayerClass))
+        self.role = role
 
     def handle_error(self, error):
-        raise Exception(error)
+        # raise Exception(error)
+        with open(r'C:\Users\32685\Desktop\spirecomm\error_log.txt', 'a') as file:
+            file.write("error occurs!!:\n"+error.__str__()+"\n\n")
 
     def get_next_action_in_game(self, game_state):
         self.game = game_state
@@ -76,12 +88,12 @@ class SimpleAgent:
                 if potion_action is not None:
                     return potion_action
             if (self.game.room_type == "MonsterRoom" and len(self.game.get_real_potions()) > 0
-                    and self.game.current_hp <= 20):
+                    and self.game.current_hp <= 30):
                 potion_action = self.use_next_potion()
                 if potion_action is not None:
                     return potion_action
             if (self.game.room_type == "MonsterRoomElite" and len(self.game.get_real_potions()) > 0
-                    and self.game.current_hp <= 20):
+                    and self.game.current_hp <= 50):
                 potion_action = self.use_next_potion()
                 if potion_action is not None:
                     return potion_action
@@ -171,7 +183,7 @@ class SimpleAgent:
             # output_format=outputFormat,
             orbs=self.get_lists_str(self.game.player.orbs)
         )
-        config = {"configurable": {"thread_id": self.thread_id}}
+        config = {"configurable": {"thread_id": self.battle_thread_id}}
         responses = self.battle_agent.invoke(
             {"messages": messages},config
         )
@@ -218,7 +230,7 @@ class SimpleAgent:
         else:
             card_to_play1 = playable_cards[0]
         target1 = None
-        if target_index != -1:
+        if target_index != -1 and 0 <= target_index < len(available_monsters):
             target1 = available_monsters[target_index]
 
         if is_to_end_turn == 'Yes':
@@ -227,7 +239,7 @@ class SimpleAgent:
             if target1 is None:
                 if card_to_play1.has_target:
                     with open(r'C:\Users\32685\Desktop\spirecomm\error_log.txt', 'a') as file:
-                        file.write("\n the card must have a target!!!!!!!!!\n\n")
+                        file.write(f"\n the card must have a target!!!!!!!!!,targetIndex is {target_index}\n\n")
                     return PlayCardAction(card=card_to_play1, target_monster=available_monsters[0])
                 else:
                     return PlayCardAction(card=card_to_play1)
@@ -333,9 +345,12 @@ class SimpleAgent:
                 return ProceedAction()
 
             # 在这里写选择升级，转化，删除
-            # available_cards = []
-            # if self.game.screen.for_upgrade or self.game.screen.for_transform or self.game.screen.for_purge:
-            #     available_cards = self.make_grid_choice()
+            available_cards = self.game.screen.cards
+            if self.game.screen.for_upgrade or self.game.screen.for_transform or self.game.screen.for_purge:
+                chosen_cards = self.make_grid_choice()
+                if len(chosen_cards)!=0:
+                    return CardSelectAction(chosen_cards)
+
 
             if self.game.screen.for_upgrade or self.choose_good_card:
                 available_cards = self.priorities.get_sorted_cards(self.game.screen.cards)
@@ -355,7 +370,136 @@ class SimpleAgent:
             return ProceedAction()
 
     def make_grid_choice(self):
-        return []
+
+        card_indexes_schema = ResponseSchema(
+            name="cardIndexes",
+            description="The indexes of chosen cards from Current Deck",
+            type ="List[int]"
+        )
+        explanation_schema = ResponseSchema(
+            name="explanation",
+            description="Explanation of why you choose the cards."
+        )
+        response_schemas = [
+            card_indexes_schema,
+            explanation_schema
+        ]
+        output_parser = StructuredOutputParser(response_schemas=response_schemas)
+        outputFormat = output_parser.get_format_instructions()
+
+        intent = ''
+        if self.game.screen.for_upgrade:
+            intent = 'upgrade'
+        if self.game.screen.for_purge:
+            intent = 'purge'
+        if self.game.screen.for_transform:
+            intent = 'transform'
+        num_cards = self.game.screen.num_cards
+        s = 's'
+        if num_cards == 1:
+            s = ''
+        hp = f"{self.game.current_hp}/{self.game.max_hp}"
+        deck = self.get_card_list_str(self.game.deck)
+        relics = self.get_lists_str(self.game.relics)
+        available_cards = self.game.screen.cards
+
+        template_string = """ 
+                You are an AI designed to choose cards from your deck for the purpose of {intent} in the game 
+        "Slay the Spire" as the role {role}.Here is the context:
+                **Relics**:{relics},
+                **Current Deck:** {available_cards}
+                **Player's Health:** {hp}
+                
+                Goals:
+                now you need to choose {num_cards} card{s} from Current Deck for {intent}, you can search the content of 
+                card on wikipedia.
+                please make your choice based on the context, and provide the reason.
+                
+                Instructions:
+                Upgrade: choose the best card to upgrade.
+                         1.Consider Card Rarity,Prioritize upgrading higher rarity cards, 
+                            as they often provide more powerful effects.
+                         2.Focus on Specific Archetypes,Consider cards that align with the current strategy 
+                         or archetype you are pursuing (e.g., aggressive, defensive, combo).
+                
+                purge: 1.purge curse card 
+                       2.purge low level card to improve your deck.("Strike","Defend"....)
+                transform: transform low level card to improve your deck.("Strike","Defend"....)
+                
+                Response format:
+                {output_format}
+                
+                Attention:
+                Remember, the output should not contain annotation like "//xxxxxxx",
+                you should only choose {num_cards} card{s} for {intent},the output should
+                only contain {num_cards} index.
+                when giving index, you should take duplicate cards into counts.
+                """
+        template1 = ChatPromptTemplate.from_template(template_string)
+        messages = template1.format_messages(
+            intent = intent,
+            role= self.role,
+            relics = relics,
+            deck = deck,
+            hp = hp,
+            available_cards= self.get_card_list_str(available_cards),
+            num_cards = num_cards,
+            s = s,
+            output_format = outputFormat
+        )
+        config = {"configurable": {"thread_id": self.thread_id}}
+        responses = self.common_agent.invoke(
+            {"messages": messages}, config
+        )
+        response_text = responses["messages"][-1].content
+        start = response_text.rfind('```json') + len('```json\n')
+        end = response_text.rfind('```')
+        json_text = response_text[start:end].strip()  # json文本
+
+        ret = []
+        error_ret = []
+
+
+        with open(r'C:\Users\32685\Desktop\spirecomm\output.txt', 'a') as file:
+            file.write('--------------human message--------------------------------\n')
+            file.write(messages[0].content + "\n")
+            file.write("--------------ai message-----------------------------------\n")
+            file.write(responses["messages"][-1].content + "\n")
+
+        # 得到最终的 json格式文件
+        try:
+            jsonfile = json.loads(json_text)
+        except Exception as e:
+            with open(r'C:\Users\32685\Desktop\spirecomm\error_log.txt', 'a') as file:
+                file.write(f'unable to parse json_text:{json_text}\n')
+            return error_ret
+
+        card_Indexes = jsonfile.get('cardIndexes')
+        explanation = jsonfile.get('explanation')
+
+
+        if isinstance(card_Indexes, list):
+            if len(card_Indexes) == num_cards:
+                for index in card_Indexes:
+                    if len(available_cards) > index >= 0:
+                        ret.append(available_cards[index])
+                    else:
+                        break
+        if len(ret) != num_cards:
+            # 出bug啦！
+            with open(r'C:\Users\32685\Desktop\spirecomm\error_log.txt', 'a') as file:
+                file.write(f'wrong index list from "make_grid_choice"')
+            return error_ret
+
+        with open(r'C:\Users\32685\Desktop\spirecomm\output.txt', 'a') as file:
+            # file.write('--------------executing get_play_card_action---------------\n')
+            # file.write(self.game.__str__())
+            file.write("--------------ai stream------------------------------------\n")
+            for response in responses["messages"]:
+                file.write(type(response).__name__ + " " + response.__str__())
+                file.write("\n\n")
+
+        return ret
 
     def choose_rest_option(self):
         rest_options = self.game.screen.rest_options
@@ -386,7 +530,7 @@ class SimpleAgent:
 
     def choose_card_reward(self):
 
-        template_string = """ now you need to choose card rewards, and the below is the current situation: 
+        template_string = """ now you need to choose card rewards from **Available Cards**, and the below is the current situation: 
                 - **Current Deck:** {deck}
                 - **Player's Health:** {hp}
                 - **Available Cards:** {reward_cards}
@@ -403,7 +547,7 @@ class SimpleAgent:
             relic_bowl=self.game.screen.can_bowl,
             # output_format=outputFormat,
         )
-        config = {"configurable": {"thread_id": self.thread_id}}
+        config = {"configurable": {"thread_id": self.choose_card_thread_id}}
         responses = self.choose_card_agent.invoke(
             {"messages": messages}, config
         )
@@ -444,6 +588,8 @@ class SimpleAgent:
         else:
             reward_cards = self.game.screen.cards
             card_to_choose = next((card for card in reward_cards if card.name == card_name), None)
+            if card_to_choose is None:
+                return CancelAction()
             return CardRewardAction(card_to_choose)
 
 
@@ -547,7 +693,7 @@ class SimpleAgent:
             tree= tree_dict.__str__(),
             # output_format=outputFormat,
         )
-        config = {"configurable": {"thread_id": self.thread_id}}
+        config = {"configurable": {"thread_id": self.map_thread_id}}
         responses = self.make_map_choice_agent.invoke(
             {"messages": messages}, config
         )
@@ -632,7 +778,8 @@ class SimpleAgent:
         outputFormat = self.battle_output_parser.get_format_instructions()
 
 
-
+        # Role Guidelines:
+        # {self.get_role_guidelines(self.chosen_class)}
         system_prompt2 = f"""
                 You are an AI designed to play *Slay the Spire* as the role {self.role} and make optimal card choices during combat. 
                 On each turn, you need to choose one card to play or decide to end the turn. 
@@ -654,24 +801,27 @@ class SimpleAgent:
                    **Player Status**: [ player_status ] (list of player status)
                 
                 Goal:
-                take a action to maximize your chances of winning the combat:
+                take a action to maximize your chances of winning the combat( defeat all your enemy and keep your hp 
+                healthy):
                     Choose one card from Hand pile to play, or decide to end the turn.
-                
-                Role Guidelines:
-                {self.get_role_guidelines(self.chosen_class)}
+
             
                 General Guidelines:
                 - before you choose a card, please figure out your combat strategy first based on the enemy you encounter.
-                - if you don't have the relic 'Runic Dome', and your enemy's intent is UNKNOWN, it means the enemy doesn't
-                  attack this turn. Then you should prioritize attacking or enhance yourself rather than using 
-                  defensive cards.
+                  you can search it on wikipedia.
+                - Focus on minimizing the damage you take. Prioritize using defensive cards(cards that gain blocks or weaken the enemy) 
+                  when enemy has an attack intention and the damage is bigger than your block. when facing multiple 
+                  enemies, prioritize weaken the enemy with biggest damage.
                 - Focus on maximizing damage if the enemy’s HP is low, or if you have a strong offensive option available,
                   or you think you can terminate the enemy in this turn.
+                - If you want to attack,prioritize cards that strength your later attack,for example "flex","Bash".
                 - If enemy has high block now, you can prefer not to attack it in this turn, because in next turn it's 
                   block will be removed.
-                - Consider using defensive cards(cards that gain blocks or weaken the enemy) when enemy has an attack 
-                  intention and the damage is bigger than your block. when facing multiple enemies, prioritize 
-                  weaken the enemy with biggest damage.
+                - when you don't have Relic "Runic Dome",enemy intents like "DEBUFF","UNKNOWN","BUFF","DEFEND" mean that 
+                  the enemy doesn't attack this turn. So you should prioritize attacking or enhance yourself rather than 
+                  using defensive cards.
+                - when the total incoming damage is about to cause you death, you should use defensive cards or 
+                  terminate the enemy in this turn to avoid death.    
                 - prioritize Power card,as it can benefit you in all turns after.
                 - when facing multiple enemies, AOE cards should be prioritized.
                 - When you are about to attack or defend, you should prioritize non-basic cards(cards that are not 
@@ -704,7 +854,7 @@ class SimpleAgent:
         # llm = ChatOpenAI(model="gpt-3.5-turbo-0125",temperature=0)
         # memory = ConversationSummaryBufferMemory(llm=llm, max_token_limit=100)
 
-        # tools = load_tools(["wikipedia"],llm=llm)
+        # tools = load_tools(["wikipedia"],llm=self.search_llm)
         tools = []
 
         agent = create_react_agent(self.llm, tools=tools, state_modifier=system_prompt2,)
@@ -735,7 +885,8 @@ class SimpleAgent:
                 You are an expert at playing Slay the Spire, and now you need to play Slay the Spire 
                 as the role {self.role}.now you need to assist in choosing card rewards.
                  Your goal is to maximize the player's chances of success by selecting the most beneficial cards 
-                 based on the current context. 
+                 based on the current context. Before choosing, please invoke the tool to search the content of 
+                 card on wikipedia.
 
                 ### Context:
                 - **Current Deck:** [List of cards currently in the deck]
@@ -746,14 +897,16 @@ class SimpleAgent:
                 ### Considerations:
                 1.**Deck Size Management**: Maintain a streamlined deck. A larger deck can dilute card effectiveness and 
                   make it harder to draw key cards. If the available cards do not significantly improve the deck  , 
-                  consider skipping the card selection.
-                2. **Synergy with Archetypes:** Assess how well each card fits into a specific archetype or deck strategy.
-                  Look for cards that complement and enhance the current build, creating powerful synergies.
-                3. **Card Rarity:** Evaluate the rarity of the available cards. Prioritize higher rarity cards for their
+                  consider skipping the card selection. Don't grab too many cards of the same type.
+                  
+                2. **Card Rarity:** Evaluate the rarity of the available cards. Prioritize higher rarity cards for their
                     unique abilities and potential impact on the gameplay.
-                4. **Scaling:** Consider cards that scale well into the later acts of the game.
-                5. **Health Management:** Prioritize cards that can help regain health or mitigate damage 
-                    if the player's health is low.
+                3. **Upgraded:** Prioritize upgraded cards( 'card_name+' ) for their upgraded abilities.
+                3. **Synergy with Archetypes:** Assess how well each card fits into a specific archetype or deck strategy.
+                  Look for cards that complement and enhance the current build, creating powerful synergies.
+                4. **Health Management:** Prioritize cards that can help regain health or mitigate damage .
+                5. **Scaling:** Consider cards that scale well into the later acts of the game.
+                
                 
                 ### choice：
                 1.choose one card from **Available Cards**
@@ -769,10 +922,12 @@ class SimpleAgent:
         # memory = ConversationBufferWindowMemory(k=1)
         memory = MemorySaver()
 
-        # llm = ChatOpenAI(model="gpt-3.5-turbo-0125", temperature=0)
-        # tools = load_tools(["wikipedia"],llm=llm)
-        # tools = [self.search_card]
+
+        # tools = load_tools(["wikipedia"],llm=self.search_llm)
         tools = []
+        # tool = TavilySearchResults(max_results=2)
+        # tools.append(tool)
+        # tools = [self.search_card]
         agent = create_react_agent(self.llm, tools=tools, state_modifier=system_prompt, )
         self.choose_card_agent = agent
     def init_make_map_choice_llm(self):
@@ -828,6 +983,12 @@ class SimpleAgent:
         tools = []
         agent = create_react_agent(self.llm, tools=tools, state_modifier=system_prompt, )
         self.make_map_choice_agent = agent
+
+    def init_common_llm(self):
+        # tools = load_tools(["wikipedia"],llm=self.search_llm)
+        tools = []
+        agent = create_react_agent(self.llm, tools=tools)
+        self.common_agent = agent
     
     @tool("search_card_tool")
     def search_card(card: str) -> str:
@@ -840,12 +1001,26 @@ class SimpleAgent:
 
 
     def init_llm_env(self):
+        # tavity
+        os.environ["TAVILY_API_KEY"] = "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"
+
+        # chatanywhere
         # free
         # os.environ["OPENAI_API_KEY"] = "sk-KCmRtnkbFhG5H17LiQSJ9Y76EjACuiSH0Bgjq83Ld7QiBKs4"
-        os.environ["OPENAI_API_KEY"] = "sk-Nxr5VkCGRNruaDUzUZz3uCkKUtMvg0u3V7uiXJhJSbo0wAIp"
-        os.environ["OPENAI_API_BASE"] = "https://api.chatanywhere.tech/v1"
-        os.environ["TAVILY_API_KEY"] = "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"
+        # os.environ["OPENAI_API_KEY"] = "sk-Nxr5VkCGRNruaDUzUZz3uCkKUtMvg0u3V7uiXJhJSbo0wAIp"
+        # os.environ["OPENAI_API_BASE"] = "https://api.chatanywhere.tech/v1"
+
+
+        #silicon
+        os.environ["OPENAI_API_KEY"] = "sk-aqhgalcbwavbbbcjbiuikgznytxmmixcveggxfmxmrjkpxkt"
+        os.environ["OPENAI_API_BASE"] ="https://api.siliconflow.cn/v1"
+
+        # self.search_llm = ChatOpenAI(model="THUDM/chatglm3-6b", temperature=0)
+        self.battle_thread_id = ''.join(random.choices('abcdefghijklmnopqrstuvwxyz0123456789', k=10))
+        self.map_thread_id = ''.join(random.choices('abcdefghijklmnopqrstuvwxyz0123456789', k=10))
+        self.choose_card_thread_id = ''.join(random.choices('abcdefghijklmnopqrstuvwxyz0123456789', k=10))
         self.thread_id = ''.join(random.choices('abcdefghijklmnopqrstuvwxyz0123456789', k=10))
+<<<<<<< Updated upstream
         # self.llm = ChatOpenAI(model="gemini-1.5-flash-latest", temperature=0) #便宜
         # self.llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)  # good
         # self.llm = ChatOpenAI(model="gpt-3.5-turbo-ca", temperature=0)  # 史
@@ -860,6 +1035,24 @@ class SimpleAgent:
         else:
             return "Invalid class!"
         self.role = role
+=======
+
+        # self.llm = ChatOpenAI(model="gemini-1.5-flash-latest", temperature=0) #便宜
+        # self.llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)  # good
+        # self.llm = ChatOpenAI(model="gpt-3.5-turbo-ca", temperature=0)  # 史
+        # self.llm = ChatOpenAI(model="gpt-4o-mini-ca", temperature=0)  # good
+
+        # self.llm = ChatOpenAI(model="internlm/internlm2_5-7b-chat", temperature =0) #good grid选择有问题 支持工具 shi
+        # self.llm = ChatOpenAI(model="THUDM/chatglm3-6b", temperature =0) # 有点烂
+        self.llm = ChatOpenAI(model="THUDM/glm-4-9b-chat", temperature=0) # 还行，支持工具 还行
+        # self.llm = ChatOpenAI(model="01-ai/Yi-1.5-9B-Chat-16K", temperature=0) # 一般
+        # self.llm = ChatOpenAI(model="Qwen/Qwen2.5-7B-Instruct", temperature=0) # 还行
+        # self.llm = ChatOpenAI(model="meta-llama/Meta-Llama-3.1-8B-Instruct", temperature=0) # 一般
+        # self.llm = ChatOpenAI(model="AIDC-AI/Marco-o1", temperature=0) #选路有问题
+        # self.llm = ChatOpenAI(model="google/gemma-2-9b-it", temperature=0) # 一般, 不支持工具
+        # self.llm = ChatOpenAI(model="01-ai/Yi-1.5-6B-Chat", temperature=0) # 史
+
+>>>>>>> Stashed changes
 
 
     def get_role_guidelines(self,chosen_class):

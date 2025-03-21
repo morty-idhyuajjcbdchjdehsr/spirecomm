@@ -17,28 +17,20 @@ if __name__ == "__main__":
     agent.change_class(PlayerClass.IRONCLAD)
     agent.init_llm_env()
     agent.init_battle_llm()
+    agent.init_choose_card_llm()
     # agent.get_play_card_action()
-    output_parser = agent.battle_output_parser
+
 
 
     config = {"configurable": {"thread_id": agent.thread_id}}
-    response = agent.battle_agent.invoke({"messages": [HumanMessage(content="""You are currently in a combat, and the below is the context:
-        **Floor**: 14, 
-        **Turn Number**: 3, 
-        **Current HP**: 47/80,
-        **Block**: 0,
-        **Energy Available**: 3,
-        **Relics**:[ Burning Blood, Neow's Lament, Tiny Chest,  ],
-        **Hand pile**(the cards in your hand): [ Havoc(1,False), Strike(1,True), Strike(1,True), Bash+(2,True), Anger+(0,True)],
-        **Enemy Lists**:[ FungiBeast( 7/26 ,Intent.ATTACK 9*1,[ Spore Cloud, Strength,  ]), FungiBeast( 28/28 ,Intent.BUFF,[ Spore Cloud, Strength ])],
-        **Draw Pile**(the cards in draw pile): [ Spot Weakness+(1,True), Anger+(0,True), Strike(1,True), Dropkick(1,True), Defend+(1,False), Defend(1,False), Strike+(1,True), Strike(1,True), Hemokinesis(1,True) ],
-        **Discard Pile**(the cards in discard pile):[  ],
-        **Player Status**(list of player status):[ No Block, Strength,  ]
-    
-        remember, the cardName you output should not contain parentheses,and can contain '+',which stand for
-        upgraded card. for example:
-            "Strike","Havoc+","Warcry"
-        now take your action and give the response."""
+    response = agent.choose_card_agent.invoke({"messages": [HumanMessage(content=""" now you need to choose card rewards from **Available Cards**, and the below is the current situation: 
+                - **Current Deck:** [Strike+, Strike, Strike, Defend, Defend, Defend+, Defend, Bash, Headbutt, Flex, Twin Strike, Wild Strike+, Spot Weakness, Power Through, Blood for Blood, Sever Soul, Havoc]
+                - **Player's Health:** 11/80
+                - **Available Cards:** [Brutality, Offering, Bludgeon]
+                - **Relic Bowl:** False
+                
+                now make your choice and provide the reason.                
+"""
     )]}, config)
 
     for response1 in response["messages"]:
