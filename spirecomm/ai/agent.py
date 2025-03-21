@@ -710,6 +710,9 @@ class SimpleAgent:
         agent = create_react_agent(self.llm, tools=tools, state_modifier=system_prompt2,)
         self.battle_agent = agent
 
+
+
+
     def init_choose_card_llm(self):
         card_name_schema = ResponseSchema(
             name="cardName",
@@ -843,9 +846,10 @@ class SimpleAgent:
         os.environ["OPENAI_API_BASE"] = "https://api.chatanywhere.tech/v1"
         os.environ["TAVILY_API_KEY"] = "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"
         self.thread_id = ''.join(random.choices('abcdefghijklmnopqrstuvwxyz0123456789', k=10))
-        self.llm = ChatOpenAI(model="gemini-1.5-flash-latest", temperature=0) #便宜
+        # self.llm = ChatOpenAI(model="gemini-1.5-flash-latest", temperature=0) #便宜
         # self.llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)  # good
         # self.llm = ChatOpenAI(model="gpt-3.5-turbo-ca", temperature=0)  # 史
+        self.llm = ChatOpenAI(model="gpt-4o-mini-ca", temperature=0)
         role = ''
         if self.chosen_class == PlayerClass.IRONCLAD:
             role = "IRONCLAD"
