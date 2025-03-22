@@ -9,6 +9,7 @@ from langchain_community.agent_toolkits.load_tools import load_tools
 from langchain_community.tools import TavilySearchResults
 from langchain_core.tools import tool
 
+from spirecomm.ai.battle_agent import BattleAgent
 from spirecomm.spire.game import Game
 from spirecomm.spire.character import Intent, PlayerClass
 import spirecomm.spire.card
@@ -66,6 +67,9 @@ class SimpleAgent:
         elif self.chosen_class == PlayerClass.DEFECT:
             self.priorities = DefectPowerPriority()
             role = "DEFECT"
+        elif self.chosen_class == PlayerClass.WATCHER:
+            self.priorities = DefectPowerPriority()
+            role = "WATCHER"
         else:
             self.priorities = random.choice(list(PlayerClass))
         self.role = role
@@ -142,77 +146,44 @@ class SimpleAgent:
     def get_play_card_action(self):
 
 
-        template_string = """ You are currently in a combat, and the below is the context:
-        **Floor**: {floor}, 
-        **Turn Number**: {turn}, 
-        **Current HP**: {hp},
-        **Block**: {block},
-        **Energy Available**: {energy},
-        **Relics**:{relics},
-        **Hand pile**(the cards in your hand): {hand},
-        **Enemy Lists**:{monsters},
-        **Draw Pile**(the cards in draw pile): {drawPile},
-        **Discard Pile**(the cards in discard pile):{discardPile},
-        **Player Status**(list of player status):{pStatus}
-        **Orbs**(if you are DEFECT): {orbs}
-    
-        remember, the cardName you output should not contain parentheses,and can contain '+',which stand for
-        upgraded card. for example:"Strike","Havoc+","Warcry".
-            
-        now take your action and give the response.
-        """
-        # outputFormat = self.output_parser.get_format_instructions()
-
-        template1 = ChatPromptTemplate.from_template(template_string)
         available_monsters = [monster for monster in self.game.monsters if
                               monster.current_hp > 0 and not monster.half_dead and not monster.is_gone]
         playable_cards = [card for card in self.game.hand if card.is_playable]
-
-        messages = template1.format_messages(
-            floor=self.game.floor,
-            turn=self.game.turn,
-            hp=f"{self.game.current_hp}/{self.game.max_hp}",
-            block=self.game.player.block,
-            energy=self.game.player.energy,
-            relics=self.get_lists_str(self.game.relics),
-            hand=self.get_lists_str(playable_cards),
-            monsters=self.get_lists_str(available_monsters),
-            drawPile=self.get_lists_str(self.game.draw_pile),
-            discardPile=self.get_lists_str(self.game.discard_pile),
-            pStatus=self.get_lists_str(self.game.player.powers),
-            # output_format=outputFormat,
-            orbs=self.get_lists_str(self.game.player.orbs)
-        )
         config = {"configurable": {"thread_id": self.battle_thread_id}}
         responses = self.battle_agent.invoke(
-            {"messages": messages},config
+            floor=self.game.floor,
+            turn=self.game.turn,
+            current_hp=self.game.current_hp,
+            max_hp=self.game.max_hp,
+            block=self.game.player.block,
+            energy=self.game.player.energy,
+            relics=self.game.relics,
+            hand=self.game.hand,
+            monsters=available_monsters,
+            drawPile=self.game.draw_pile,
+            discardPile=self.game.discard_pile,
+            powers=self.game.player.powers,
+            # output_format=outputFormat,
+            orbs=self.game.player.orbs
+            ,config=config
         )
-        response_text = responses["messages"][-1].content
-        start = response_text.rfind('```json') + len('```json\n')
-        end = response_text.rfind('```')
-        json_text = response_text[start:end].strip()
 
-        # 得到最终的 json格式文件
-        try:
-            jsonfile = json.loads(json_text)
-        except Exception as e:
-            with open(r'C:\Users\32685\Desktop\spirecomm\error_log.txt', 'a') as file:
-                file.write(f'unable to parse json_text:{json_text}\n')
-            return EndTurnAction()
-
-        is_to_end_turn = jsonfile.get('isToEndTurn')
-        # card_name = jsonfile.get('cardName')
-        card_Index = jsonfile.get('cardIndex')
-        target_index = jsonfile.get('targetIndex')
-        explanation = jsonfile.get('explanation')
+        is_to_end_turn = self.battle_agent.is_to_end_turn
+        card_Index = self.battle_agent.card_Index
+        target_index = self.battle_agent.target_index
+        explanation = self.battle_agent.explanation
 
         with open(r'C:\Users\32685\Desktop\spirecomm\output.txt', 'a') as file:
             # file.write('--------------executing get_play_card_action---------------\n')
             # file.write(self.game.__str__())
             file.write('--------------human message--------------------------------\n')
-            file.write(messages[0].content+"\n")
+            file.write(self.battle_agent.humanM+"\n")
             file.write("--------------ai message-----------------------------------\n")
             file.write(responses["messages"][-1].content + "\n")
+            file.write("self.card_index:"+str(self.battle_agent.card_Index)+ "\n")
+            file.write("self.is_to_end_turn:"+str(self.battle_agent.is_to_end_turn)+ "\n")
+            file.write("self.target_index:"+str(self.battle_agent.target_index)+ "\n")
+            file.write("self.explanation:"+str(self.battle_agent.explanation)+ "\n")
             # file.write("--------------ai stream------------------------------------\n")
             # for response in responses["messages"]:
             #     file.write(type(response).__name__+" "+response.__str__())
@@ -748,116 +719,7 @@ class SimpleAgent:
 
     def init_battle_llm(self):
 
-        is_to_end_turn_schema = ResponseSchema(
-            name="isToEndTurn",
-            description="return 'No' if you have chosen one card to play, return 'Yes' if you decide to end the turn"
-        )
-        card_index_schema = ResponseSchema(
-            name="cardIndex",
-            description="The index of the card you choose from Hand Pile; if you don't choose a card, just return -1",
-            type="Int"
-        )
-        target_index_schema = ResponseSchema(
-            name="targetIndex",
-            description="The index of your card's target in enemy list; if your card's attribute 'is_card_has_target' is False, just return -1.",
-            type="Int"
-        )
-        explanation_schema = ResponseSchema(
-            name="explanation",
-            description="Explanation of why you take the action."
-        )
-        # 将所有 schema 添加到列表中
-        response_schemas = [
-            is_to_end_turn_schema,
-            card_index_schema,
-            target_index_schema,
-            explanation_schema
-        ]
-        output_parser = StructuredOutputParser(response_schemas=response_schemas)
-        self.battle_output_parser =output_parser
-        outputFormat = self.battle_output_parser.get_format_instructions()
-
-
-        # Role Guidelines:
-        # {self.get_role_guidelines(self.chosen_class)}
-        system_prompt2 = f"""
-                You are an AI designed to play *Slay the Spire* as the role {self.role} and make optimal card choices during combat. 
-                On each turn, you need to choose one card to play or decide to end the turn. 
-                Given the following context, make your choice for this specific call.
-
-                Context:
-                   **Floor**: 'floor' (current floor in game)
-                   **Turn Number**: 'turn_number' (current round in the combat)
-                   **Current HP**: 'current_hp' / 'max_hp'
-                   **Block**: 'block' (current block you have),
-                   **Energy Available**: 'energy' (how much energy is available for playing cards),
-                   **Relics**: [ Relic ],(the relics you have)
-                   **Enemy Lists**: [ Enemy ]  (a list of enemy,each Enemy is in format: 
-                    "enermy_name( enermy_hp,enemy_intent,enemy_block,[enemy_status])"  )
-                   **Hand pile**: [ Card ] (list of cards available in the player’s hand, each Card is in
-                      format: "card_name( card_cost,is_card_has_target )" )
-                   **Draw Pile**: [ Card ] (list of cards in draw pile)
-                   **Discard Pile**: [ Card ](list of cards in discard pile)
-                   **Player Status**: [ player_status ] (list of player status)
-                
-                Goal:
-                take a action to maximize your chances of winning the combat( defeat all your enemy and keep your hp 
-                healthy):
-                    Choose one card from Hand pile to play, or decide to end the turn.
-
-            
-                General Guidelines:
-                - before you choose a card, please figure out your combat strategy first based on the enemy you encounter.
-                  you can search it on wikipedia.
-                - Focus on minimizing the damage you take. Prioritize using defensive cards(cards that gain blocks or weaken the enemy) 
-                  when enemy has an attack intention and the damage is bigger than your block. when facing multiple 
-                  enemies, prioritize weaken the enemy with biggest damage.
-                - Focus on maximizing damage if the enemy’s HP is low, or if you have a strong offensive option available,
-                  or you think you can terminate the enemy in this turn.
-                - If you want to attack,prioritize cards that strength your later attack,for example "flex","Bash".
-                - If enemy has high block now, you can prefer not to attack it in this turn, because in next turn it's 
-                  block will be removed.
-                - when you don't have Relic "Runic Dome",enemy intents like "DEBUFF","UNKNOWN","BUFF","DEFEND" mean that 
-                  the enemy doesn't attack this turn. So you should prioritize attacking or enhance yourself rather than 
-                  using defensive cards.
-                - when the total incoming damage is about to cause you death, you should use defensive cards or 
-                  terminate the enemy in this turn to avoid death.    
-                - prioritize Power card,as it can benefit you in all turns after.
-                - when facing multiple enemies, AOE cards should be prioritized.
-                - When you are about to attack or defend, you should prioritize non-basic cards(cards that are not 
-                  "Defend" or "Strike")
-                - For cards of the same type, prioritize those with best overall effects (evaluated based on its 
-                  value, additional effects, etc.)
-                - card with 0 cost can be chosen whatever your available energy is, so please prioritize it.
-                - when you have 0 energy,don't easily end your turn, you can still play 0 cost card.
-                - spend your energy at most.Don't easily leave unused energy in one turn.
-                - Take into account any status effects that may alter the effectiveness of your cards 
-                  (e.g., *Vulnerable*, *Frailty*, etc.).
-                - If you cannot play any card or you feel that playing a card will do much harm than good, 
-                  choose to end the turn.
-                - If there are any synergy effects (e.g., combo cards or cards that strengthen with specific conditions)
-                  , consider playing those first.
-                - Evaluate potential future turns: if you need to conserve status effects that 
-                  can be applied in future turns, account for that as well.
-                - exhausting the status card is good for you, do it when you can.
-                
-                Attention:
-                - Before giving your response,please check the chosen card's attribute 'is_card_has_target', 
-                  if it's True,then you need to appoint a target for the card, which means 'targetIndex' 
-                  in your response shouldn't be -1.
-                - Provide reasoning for your card choice based on the current context.
-
-                Response format:
-                {outputFormat}
-                """
-        # memory = ConversationBufferWindowMemory(k=1)
-        # llm = ChatOpenAI(model="gpt-3.5-turbo-0125",temperature=0)
-        # memory = ConversationSummaryBufferMemory(llm=llm, max_token_limit=100)
-
-        # tools = load_tools(["wikipedia"],llm=self.search_llm)
-        tools = []
-
-        agent = create_react_agent(self.llm, tools=tools, state_modifier=system_prompt2,)
+        agent = BattleAgent(role=self.role,llm=self.llm)
         self.battle_agent = agent
 
 
@@ -1021,32 +883,21 @@ class SimpleAgent:
         self.choose_card_thread_id = ''.join(random.choices('abcdefghijklmnopqrstuvwxyz0123456789', k=10))
         self.thread_id = ''.join(random.choices('abcdefghijklmnopqrstuvwxyz0123456789', k=10))
 
-        role = ''
-        if self.chosen_class == PlayerClass.IRONCLAD:
-            role = "IRONCLAD"
-        elif self.chosen_class == PlayerClass.THE_SILENT:
-            role = "THE_SILENT"
-        elif self.chosen_class == PlayerClass.DEFECT:
-            role = "DEFECT"
-        else:
-            return "Invalid class!"
-        self.role = role
-
 
         # self.llm = ChatOpenAI(model="gemini-1.5-flash-latest", temperature=0) #便宜
         # self.llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)  # good
         # self.llm = ChatOpenAI(model="gpt-3.5-turbo-ca", temperature=0)  # 史
         # self.llm = ChatOpenAI(model="gpt-4o-mini-ca", temperature=0)  # good
 
-        # self.llm = ChatOpenAI(model="internlm/internlm2_5-7b-chat", temperature =0) #good grid选择有问题 支持工具 shi
+        self.llm = ChatOpenAI(model="internlm/internlm2_5-7b-chat", temperature =0) #good grid选择有问题 支持工具 shi
         # self.llm = ChatOpenAI(model="THUDM/chatglm3-6b", temperature =0) # 有点烂
         # self.llm = ChatOpenAI(model="THUDM/glm-4-9b-chat", temperature=0) # 还行，支持工具 还行
         # self.llm = ChatOpenAI(model="01-ai/Yi-1.5-9B-Chat-16K", temperature=0) # 一般
         # self.llm = ChatOpenAI(model="Qwen/Qwen2.5-7B-Instruct", temperature=0) # 还行
-        # self.llm = ChatOpenAI(model="meta-llama/Meta-Llama-3.1-8B-Instruct", temperature=0) # 一般
-        # self.llm = ChatOpenAI(model="AIDC-AI/Marco-o1", temperature=0) #选路有问题
-        # self.llm = ChatOpenAI(model="google/gemma-2-9b-it", temperature=0) # 一般, 不支持工具
-        # self.llm = ChatOpenAI(model="01-ai/Yi-1.5-6B-Chat", temperature=0) # 史
+
+        # self.llm = ChatOpenAI(model="deepseek-ai/DeepSeek-R1-Distill-Qwen-14B", temperature=0) # 要钱 慢死了
+        # self.llm = ChatOpenAI(model="deepseek-ai/DeepSeek-R1-Distill-Qwen-7B", temperature=0)  # 7b man
+        # self.llm = ChatOpenAI(model="internlm/internlm2_5-20b-chat", temperature=0)  # 20b shi
 
 
 

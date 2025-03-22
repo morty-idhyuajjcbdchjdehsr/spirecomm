@@ -30,7 +30,7 @@ class PlayerClass(Enum):
     IRONCLAD = 1
     THE_SILENT = 2
     DEFECT = 3
-
+    WATCHER = 4
 
 class Orb:
 
