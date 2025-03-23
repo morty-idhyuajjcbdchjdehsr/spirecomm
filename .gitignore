@@ -125,3 +125,8 @@ dmypy.json
 # PyCharm
 .idea/
 *.txt
+error_log.txt
+mapInfo.txt
+output.txt
+results.txt
+state.txt
