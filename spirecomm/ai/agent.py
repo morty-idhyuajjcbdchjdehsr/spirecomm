@@ -29,7 +29,7 @@ from datetime import datetime
 from langchain_openai import ChatOpenAI
 from langgraph.prebuilt import create_react_agent
 from langgraph.checkpoint.memory import MemorySaver
-
+from dotenv import load_dotenv
 
 
 class SimpleAgent:
@@ -542,7 +542,7 @@ class SimpleAgent:
         card_name = jsonfile.get('cardName')
         explanation = jsonfile.get('explanation')
 
-        with open(r'C:\Users\32685\Desktop\spirecomm\output.txt', 'a') as file:
+        with open(r'C:\Users\32685\Desktop\spirecomm\output.txt', 'a',encoding="utf-8") as file:
             # file.write('--------------executing get_play_card_action---------------\n')
             # file.write(self.game.__str__())
             file.write('--------------human message--------------------------------\n')
@@ -723,8 +723,14 @@ class SimpleAgent:
         # return ChooseAction(0)
 
     def init_battle_llm(self):
+        # small_llm = ChatOpenAI(model="gemini-1.5-flash", temperature=0) # 4s
+        # small_llm = ChatOpenAI(model="gpt-4o-mini",temperature=0) #good
+        # small_llm = ChatOllama(model="mistral:7b", temperature=0) # 缺少对卡牌的理解
+        # small_llm = ChatOpenAI(model="claude-3-haiku-20240307", temperature=0) # 似乎还挺懂 话多
+        small_llm = ChatOpenAI(model="qwen-turbo-latest", temperature=0) # good 3~4s
+        # small_llm = ChatOpenAI(model="qwen-plus-latest", temperature=0) # man
 
-        agent = BattleAgent(role=self.role,llm=self.llm,small_llm=ChatOpenAI(model="gpt-4o-mini",temperature=0))
+        agent = BattleAgent(role=self.role,llm=self.llm,small_llm=small_llm)
         self.battle_agent = agent
 
 
@@ -753,7 +759,7 @@ class SimpleAgent:
                 as the role {self.role}.now you need to assist in choosing card rewards.
                  Your goal is to maximize the player's chances of success by selecting the most beneficial cards 
                  based on the current context. Before choosing, please invoke the tool to search the content of 
-                 card on wikipedia.
+                 cards on wikipedia.
 
                 ### Context:
                 - **Current Deck:** [List of cards currently in the deck]
@@ -765,7 +771,6 @@ class SimpleAgent:
                 1.**Deck Size Management**: Maintain a streamlined deck. A larger deck can dilute card effectiveness and 
                   make it harder to draw key cards. If the available cards do not significantly improve the deck  , 
                   consider skipping the card selection. Don't grab too many cards of the same type.
-                  
                 2. **Card Rarity:** Evaluate the rarity of the available cards. Prioritize higher rarity cards for their
                     unique abilities and potential impact on the gameplay.
                 3. **Upgraded:** Prioritize upgraded cards( 'card_name+' ) for their upgraded abilities.
@@ -780,9 +785,7 @@ class SimpleAgent:
                 2.skip the card selection
                 3.use the relic "Bowl" to improve max-hp 
                 
-                ### output:
-                your choice and the corresponding reason.
-
+                ### output format:
                 {outputFormat}
                 """
 
@@ -790,12 +793,12 @@ class SimpleAgent:
         memory = MemorySaver()
 
 
-        # tools = load_tools(["wikipedia"],llm=self.search_llm)
-        tools = []
+        tools = load_tools(["wikipedia"],llm=self.search_llm)
+        # tools = []
         # tool = TavilySearchResults(max_results=2)
         # tools.append(tool)
         # tools = [self.search_card]
-        agent = create_react_agent(self.llm, tools=tools, state_modifier=system_prompt, )
+        agent = create_react_agent(ChatOpenAI(model="o3-mini",temperature=0), tools=tools, state_modifier=system_prompt, )
         self.choose_card_agent = agent
     def init_make_map_choice_llm(self):
         choice_index_schema = ResponseSchema(
@@ -854,7 +857,7 @@ class SimpleAgent:
     def init_common_llm(self):
         # tools = load_tools(["wikipedia"],llm=self.search_llm)
         tools = []
-        agent = create_react_agent(self.llm, tools=tools)
+        agent = create_react_agent(ChatOpenAI(model="o3-mini",temperature=0), tools=tools)
         self.common_agent = agent
     
     @tool("search_card_tool")
@@ -868,6 +871,9 @@ class SimpleAgent:
 
 
     def init_llm_env(self):
+
+        # load_dotenv()  # to do: 隐藏各个api key
+
         # tavity
         os.environ["TAVILY_API_KEY"] = "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"
 
@@ -898,12 +904,13 @@ class SimpleAgent:
         self.thread_id = ''.join(random.choices('abcdefghijklmnopqrstuvwxyz0123456789', k=10))
 
 
-        self.llm = ChatOpenAI(model="gemini-1.5-flash", temperature=0) #便宜
+        # self.llm = ChatOpenAI(model="gemini-1.5-flash", temperature=0) #便宜
         # self.llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)  # good
         # self.llm = ChatOpenAI(model="gpt-3.5-turbo-ca", temperature=0)  # 史
         # self.llm = ChatOpenAI(model="gpt-4o-mini-ca", temperature=0)  # good
         # self.llm = ChatOpenAI(model="deepseek-v3", temperature=0)
         # self.llm = ChatOpenAI(model="gemini-2.0-flash", temperature=0)
+        self.llm = ChatOpenAI(model="qwen-turbo-latest", temperature=0) # 便宜又快！！
 
 
         # self.llm = ChatOpenAI(model="internlm/internlm2_5-7b-chat", temperature =0) #good grid选择有问题 支持工具 shi
@@ -917,7 +924,7 @@ class SimpleAgent:
         # self.llm = ChatOpenAI(model="internlm/internlm2_5-20b-chat", temperature=0)  # 20b shi
         # self.llm = ChatOpenAI(model="Pro/Qwen/Qwen2.5-7B-Instruct", temperature=0)  # 20b shi
 
-        # self.llm = ChatOllama(model="deepseek-r1:7b", temperature=0) # 还行
+        # self.llm = ChatOllama(model="deepseek-r1:7b", temperature=0) # 有<think>
         # self.llm = ChatOllama(model="mistral:7b", temperature=0) # 还行
         # self.llm = ChatOllama(model="hermes3:3b", temperature=0) # 老出错
         # self.llm = ChatOllama(model="qwen2.5:3b", temperature=0)  #不赖

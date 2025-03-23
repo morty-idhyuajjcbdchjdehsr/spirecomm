@@ -1,4 +1,5 @@
 import json
+import time
 from collections import deque
 
 from langchain.output_parsers import ResponseSchema, StructuredOutputParser
@@ -51,7 +52,9 @@ class State(TypedDict):
 
 
 class BattleAgent:
-    def __init__(self, role="DEFECT", llm=ChatOpenAI(model="gpt-3.5-turbo-0125", temperature=0),small_llm=ChatOllama(model="mistral:7b", temperature=0) ):
+    def __init__(self, role="DEFECT", llm=ChatOpenAI(model="gpt-3.5-turbo-0125", temperature=0),
+                 small_llm=ChatOllama(model="mistral:7b", temperature=0)):
+        self.ori_suggestion = None
         self.end_turn_cnt = None
         self.battle_agent_sys_prompt = None
         self.router2_cnt = 0
@@ -178,7 +181,10 @@ class BattleAgent:
                             
                             Previous two operations Info Format:
                             [ {{ turn: int, operation: str }}, ...  ]
-
+                            
+                            General_guidance:
+                            {general_guidance}
+                            
                             Response format:
                             {outputFormat}
                             
@@ -241,7 +247,7 @@ class BattleAgent:
                     your response should follow the format: 
                     **Guidance**:
                             xxxxxxxxxxxxx
-                    Refine your response and limit your response to 100 words.
+                    Refine your response. **limit your response to 100 words!!**.
                     """
 
         suggestion_content = '**Guidance**:'
@@ -252,6 +258,14 @@ class BattleAgent:
         current_hp = state["current_hp"]
 
         suggestion_content += "\nspend your energy at most.Don't easily leave unused energy in one turn."
+        suggestion_content += ("\nFor cards of the same type, prioritize cards with best overall effects "
+                               "(evaluated based on its"
+                               "value, additional effects, etc.)")
+        suggestion_content += ("When you are about to attack or defend, you should prioritize"
+                               " non-basic cards(cards that are not"
+                              "'Defend' or 'Strike'")
+        suggestion_content += ("When facing multiple enemies which are leader and minions, prioritize"
+                               "dealing with the leader.")
 
         no_attack_flag = 1
         for monster in monsters:
@@ -276,12 +290,16 @@ class BattleAgent:
         if low_hp_flag:
             suggestion_content += ("\nEnemy is in low hp,check the maximum damage you can deal to see"
                                    "if you can eliminate it.")
-        if len(monsters)>1:
+        if len(monsters) > 1:
             suggestion_content += ("\nYou are facing multiply enemies,you should prioritize"
                                    "AOE card which can affect them all.")
 
+        self.ori_suggestion = suggestion_content
+        with open(r'C:\Users\32685\Desktop\spirecomm\battle_agent.txt', 'a') as file:
+            file.write("\nOriginal Suggestion is:\n" + self.ori_suggestion)
 
-        messages = [{"role": "system", "content": system_msg}] + [HumanMessage(content=self.humanM+'\n'+suggestion_content)]
+        messages = [{"role": "system", "content": system_msg}] + [
+            HumanMessage(content=self.humanM + '\n' + suggestion_content)]
         response = self.small_llm.invoke(messages)
         suggestion_content = response.content
 
@@ -331,7 +349,7 @@ class BattleAgent:
                 zero_cost_card = 1
 
         if self.is_to_end_turn == 'Yes':
-            self.end_turn_cnt +=1
+            self.end_turn_cnt += 1
             if self.end_turn_cnt == 1:
                 if state["energy"] == 0 and zero_cost_card:
                     return {
@@ -376,9 +394,9 @@ class BattleAgent:
                 if card_to_play1.has_target:
                     if self.target_index == -1:
                         return {
-                        **state,  # 保留原 state 的所有属性
-                        "messages": [{"role": "user", "content": "Your chosen card must have a target,"
-                                                                 " please regenerate it!"}]
+                            **state,  # 保留原 state 的所有属性
+                            "messages": [{"role": "user", "content": "Your chosen card must have a target,"
+                                                                     " please regenerate it!"}]
                         }
                     return {
                         **state,  # 保留原 state 的所有属性
@@ -422,6 +440,7 @@ class BattleAgent:
                powers: list,
                orbs: list,
                config=None):
+        start_time = time.time()  # 记录开始时间
 
         last_two_rounds_info = '['
         for item in list(self.last_two_rounds):
@@ -478,6 +497,9 @@ class BattleAgent:
         else:
             result = self.graph.invoke(state)
 
+        end_time = time.time()  # 记录结束时间
+        elapsed_time = end_time - start_time  # 计算耗时
+
         # 添加round信息到队列
         available_monsters = [monster for monster in monsters if
                               monster.current_hp > 0 and not monster.half_dead and not monster.is_gone]
@@ -499,11 +521,13 @@ class BattleAgent:
         round_info = f"{{ turn:{turn},operation:{operation} }}"
         self.last_two_rounds.append(round_info)
 
+        # 输出log
         with open(r'C:\Users\32685\Desktop\spirecomm\battle_agent.txt', 'a') as file:
             file.write('--------------round start-------------------------\n')
             file.write("System:\n" + self.battle_agent_sys_prompt + '\n')
             for response in result["messages"]:
                 file.write(type(response).__name__ + ":\n" + response.content.__str__() + '\n')
+            file.write(f"invoke time: {elapsed_time:.6f} s\n")
             file.write('--------------round end-------------------------\n')
 
         return result
