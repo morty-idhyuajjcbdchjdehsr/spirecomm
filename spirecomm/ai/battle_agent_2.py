@@ -152,11 +152,11 @@ class BattleAgent:
                             card choices during combat. Please read the Basic Game Rules below first.
                             Basic Game Rules:
                             {basic_game_rules}
-                            
+
                             On each operation, you need to choose one card to play or decide to 
                             end the turn. you will be given info of previous two operations and context of this operation.
-                            Based on the context, please make your choice by combining user guidance
-                            ,game rules and the info of previous two operations.
+                            Based on the context, please make your choice by combining user guidance,game rules and 
+                            the info of previous two operations.
 
                             Context format:
                                **Floor**: 'floor' (current floor in game)
@@ -172,13 +172,13 @@ class BattleAgent:
                                **Draw Pile**: [ Card ] (list of cards in draw pile)
                                **Discard Pile**: [ Card ](list of cards in discard pile)
                                **Player Status**: [ player_status ] (list of player status)
-                            
+
                             Previous two operations Info Format:
                             [ {{ turn: int, operation: str }}, ...  ]
 
                             Response format:
                             {outputFormat}
-                            
+
                             Attention:
                             - Before giving your response,please check the chosen card's attribute 'is_card_has_target', 
                               if it's True,then you need to appoint a target for the card, which means 'targetIndex' 
@@ -206,12 +206,12 @@ class BattleAgent:
                     situation to generate guidance about making card choices. Please read the Basic Game Rules below first. 
                     Basic Game Rules:
                     {basic_game_rules}
-                    
+
                     you will be given info of previous two operations and context of this operation.
                     you will also be given a Ready made guidance.
                     Based on them,your job is to analyze various aspects of combat situation(including Enemy,cards,etc)
                     , and completion the Ready made guidance.
-                    
+
                     Context Format:
                     **Floor**: 'floor' (current floor in game)
                     **Turn Number**: 'turn_number' (current round in the combat)
@@ -226,11 +226,11 @@ class BattleAgent:
                     **Draw Pile**: [ Card ] (list of cards in draw pile)
                     **Discard Pile**: [ Card ](list of cards in discard pile)
                     **Player Status**: [ player_status ] (list of player status)
-                    
+
                     Previous two operations Info Format:
                     [ {{ turn: int, operation: str }}, ...  ]
-                    
-                    
+
+
                     Response:
                     completion the Ready made guidance. you should add 2 parts into the guidance:
                     1. Introduction of the enemy and strategy to deal with it.
@@ -271,14 +271,11 @@ class BattleAgent:
         if low_hp_flag:
             suggestion_content += ("\nEnemy is in low hp,check the maximum damage you can deal to see"
                                    "if you can eliminate it.")
-        if len(monsters)>1:
-            suggestion_content += ("\nYou are facing multiply enemies,you should prioritize"
-                                   "AOE card which can affect them all.")
 
-
-        messages = [{"role": "system", "content": system_msg}] + [HumanMessage(content=self.humanM+'\n'+suggestion_content)]
-        response = self.llm.invoke(messages)
-        suggestion_content = response.content
+        # messages = [{"role": "system", "content": system_msg}] + [
+        #     HumanMessage(content=self.humanM + '\n' + suggestion_content)]
+        # response = self.llm.invoke(messages)
+        # suggestion_content = response.content
 
         return {
             **state,  # 保留原 state 的所有属性
@@ -325,13 +322,13 @@ class BattleAgent:
                 zero_cost_card = 1
 
         if self.is_to_end_turn == 'Yes':
-            # if state["energy"]==0 and zero_cost_card:
-            #     return {
-            #         **state,  # 保留原 state 的所有属性
-            #         "messages": [{"role": "user", "content": "There are 0 cost cards in your Hand Pile,"
-            #                                                  "you can play them even if your energy is 0."
-            #                                                  "are you sure to end the turn?"}]
-            #     }
+            if state["energy"] == 0 and zero_cost_card:
+                return {
+                    **state,  # 保留原 state 的所有属性
+                    "messages": [{"role": "user", "content": "There are 0 cost cards in your Hand Pile,"
+                                                             "you can play them even if your energy is 0."
+                                                             "are you sure to end the turn?"}]
+                }
             return {
                 **state,
                 "messages": [AIMessage(content="output check pass!!")]
@@ -355,9 +352,9 @@ class BattleAgent:
                 if card_to_play1.has_target:
                     if self.target_index == -1:
                         return {
-                        **state,  # 保留原 state 的所有属性
-                        "messages": [{"role": "user", "content": "Your chosen card must have a target,"
-                                                                 " please regenerate it!"}]
+                            **state,  # 保留原 state 的所有属性
+                            "messages": [{"role": "user", "content": "Your chosen card must have a target,"
+                                                                     " please regenerate it!"}]
                         }
                     return {
                         **state,  # 保留原 state 的所有属性
@@ -381,10 +378,6 @@ class BattleAgent:
             with open(r'C:\Users\32685\Desktop\spirecomm\battle_agent.txt', 'a') as file:
                 file.write('cnt is:' + str(self.router2_cnt) + '\n')
             if self.router2_cnt >= 3:
-                self.is_to_end_turn = 'NO'
-                self.card_Index = -1
-                self.target_index = -1
-                self.explanation = 'router2 reach recursion limit! use algorithm to choose card!'
                 return END
             return "LLM"
 
@@ -422,7 +415,7 @@ class BattleAgent:
                             **Discard Pile**(the cards in discard pile):{discardPile},
                             **Player Status**(list of player status):{pStatus}
                             **Orbs**(if you are DEFECT): {orbs}
-                            
+
                             Previous two operations Info:
                             {last_two_rounds_info}
 

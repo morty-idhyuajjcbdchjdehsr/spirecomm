@@ -6,6 +6,7 @@ import random
 from langchain.memory import ConversationBufferWindowMemory, ConversationSummaryBufferMemory
 from langchain.output_parsers import ResponseSchema, StructuredOutputParser
 from langchain_community.agent_toolkits.load_tools import load_tools
+from langchain_community.chat_models import ChatOllama
 from langchain_community.tools import TavilySearchResults
 from langchain_core.tools import tool
 
@@ -196,10 +197,10 @@ class SimpleAgent:
             file.write('--------------current state---------------\n')
             file.write(self.game.__str__())
 
+        card_to_play1 = None
         if 0 <= card_Index < len(playable_cards):
             card_to_play1 = playable_cards[card_Index]
-        else:
-            card_to_play1 = playable_cards[0]
+
         target1 = None
         if target_index != -1 and 0 <= target_index < len(available_monsters):
             target1 = available_monsters[target_index]
@@ -533,6 +534,7 @@ class SimpleAgent:
         except Exception as e:
             with open(r'C:\Users\32685\Desktop\spirecomm\error_log.txt', 'a') as file:
                 file.write(f'unable to parse json_text:{json_text}\n')
+            self.skipped_cards = True
             return CancelAction()
 
         card_name = jsonfile.get('cardName')
@@ -560,6 +562,7 @@ class SimpleAgent:
             reward_cards = self.game.screen.cards
             card_to_choose = next((card for card in reward_cards if card.name == card_name), None)
             if card_to_choose is None:
+                self.skipped_cards = True
                 return CancelAction()
             return CardRewardAction(card_to_choose)
 
@@ -889,7 +892,7 @@ class SimpleAgent:
         # self.llm = ChatOpenAI(model="gpt-3.5-turbo-ca", temperature=0)  # 史
         # self.llm = ChatOpenAI(model="gpt-4o-mini-ca", temperature=0)  # good
 
-        self.llm = ChatOpenAI(model="internlm/internlm2_5-7b-chat", temperature =0) #good grid选择有问题 支持工具 shi
+        # self.llm = ChatOpenAI(model="internlm/internlm2_5-7b-chat", temperature =0) #good grid选择有问题 支持工具 shi
         # self.llm = ChatOpenAI(model="THUDM/chatglm3-6b", temperature =0) # 有点烂
         # self.llm = ChatOpenAI(model="THUDM/glm-4-9b-chat", temperature=0) # 还行，支持工具 还行
         # self.llm = ChatOpenAI(model="01-ai/Yi-1.5-9B-Chat-16K", temperature=0) # 一般
@@ -898,7 +901,13 @@ class SimpleAgent:
         # self.llm = ChatOpenAI(model="deepseek-ai/DeepSeek-R1-Distill-Qwen-14B", temperature=0) # 要钱 慢死了
         # self.llm = ChatOpenAI(model="deepseek-ai/DeepSeek-R1-Distill-Qwen-7B", temperature=0)  # 7b man
         # self.llm = ChatOpenAI(model="internlm/internlm2_5-20b-chat", temperature=0)  # 20b shi
+        # self.llm = ChatOpenAI(model="Pro/Qwen/Qwen2.5-7B-Instruct", temperature=0)  # 20b shi
 
+        # self.llm = ChatOllama(model="deepseek-r1:7b", temperature=0) # 还行
+        # self.llm = ChatOllama(model="mistral:7b", temperature=0) # 还行
+        # self.llm = ChatOllama(model="hermes3:3b", temperature=0) # 老出错
+        self.llm = ChatOllama(model="qwen2.5:3b", temperature=0)  #不赖
+        self.llm = ChatOllama(model="qwen2.5:1.5b", temperature=0)
 
 
     def get_role_guidelines(self,chosen_class):
