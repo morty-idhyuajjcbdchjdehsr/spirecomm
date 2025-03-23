@@ -23,11 +23,13 @@ from langchain_openai import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate
 from langchain.chains import LLMChain
 from langchain.chains import RetrievalQA
+from langchain_google_genai import ChatGoogleGenerativeAI
 
 from datetime import datetime
 from langchain_openai import ChatOpenAI
 from langgraph.prebuilt import create_react_agent
 from langgraph.checkpoint.memory import MemorySaver
+
 
 
 class SimpleAgent:
@@ -722,7 +724,7 @@ class SimpleAgent:
 
     def init_battle_llm(self):
 
-        agent = BattleAgent(role=self.role,llm=self.llm)
+        agent = BattleAgent(role=self.role,llm=self.llm,small_llm=ChatOpenAI(model="gpt-4o-mini",temperature=0))
         self.battle_agent = agent
 
 
@@ -877,8 +879,17 @@ class SimpleAgent:
 
 
         #silicon
-        os.environ["OPENAI_API_KEY"] = "sk-aqhgalcbwavbbbcjbiuikgznytxmmixcveggxfmxmrjkpxkt"
-        os.environ["OPENAI_API_BASE"] ="https://api.siliconflow.cn/v1"
+        # os.environ["OPENAI_API_KEY"] = "sk-aqhgalcbwavbbbcjbiuikgznytxmmixcveggxfmxmrjkpxkt"
+        # os.environ["OPENAI_API_BASE"] ="https://api.siliconflow.cn/v1"
+
+
+        #Google
+        # os.environ["GEMINI_API_KEY"] = "AIzaSyDUhCQJYnjYpez1v_2BH03Kzw - sDLWYTyI"
+        os.environ["GOOGLE_API_KEY"] = "AIzaSyDUhCQJYnjYpez1v_2BH03Kzw-sDLWYTyI"
+
+        #AGICTO
+        os.environ["OPENAI_API_KEY"] = "sk-dXqzgPLzOmxdo24tl4lqL8Ioh9udaG4ctTQMuDq1fDfwS4mM"
+        os.environ["OPENAI_API_BASE"] = "https://api.agicto.cn/v1"
 
         # self.search_llm = ChatOpenAI(model="THUDM/chatglm3-6b", temperature=0)
         self.battle_thread_id = ''.join(random.choices('abcdefghijklmnopqrstuvwxyz0123456789', k=10))
@@ -887,10 +898,13 @@ class SimpleAgent:
         self.thread_id = ''.join(random.choices('abcdefghijklmnopqrstuvwxyz0123456789', k=10))
 
 
-        # self.llm = ChatOpenAI(model="gemini-1.5-flash-latest", temperature=0) #便宜
+        self.llm = ChatOpenAI(model="gemini-1.5-flash", temperature=0) #便宜
         # self.llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)  # good
         # self.llm = ChatOpenAI(model="gpt-3.5-turbo-ca", temperature=0)  # 史
         # self.llm = ChatOpenAI(model="gpt-4o-mini-ca", temperature=0)  # good
+        # self.llm = ChatOpenAI(model="deepseek-v3", temperature=0)
+        # self.llm = ChatOpenAI(model="gemini-2.0-flash", temperature=0)
+
 
         # self.llm = ChatOpenAI(model="internlm/internlm2_5-7b-chat", temperature =0) #good grid选择有问题 支持工具 shi
         # self.llm = ChatOpenAI(model="THUDM/chatglm3-6b", temperature =0) # 有点烂
@@ -906,9 +920,9 @@ class SimpleAgent:
         # self.llm = ChatOllama(model="deepseek-r1:7b", temperature=0) # 还行
         # self.llm = ChatOllama(model="mistral:7b", temperature=0) # 还行
         # self.llm = ChatOllama(model="hermes3:3b", temperature=0) # 老出错
-        self.llm = ChatOllama(model="qwen2.5:3b", temperature=0)  #不赖
-        self.llm = ChatOllama(model="qwen2.5:1.5b", temperature=0)
-
+        # self.llm = ChatOllama(model="qwen2.5:3b", temperature=0)  #不赖
+        # self.llm = ChatOllama(model="qwen2.5:1.5b", temperature=0) # shi
+        # self.llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash",temperature=0,transport='rest') #有限额
 
     def get_role_guidelines(self,chosen_class):
 

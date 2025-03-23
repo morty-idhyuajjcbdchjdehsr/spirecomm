@@ -2,6 +2,7 @@ import json
 from collections import deque
 
 from langchain.output_parsers import ResponseSchema, StructuredOutputParser
+from langchain_community.chat_models import ChatOllama
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_openai import ChatOpenAI
 from langgraph.prebuilt import ToolNode
@@ -50,7 +51,8 @@ class State(TypedDict):
 
 
 class BattleAgent:
-    def __init__(self, role="DEFECT", llm=ChatOpenAI(model="gpt-3.5-turbo-0125", temperature=0)):
+    def __init__(self, role="DEFECT", llm=ChatOpenAI(model="gpt-3.5-turbo-0125", temperature=0),small_llm=ChatOllama(model="mistral:7b", temperature=0) ):
+        self.end_turn_cnt = None
         self.battle_agent_sys_prompt = None
         self.router2_cnt = 0
         self.humanM = None
@@ -60,6 +62,7 @@ class BattleAgent:
         self.is_to_end_turn = None
         self.role = role
         self.llm = llm
+        self.small_llm = small_llm
 
         is_to_end_turn_schema = ResponseSchema(
             name="isToEndTurn",
@@ -248,6 +251,8 @@ class BattleAgent:
         hand = state["hand"]
         current_hp = state["current_hp"]
 
+        suggestion_content += "\nspend your energy at most.Don't easily leave unused energy in one turn."
+
         no_attack_flag = 1
         for monster in monsters:
             if monster.intent == Intent.ATTACK or monster.intent == Intent.ATTACK_BUFF or monster.intent == Intent.ATTACK_DEBUFF or monster.intent == Intent.ATTACK_DEFEND:
@@ -277,7 +282,7 @@ class BattleAgent:
 
 
         messages = [{"role": "system", "content": system_msg}] + [HumanMessage(content=self.humanM+'\n'+suggestion_content)]
-        response = self.llm.invoke(messages)
+        response = self.small_llm.invoke(messages)
         suggestion_content = response.content
 
         return {
@@ -319,31 +324,47 @@ class BattleAgent:
         available_monsters = [monster for monster in state["monsters"] if
                               monster.current_hp > 0 and not monster.half_dead and not monster.is_gone]
         playable_cards = [card for card in state["hand"] if card.is_playable]
+        hand_cards = state["hand"]
         zero_cost_card = 0
         for card in playable_cards:
             if card.cost == 0:
                 zero_cost_card = 1
 
         if self.is_to_end_turn == 'Yes':
-            # if state["energy"]==0 and zero_cost_card:
-            #     return {
-            #         **state,  # 保留原 state 的所有属性
-            #         "messages": [{"role": "user", "content": "There are 0 cost cards in your Hand Pile,"
-            #                                                  "you can play them even if your energy is 0."
-            #                                                  "are you sure to end the turn?"}]
-            #     }
+            self.end_turn_cnt +=1
+            if self.end_turn_cnt == 1:
+                if state["energy"] == 0 and zero_cost_card:
+                    return {
+                        **state,  # 保留原 state 的所有属性
+                        "messages": [{"role": "user", "content": "There are 0 cost cards in your Hand Pile,"
+                                                                 "you can play them even if your energy is 0."
+                                                                 "are you sure to end the turn?"
+                                                                 "please regenerate the answer."}]
+                    }
+                if state["energy"] > 0 and len(playable_cards) > 0:
+                    return {
+                        **state,  # 保留原 state 的所有属性
+                        "messages": [{"role": "user", "content": "you have unused energy and there are still"
+                                                                 "playable cards,are you sure to end the turn?"
+                                                                 "please regenerate the answer."}]
+                    }
             return {
                 **state,
                 "messages": [AIMessage(content="output check pass!!")]
             }
 
-        if 0 <= self.card_Index < len(playable_cards):
-            card_to_play1 = playable_cards[self.card_Index]
+        if 0 <= self.card_Index < len(hand_cards):
+            card_to_play1 = hand_cards[self.card_Index]
+            if not card_to_play1.is_playable:
+                return {
+                    **state,  # 保留原 state 的所有属性
+                    "messages": [{"role": "user", "content": "Your chosen card is not playable,"
+                                                             " please regenerate it!"}]
+                }
         else:
             return {
                 **state,  # 保留原 state 的所有属性
-                "messages": [{"role": "user", "content": "Your card_Index is out of range or the "
-                                                         "chosen card is unplayable,"
+                "messages": [{"role": "user", "content": "Your card_Index is out of range,"
                                                          " please regenerate it!"}]
             }
         target1 = None
@@ -380,7 +401,7 @@ class BattleAgent:
             self.router2_cnt += 1
             with open(r'C:\Users\32685\Desktop\spirecomm\battle_agent.txt', 'a') as file:
                 file.write('cnt is:' + str(self.router2_cnt) + '\n')
-            if self.router2_cnt >= 3:
+            if self.router2_cnt >= 2:
                 self.is_to_end_turn = 'NO'
                 self.card_Index = -1
                 self.target_index = -1
@@ -408,6 +429,8 @@ class BattleAgent:
         last_two_rounds_info += ']'
 
         self.router2_cnt = 0
+        self.end_turn_cnt = 0
+
         template_string = """ 
                             context:
                             **Floor**: {floor}, 
