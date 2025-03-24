@@ -257,15 +257,15 @@ class BattleAgent:
         hand = state["hand"]
         current_hp = state["current_hp"]
 
-        suggestion_content += "\nspend your energy at most.Don't easily leave unused energy in one turn."
-        suggestion_content += ("\nFor cards of the same type, prioritize cards with best overall effects "
-                               "(evaluated based on its"
-                               "value, additional effects, etc.)")
+        # suggestion_content += "\n spend your energy at most.Don't easily leave unused energy in one turn."
+        # suggestion_content += ("\nFor cards of the same type, prioritize cards with best overall effects "
+        #                        "(evaluated based on its"
+        #                        "value, additional effects, etc.)")
         suggestion_content += ("When you are about to attack or defend, you should prioritize"
                                " non-basic cards(cards that are not"
                               "'Defend' or 'Strike'")
-        suggestion_content += ("When facing multiple enemies which are leader and minions, prioritize"
-                               "dealing with the leader.")
+        # suggestion_content += ("When facing multiple enemies which are leader and minions, prioritize"
+        #                        "dealing with the leader.")
 
         no_attack_flag = 1
         for monster in monsters:

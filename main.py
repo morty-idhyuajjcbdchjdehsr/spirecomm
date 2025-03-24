@@ -27,6 +27,8 @@ if __name__ == "__main__":
             file.write('--------------tracking---------------\n')
         with open(r'C:\Users\32685\Desktop\spirecomm\battle_agent.txt', 'w') as file:
             file.write('--------------tracking---------------\n')
+        with open(r'C:\Users\32685\Desktop\spirecomm\choose_card_agent.txt', 'w') as file:
+            file.write('--------------tracking---------------\n')
 
         agent = SimpleAgent()
         coordinator = Coordinator()

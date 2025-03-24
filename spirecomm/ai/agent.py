@@ -11,6 +11,7 @@ from langchain_community.tools import TavilySearchResults
 from langchain_core.tools import tool
 
 from spirecomm.ai.battle_agent import BattleAgent
+from spirecomm.ai.choose_card_agent import ChooseCardAgent
 from spirecomm.spire.game import Game
 from spirecomm.spire.character import Intent, PlayerClass
 import spirecomm.spire.card
@@ -504,55 +505,32 @@ class SimpleAgent:
 
     def choose_card_reward(self):
 
-        template_string = """ now you need to choose card rewards from **Available Cards**, and the below is the current situation: 
-                - **Current Deck:** {deck}
-                - **Player's Health:** {hp}
-                - **Available Cards:** {reward_cards}
-                - **Relic Bowl:** {relic_bowl}
-                
-                now make your choice and provide the reason.
-                """
-        # outputFormat = self.output_parser.get_format_instructions()
-        template1 = ChatPromptTemplate.from_template(template_string)
-        messages = template1.format_messages(
-            hp=f"{self.game.current_hp}/{self.game.max_hp}",
-            deck=self.get_card_list_str(self.game.deck),
-            reward_cards=self.get_card_list_str(self.game.screen.cards),
-            relic_bowl=self.game.screen.can_bowl,
-            # output_format=outputFormat,
-        )
         config = {"configurable": {"thread_id": self.choose_card_thread_id}}
         responses = self.choose_card_agent.invoke(
-            {"messages": messages}, config
+            floor=self.game.floor,
+            current_hp=self.game.current_hp,
+            max_hp=self.game.max_hp,
+            deck=self.game.deck,
+            reward_cards=self.game.screen.cards,
+            relic_bowl=self.game.screen.can_bowl, config=config
         )
-        response_text = responses["messages"][-1].content
-        start = response_text.rfind('```json') + len('```json\n')
-        end = response_text.rfind('```')
-        json_text = response_text[start:end].strip() # json文本
 
-        # 得到最终的 json格式文件
-        try:
-            jsonfile = json.loads(json_text)
-        except Exception as e:
-            with open(r'C:\Users\32685\Desktop\spirecomm\error_log.txt', 'a') as file:
-                file.write(f'unable to parse json_text:{json_text}\n')
-            self.skipped_cards = True
-            return CancelAction()
-
-        card_name = jsonfile.get('cardName')
-        explanation = jsonfile.get('explanation')
+        card_name = self.choose_card_agent.card_name
+        explanation = self.choose_card_agent.explanation
 
         with open(r'C:\Users\32685\Desktop\spirecomm\output.txt', 'a',encoding="utf-8") as file:
             # file.write('--------------executing get_play_card_action---------------\n')
             # file.write(self.game.__str__())
             file.write('--------------human message--------------------------------\n')
-            file.write(messages[0].content+"\n")
+            file.write(self.choose_card_agent.humanM+"\n")
             file.write("--------------ai message-----------------------------------\n")
             file.write(responses["messages"][-1].content + "\n")
-            file.write("--------------ai stream------------------------------------\n")
-            for response in responses["messages"]:
-                file.write(type(response).__name__+" "+response.__str__())
-                file.write("\n\n")
+            file.write("self.card_name:" + str(card_name) + "\n")
+            file.write("self.explanation:" + str(explanation) + "\n")
+            # file.write("--------------ai stream------------------------------------\n")
+            # for response in responses["messages"]:
+            #     file.write(type(response).__name__+" "+response.__str__())
+            #     file.write("\n\n")
 
 
         if card_name=="":
@@ -737,69 +715,8 @@ class SimpleAgent:
 
 
     def init_choose_card_llm(self):
-        card_name_schema = ResponseSchema(
-            name="cardName",
-            description="The name of the card you choose,if you decide to choose no card,return ''.if you choose to use relic 'Bowl',return 'Bowl'"
-        )
-        explanation_schema = ResponseSchema(
-            name="explanation",
-            description="Explanation of why you choose the card."
-        )
-        response_schemas = [
-            card_name_schema,
-            explanation_schema
-        ]
-        output_parser = StructuredOutputParser(response_schemas=response_schemas)
-        self.choose_card_output_parser = output_parser
-        outputFormat = self.choose_card_output_parser.get_format_instructions()
+        self.choose_card_agent = ChooseCardAgent(role=self.role,llm=ChatOpenAI(model="gpt-4o-mini",temperature=0),small_llm=ChatOpenAI(model="gpt-4o-mini",temperature=0))
 
-        
-        system_prompt = f"""
-                You are an expert at playing Slay the Spire, and now you need to play Slay the Spire 
-                as the role {self.role}.now you need to assist in choosing card rewards.
-                 Your goal is to maximize the player's chances of success by selecting the most beneficial cards 
-                 based on the current context. Before choosing, please invoke the tool to search the content of 
-                 cards on wikipedia.
-
-                ### Context:
-                - **Current Deck:** [List of cards currently in the deck]
-                - **Player's Health:** [Current health points]
-                - **Available Cards:** [List of cards available for selection]
-                - **Relic Bowl:** [whether you have the relic 'Bowl']
-                
-                ### Considerations:
-                1.**Deck Size Management**: Maintain a streamlined deck. A larger deck can dilute card effectiveness and 
-                  make it harder to draw key cards. If the available cards do not significantly improve the deck  , 
-                  consider skipping the card selection. Don't grab too many cards of the same type.
-                2. **Card Rarity:** Evaluate the rarity of the available cards. Prioritize higher rarity cards for their
-                    unique abilities and potential impact on the gameplay.
-                3. **Upgraded:** Prioritize upgraded cards( 'card_name+' ) for their upgraded abilities.
-                3. **Synergy with Archetypes:** Assess how well each card fits into a specific archetype or deck strategy.
-                  Look for cards that complement and enhance the current build, creating powerful synergies.
-                4. **Health Management:** Prioritize cards that can help regain health or mitigate damage .
-                5. **Scaling:** Consider cards that scale well into the later acts of the game.
-                
-                
-                ### choice：
-                1.choose one card from **Available Cards**
-                2.skip the card selection
-                3.use the relic "Bowl" to improve max-hp 
-                
-                ### output format:
-                {outputFormat}
-                """
-
-        # memory = ConversationBufferWindowMemory(k=1)
-        memory = MemorySaver()
-
-
-        tools = load_tools(["wikipedia"],llm=self.search_llm)
-        # tools = []
-        # tool = TavilySearchResults(max_results=2)
-        # tools.append(tool)
-        # tools = [self.search_card]
-        agent = create_react_agent(ChatOpenAI(model="o3-mini",temperature=0), tools=tools, state_modifier=system_prompt, )
-        self.choose_card_agent = agent
     def init_make_map_choice_llm(self):
         choice_index_schema = ResponseSchema(
             name="index",
