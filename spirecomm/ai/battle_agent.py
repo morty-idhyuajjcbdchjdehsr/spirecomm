@@ -54,6 +54,7 @@ class State(TypedDict):
 class BattleAgent:
     def __init__(self, role="DEFECT", llm=ChatOpenAI(model="gpt-3.5-turbo-0125", temperature=0),
                  small_llm=ChatOllama(model="mistral:7b", temperature=0)):
+        self.deck_analysis = ''
         self.ori_suggestion = None
         self.end_turn_cnt = None
         self.battle_agent_sys_prompt = None
@@ -247,10 +248,11 @@ class BattleAgent:
                     your response should follow the format: 
                     **Guidance**:
                             xxxxxxxxxxxxx
-                    Refine your response. **limit your response to 100 words!!**.
+                    Refine your response. **limit your response to 200 words!!**.
                     """
 
-        suggestion_content = '**Guidance**:'
+        suggestion_content = ''
+        suggestion_content += '**Guidance**:'
 
         # 人工添加建议：
         monsters = state["monsters"]
@@ -300,13 +302,15 @@ class BattleAgent:
 
         messages = [{"role": "system", "content": system_msg}] + [
             HumanMessage(content=self.humanM + '\n' + suggestion_content)]
-        response = self.small_llm.invoke(messages)
-        suggestion_content = response.content
+        # response = self.small_llm.invoke(messages)
+        # suggestion_content = response.content
+
+
 
         return {
             **state,  # 保留原 state 的所有属性
-            "messages": [AIMessage(content="can you help me analyse the condition and give me some guidance?")] + [
-                HumanMessage(content=suggestion_content)]
+            "messages": [AIMessage(content="can you help me analyse the deck and give me some guidance?")] + [
+                HumanMessage(content="**Deck Analysis**:\n"+self.deck_analysis)]
         }
 
     def router1(self, state: State):
@@ -439,6 +443,7 @@ class BattleAgent:
                discardPile: list,
                powers: list,
                orbs: list,
+               deck_analysis:str,
                config=None):
         start_time = time.time()  # 记录开始时间
 
@@ -449,6 +454,7 @@ class BattleAgent:
 
         self.router2_cnt = 0
         self.end_turn_cnt = 0
+        self.deck_analysis = deck_analysis
 
         template_string = """ 
                             context:

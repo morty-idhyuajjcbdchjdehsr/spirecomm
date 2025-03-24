@@ -36,6 +36,7 @@ from dotenv import load_dotenv
 class SimpleAgent:
 
     def __init__(self, chosen_class=PlayerClass.THE_SILENT):
+        self.deck_analysis = ''
         self.search_llm = None
         self.choose_card_thread_id = None
         self.map_thread_id = None
@@ -168,8 +169,9 @@ class SimpleAgent:
             discardPile=self.game.discard_pile,
             powers=self.game.player.powers,
             # output_format=outputFormat,
-            orbs=self.game.player.orbs
-            ,config=config
+            orbs=self.game.player.orbs,
+            deck_analysis=self.deck_analysis,
+            config=config
         )
 
         is_to_end_turn = self.battle_agent.is_to_end_turn
@@ -435,7 +437,7 @@ class SimpleAgent:
         error_ret = []
 
 
-        with open(r'C:\Users\32685\Desktop\spirecomm\output.txt', 'a') as file:
+        with open(r'C:\Users\32685\Desktop\spirecomm\output.txt', 'a',encoding="utf-8") as file:
             file.write('--------------human message--------------------------------\n')
             file.write(messages[0].content + "\n")
             file.write("--------------ai message-----------------------------------\n")
@@ -517,6 +519,7 @@ class SimpleAgent:
 
         card_name = self.choose_card_agent.card_name
         explanation = self.choose_card_agent.explanation
+        self.deck_analysis = self.choose_card_agent.strategy
 
         with open(r'C:\Users\32685\Desktop\spirecomm\output.txt', 'a',encoding="utf-8") as file:
             # file.write('--------------executing get_play_card_action---------------\n')

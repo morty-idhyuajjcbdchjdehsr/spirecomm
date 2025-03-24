@@ -348,7 +348,7 @@ Refine your response.Limit it up to 100 words.
 
 
         # 输出log
-        with open(r'C:\Users\32685\Desktop\spirecomm\choose_card_agent.txt', 'a') as file:
+        with open(r'C:\Users\32685\Desktop\spirecomm\choose_card_agent.txt', 'a',encoding="utf-8") as file:
             file.write('--------------round start-------------------------\n')
             file.write("System:\n" + self.choose_card_agent_sys_prompt + '\n')
             for response in result["messages"]:
