@@ -208,20 +208,13 @@ Your response should be structured in JSON format as follows:
   "card_evaluation": [
     {
       "card_name": "Card A",
-      "rating": "high | medium | low",
+      "Rarity": "rarity of the card",
       "justification": "Explain why this card is good or bad for the deck.",
       "synergies": ["List cards in the deck that this card synergizes with, if any."],
       "anti_synergies": ["List cards in the deck that this card conflicts with, if any."],
-      "overall_recommendation": "Take | Consider | Skip"
+
     },
-    {
-      "card_name": "Card B",
-      "rating": "high | medium | low",
-      "justification": "...",
-      "synergies": ["..."],
-      "anti_synergies": ["..."],
-      "overall_recommendation": "Take | Consider | Skip"
-    }
+    .......
   ],
   "skip_evaluation":{
     "skip_value": "low | medium | high",

@@ -55,7 +55,7 @@ if __name__ == "__main__":
         #             file.write(f"lose as {chosen_class} at {datetime.now()} at floor {agent.game.floor}\n")
 
         while True:
-            agent.change_class(PlayerClass.IRONCLAD)
+            agent.change_class(PlayerClass.DEFECT)
 
             agent.init_llm_env()
             agent.init_common_llm()
@@ -63,12 +63,12 @@ if __name__ == "__main__":
             agent.init_choose_card_llm()
             agent.init_make_map_choice_llm()
 
-            result = coordinator.play_one_game(PlayerClass.IRONCLAD)
+            result = coordinator.play_one_game(PlayerClass.DEFECT)
             with open(r'C:\Users\32685\Desktop\spirecomm\results.txt', 'a') as file:
                 if result:
-                    file.write(f"win as {PlayerClass.IRONCLAD} at {datetime.now()}\n")
+                    file.write(f"win as {PlayerClass.DEFECT} at {datetime.now()}\n")
                 else:
-                    file.write(f"lose as {PlayerClass.IRONCLAD} at {datetime.now()} at floor {agent.game.floor}\n")
+                    file.write(f"lose as {PlayerClass.DEFECT} at {datetime.now()} at floor {agent.game.floor}\n")
     except Exception as e:
         # 将错误信息记录到文件
         logging.error("An error occurred: %s\n\n\n\n\n", str(e), exc_info=True)

@@ -708,17 +708,17 @@ class SimpleAgent:
         # small_llm = ChatOpenAI(model="gpt-4o-mini",temperature=0) #good
         # small_llm = ChatOllama(model="mistral:7b", temperature=0) # 缺少对卡牌的理解
         # small_llm = ChatOpenAI(model="claude-3-haiku-20240307", temperature=0) # 似乎还挺懂 话多
-        small_llm = ChatOpenAI(model="qwen-turbo-latest", temperature=0) # good 3~4s
+        # small_llm = ChatOpenAI(model="qwen-turbo-latest", temperature=0) # good 3~4s
         # small_llm = ChatOpenAI(model="qwen-plus-latest", temperature=0) # man
 
-        agent = BattleAgent(role=self.role,llm=self.llm,small_llm=small_llm)
+        agent = BattleAgent(role=self.role,llm=self.llm,small_llm=self.llm)
         self.battle_agent = agent
 
 
 
 
     def init_choose_card_llm(self):
-        self.choose_card_agent = ChooseCardAgent(role=self.role,llm=ChatOpenAI(model="gpt-4o-mini",temperature=0),small_llm=self.llm)
+        self.choose_card_agent = ChooseCardAgent(role=self.role,llm=self.llm,small_llm=self.llm)
 
     def init_make_map_choice_llm(self):
         choice_index_schema = ResponseSchema(
@@ -825,21 +825,27 @@ class SimpleAgent:
 
 
         # self.llm = ChatOpenAI(model="gemini-1.5-flash", temperature=0) #便宜
+        # self.llm = ChatOpenAI(model="gemini-1.5-flash-latest", temperature=0)
         # self.llm = ChatOpenAI(model="gemini-2.0-flash-exp", temperature=0)  # 便宜
         # self.llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)  # good
-        self.llm = ChatOpenAI(model="gpt-3.5-turbo-ca", temperature=0)  # 史
+        self.llm = ChatOpenAI(model="gpt-3.5-turbo-0125", temperature=0)
+        # self.llm = ChatOpenAI(model="gpt-3.5-turbo-ca", temperature=0)  # 史
         # self.llm = ChatOpenAI(model="gpt-4o-mini-ca", temperature=0)  # good
         # self.llm = ChatOpenAI(model="deepseek-v3", temperature=0)
         # self.llm = ChatOpenAI(model="gemini-2.0-flash", temperature=0)
-        # self.llm = ChatOpenAI(model="qwen-turbo-latest", temperature=0) # 便宜又快！！
 
+        # self.llm = ChatOpenAI(model="qwen-turbo-latest", temperature=0) # 便宜又快！！
+        # self.llm = ChatOpenAI(model="hunyuan-turbos-latest", temperature=0)  #慢
+        # self.llm = ChatOpenAI(model="ERNIE-Speed-128K", temperature=0.7) #shi
+        # self.llm = ChatOpenAI(model="glm-4-flashx", temperature=0) #慢
+        # self.llm = ChatOpenAI(model="gemma2-9b-it", temperature=0) # 快且免费！但是会爆
+        # self.llm = ChatOpenAI(model="gemma2-7b-it", temperature=0)
 
         # self.llm = ChatOpenAI(model="internlm/internlm2_5-7b-chat", temperature =0) #good grid选择有问题 支持工具 shi
         # self.llm = ChatOpenAI(model="THUDM/chatglm3-6b", temperature =0) # 有点烂
-        # self.llm = ChatOpenAI(model="THUDM/glm-4-9b-chat", temperature=0) # 还行，支持工具 还行
+        # self.llm = ChatOpenAI(model="THUDM/glm-4-9b-chat", temperature=0) # 还行，支持工具 还行 10s+
         # self.llm = ChatOpenAI(model="01-ai/Yi-1.5-9B-Chat-16K", temperature=0) # 一般
         # self.llm = ChatOpenAI(model="Qwen/Qwen2.5-7B-Instruct", temperature=0) # 还行
-
         # self.llm = ChatOpenAI(model="deepseek-ai/DeepSeek-R1-Distill-Qwen-14B", temperature=0) # 要钱 慢死了
         # self.llm = ChatOpenAI(model="deepseek-ai/DeepSeek-R1-Distill-Qwen-7B", temperature=0)  # 7b man
         # self.llm = ChatOpenAI(model="internlm/internlm2_5-20b-chat", temperature=0)  # 20b shi
@@ -848,8 +854,9 @@ class SimpleAgent:
         # self.llm = ChatOllama(model="deepseek-r1:7b", temperature=0) # 有<think>
         # self.llm = ChatOllama(model="mistral:7b", temperature=0) # 还行
         # self.llm = ChatOllama(model="hermes3:3b", temperature=0) # 老出错
-        # self.llm = ChatOllama(model="qwen2.5:3b", temperature=0)  #不赖
+        # self.llm = ChatOllama(model="qwen2.5:3b", temperature=0)  #不赖 10s+
         # self.llm = ChatOllama(model="qwen2.5:1.5b", temperature=0) # shi
+        # self.llm = ChatOllama(model="gemma2:2b", temperature=0) #man
         # self.llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash",temperature=0,transport='rest') #有限额
 
     def get_role_guidelines(self,chosen_class):
