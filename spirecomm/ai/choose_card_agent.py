@@ -134,7 +134,8 @@ class ChooseCardAgent:
                         
                         ### attention
                         Do NOT always choose to add one card.Adding too many low-level cards will do much more harm to
-                        your deck than good.Skipping the card could be a greater choice in some cases.
+                        your deck than good.Skipping the card could be a greater choice in some cases.If you have relic
+                        "Bowl", you can weigh the trade-off between adding a card and increasing max HP.
 
                         ### output format:
                         {outputFormat}
@@ -147,29 +148,29 @@ class ChooseCardAgent:
         }
 
     def strategyGenerator(self,state:State):
-        system_msg = f"""
-You are an intelligent game strategy analyst for *Slay the Spire*, tasked with analyzing the current deck and determining the optimal card play order and combos during battle. Please provide a detailed strategy focusing on which cards to prioritize and which card combinations are most effective in battle.
+        system_msg = """
+You are an advanced *Slay the Spire* deck strategy analyst. Your task is to analyze the current deck and provide a comprehensive **game plan** that describes the overall strategy for playing this deck effectively. The game plan should include a high-level approach to playing the deck and detailed tactical instructions on how to execute the strategy.
 
-1. **Card Priority**:
-   - Based on the deck’s composition, which cards should be prioritized early in combat? For example, focus on cards that offer high damage, defensive capabilities, or essential buffs.
-   - Identify the key cards that should be played at the start of the turn to set up for future turns. How can energy, health, or debuffs be optimized with the first few plays?
-   - Are there any cards that should only be played in specific scenarios, such as against high-damage enemies or when low on health?
+### **1. Output Format**:
+Your response should be structured in the following format:
+```json
+{
+  "game_plan": "A high-level description of how this deck should be played, including its core strategy, strengths, weaknesses, and general approach to fights.",
+  "card_roles": {
+    "offensive": ["List of cards primarily used for dealing damage"],
+    "defensive": ["List of cards used for blocking or mitigating damage"],
+    "setup": ["List of cards that enable combos, buffs, or deck cycling"],
+    "utility": ["List of cards that provide energy, card draw, or special effects"]
+  },
+  "combos": [
+    {
+      "name": "Combo Name",
+      "sequence": ["Card X", "Card Y", "Card Z"],
+      "effect": "Describes the purpose and effect of this combo"
+    }
+  ],
+}
 
-2. **Card Combos**:
-   - Identify powerful combos that can be formed within the deck. For example, combinations of cards that synergize to increase damage, enhance defense, or provide healing over time.
-   - Recommend sequences of card plays that maximize value. For instance, which cards should be played first to set up others (e.g., playing debuffs or buffs before attack cards)?
-   - Highlight any recurring cycles or synergies that should be exploited throughout the battle.
-
-3. **Turn-by-Turn Strategy**:
-   - Provide a turn-by-turn breakdown of how to sequence card plays for maximum effect. What’s the ideal order of plays for early, mid, and late stages of the battle?
-   - How should the deck adjust for various enemy phases (e.g., when to go on the offensive, when to focus on defense, and when to manage resources like energy or card draw)?
-
-4. **Situational Adjustments**:
-   - Suggest changes to the card play strategy depending on the battle situation, such as dealing with multiple enemies, handling high burst damage, or managing low resources.
-   - In the event of tough enemy abilities or phases (e.g., enemies that deal high damage or have shields), what specific cards or combos should be prioritized?
-
-Please analyze the deck’s potential combos and card priorities and provide a gameplay strategy.
-Refine your response.Limit it up to 100 words.
 """
 
         human_msg = f""" Context:
@@ -186,48 +187,60 @@ Refine your response.Limit it up to 100 words.
 
     def suggestionAdder(self, state: State):
 
-        system_msg = f"""
-                You are an intelligent analyst responsible for analyzing the deck in *Slay the Spire*. Please analyze 
-                the deck based on the following aspects and provide an evaluation of each aspect, as well as potential 
-                missing card types.
+        system_msg = """
+You are an advanced *Slay the Spire* deck-building AI assistant. Your task is to analyze the given deck 
+and provide guidance on selecting post-battle card rewards. Your analysis should determine whether 
+adding a card is beneficial and which option best aligns with the deck’s current strategy.
 
-                1. **Offensive Capabilities**:
-                   - Evaluate the number and types of offensive cards in the deck (e.g., single-target damage, 
-                   area-of-effect damage, damage over time, etc.).
-                   - Does the deck include high burst damage cards? Are there cards to weaken enemy defenses?
-                   - Does the deck have enough cards to deal with different types of enemies and battle environments?
-                
-                2. **Defensive Capabilities**:
-                   - Evaluate the number and effectiveness of defensive cards (e.g., shields, damage reduction, etc.) 
-                     in the deck.
-                   - Can the deck provide enough defense against high enemy damage?
-                   - Does the deck include defensive cards that specifically counter unique enemy attack patterns?
-                
-                3. **Deck Synergy**:
-                   - Do the cards in the deck work well together? For example: Does the deck have cards that trigger 
-                     synergies or enhance each other’s effects?
-                   - Are there cards that effectively manage resources like energy or card draw over multiple turns?
-                   - Does the deck have combinations that support the core strategy effectively?
-                
-                4. **Capabilities and Special Effects**:
-                   - Evaluate the special effect cards in the deck (e.g., poison, damage stacking, enemy disruption, etc.).
-                   - Does the deck have enough tools to handle complex enemy mechanics, such as summoning enemies, healing, or retaliating?
-                   - Are there any critical abilities missing, such as buffs, healing, or debuff removal?
-                
-                Please provide a comprehensive analysis of the deck’s strengths and weaknesses, and suggest possible 
-                missing cards (e.g., offensive, defensive, utility, or cards targeting specific enemies).
+### Notice:
+Prioritize cards that can help regain health or mitigate damage .
 
+###  Output Format**
+Your response should be structured in JSON format as follows:
+```json
+{
+  "deck_analysis": {
+    "current_strategy": "Briefly describe the deck's current core strategy.",
+    "strengths": ["List the deck's key strengths."],
+    "weaknesses": ["List the deck's current weaknesses."],
+    "missing_elements": ["List what the deck lacks to improve its strategy."]
+  },
+  "card_evaluation": [
+    {
+      "card_name": "Card A",
+      "rating": "high | medium | low",
+      "justification": "Explain why this card is good or bad for the deck.",
+      "synergies": ["List cards in the deck that this card synergizes with, if any."],
+      "anti_synergies": ["List cards in the deck that this card conflicts with, if any."],
+      "overall_recommendation": "Take | Consider | Skip"
+    },
+    {
+      "card_name": "Card B",
+      "rating": "high | medium | low",
+      "justification": "...",
+      "synergies": ["..."],
+      "anti_synergies": ["..."],
+      "overall_recommendation": "Take | Consider | Skip"
+    }
+  ],
+  "skip_evaluation":{
+    "skip_value": "low | medium | high",
+    "skip_justification": "Explain why skipping is or isn't valuable."
+  }
+}
 
-                Context Format:
-                - **Current Deck:** [List of cards currently in the deck] - 
-                    
-                Response:
-                Refine your response. **limit your response to 200 words!!**
-                """
+Context Format:
+- **Current Deck:** [List of cards currently in the deck] - 
+- **Floor**: [Current floor]
+- **Player's Health:** [Current health points]
+- **Available Cards:** [List of cards available for selection]   
+"""
 
         human_msg = f""" Context:
                 - **Current Deck:** {get_lists_str(state["deck"])}
-                
+                - **Floor**: {state["floor"]}
+                - **Player's Health:** {state["current_hp"]}
+                - **Available Cards:** {get_lists_str(state["reward_cards"])}
                 now give your response. """
 
         messages = [{"role": "system", "content": system_msg}] + [

@@ -718,7 +718,7 @@ class SimpleAgent:
 
 
     def init_choose_card_llm(self):
-        self.choose_card_agent = ChooseCardAgent(role=self.role,llm=ChatOpenAI(model="gpt-4o-mini",temperature=0),small_llm=ChatOpenAI(model="gpt-4o-mini",temperature=0))
+        self.choose_card_agent = ChooseCardAgent(role=self.role,llm=ChatOpenAI(model="gpt-4o-mini",temperature=0),small_llm=self.llm)
 
     def init_make_map_choice_llm(self):
         choice_index_schema = ResponseSchema(
@@ -777,7 +777,7 @@ class SimpleAgent:
     def init_common_llm(self):
         # tools = load_tools(["wikipedia"],llm=self.search_llm)
         tools = []
-        agent = create_react_agent(ChatOpenAI(model="o3-mini",temperature=0), tools=tools)
+        agent = create_react_agent(ChatOpenAI(model="gpt-4o-mini",temperature=0), tools=tools)
         self.common_agent = agent
     
     @tool("search_card_tool")
@@ -800,8 +800,8 @@ class SimpleAgent:
         # chatanywhere
         # free
         # os.environ["OPENAI_API_KEY"] = "sk-KCmRtnkbFhG5H17LiQSJ9Y76EjACuiSH0Bgjq83Ld7QiBKs4"
-        # os.environ["OPENAI_API_KEY"] = "sk-Nxr5VkCGRNruaDUzUZz3uCkKUtMvg0u3V7uiXJhJSbo0wAIp"
-        # os.environ["OPENAI_API_BASE"] = "https://api.chatanywhere.tech/v1"
+        os.environ["OPENAI_API_KEY"] = "sk-Nxr5VkCGRNruaDUzUZz3uCkKUtMvg0u3V7uiXJhJSbo0wAIp"
+        os.environ["OPENAI_API_BASE"] = "https://api.chatanywhere.tech/v1"
 
 
         #silicon
@@ -814,8 +814,8 @@ class SimpleAgent:
         os.environ["GOOGLE_API_KEY"] = "AIzaSyDUhCQJYnjYpez1v_2BH03Kzw-sDLWYTyI"
 
         #AGICTO
-        os.environ["OPENAI_API_KEY"] = "sk-dXqzgPLzOmxdo24tl4lqL8Ioh9udaG4ctTQMuDq1fDfwS4mM"
-        os.environ["OPENAI_API_BASE"] = "https://api.agicto.cn/v1"
+        # os.environ["OPENAI_API_KEY"] = "sk-dXqzgPLzOmxdo24tl4lqL8Ioh9udaG4ctTQMuDq1fDfwS4mM"
+        # os.environ["OPENAI_API_BASE"] = "https://api.agicto.cn/v1"
 
         # self.search_llm = ChatOpenAI(model="THUDM/chatglm3-6b", temperature=0)
         self.battle_thread_id = ''.join(random.choices('abcdefghijklmnopqrstuvwxyz0123456789', k=10))
@@ -825,12 +825,13 @@ class SimpleAgent:
 
 
         # self.llm = ChatOpenAI(model="gemini-1.5-flash", temperature=0) #便宜
+        # self.llm = ChatOpenAI(model="gemini-2.0-flash-exp", temperature=0)  # 便宜
         # self.llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)  # good
-        # self.llm = ChatOpenAI(model="gpt-3.5-turbo-ca", temperature=0)  # 史
+        self.llm = ChatOpenAI(model="gpt-3.5-turbo-ca", temperature=0)  # 史
         # self.llm = ChatOpenAI(model="gpt-4o-mini-ca", temperature=0)  # good
         # self.llm = ChatOpenAI(model="deepseek-v3", temperature=0)
         # self.llm = ChatOpenAI(model="gemini-2.0-flash", temperature=0)
-        self.llm = ChatOpenAI(model="qwen-turbo-latest", temperature=0) # 便宜又快！！
+        # self.llm = ChatOpenAI(model="qwen-turbo-latest", temperature=0) # 便宜又快！！
 
 
         # self.llm = ChatOpenAI(model="internlm/internlm2_5-7b-chat", temperature =0) #good grid选择有问题 支持工具 shi

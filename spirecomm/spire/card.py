@@ -58,4 +58,16 @@ class Card:
         cost = self.cost
         if self.cost==-1:
             cost = "x"
-        return f"{self.name}({cost},{self.has_target})"
+        type = ""
+        if self.type == CardType.ATTACK:
+            type = "ATTACK"
+        if self.type == CardType.SKILL:
+            type = "SKILL"
+        if self.type == CardType.POWER:
+            type = "POWER"
+        if self.type == CardType.STATUS:
+            type = "STATUS"
+        if self.type == CardType.CURSE:
+            type = "CURSE"
+
+        return f"{self.name}({cost},{self.has_target},{type})"

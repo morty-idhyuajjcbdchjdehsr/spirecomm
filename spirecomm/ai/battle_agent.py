@@ -62,7 +62,7 @@ class BattleAgent:
         self.humanM = None
         self.explanation = None
         self.target_index = None
-        self.card_Index = None
+        self.card_Index = -1
         self.is_to_end_turn = None
         self.role = role
         self.llm = llm
@@ -175,7 +175,7 @@ class BattleAgent:
                                **Enemy Lists**: [ Enemy ]  (a list of enemy,each Enemy is in format: 
                                 "enermy_name( enermy_hp,enemy_intent,enemy_block,[enemy_status])"  )
                                **Hand pile**: [ Card ] (list of cards available in the player’s hand, each Card is in
-                                  format: "card_name( card_cost,is_card_has_target )" )
+                                  format: "card_name( card_cost,is_card_has_target,card_type)" )
                                **Draw Pile**: [ Card ] (list of cards in draw pile)
                                **Discard Pile**: [ Card ](list of cards in discard pile)
                                **Player Status**: [ player_status ] (list of player status)
@@ -183,8 +183,8 @@ class BattleAgent:
                             Previous two operations Info Format:
                             [ {{ turn: int, operation: str }}, ...  ]
                             
-                            General_guidance:
-                            {general_guidance}
+                            Goal:
+                            win the combat and **minimize the loss of HP**.
                             
                             Response format:
                             {outputFormat}
@@ -195,8 +195,77 @@ class BattleAgent:
                               in your response shouldn't be -1.
                             - your response shouldn't contain annotation '//'
                             """
-        self.battle_agent_sys_prompt = system_msg
-        messages = [{"role": "system", "content": system_msg}] + state["messages"]
+
+        character_strategy = {
+            "THE_SILENT":"""### **Silent (Poison & Combo)**
+- **Poison decks**: Apply Poison early (e.g., "Deadly Poison") and amplify with "Catalyst".
+- **Shiv decks**: Use "Accuracy" before playing Shiv cards.
+- **Defensive playstyle**: Leverage "Footwork" and high Block generation for scaling into longer fights.""",
+            "IRONCLAD":"""### **Ironclad (Strength & Self-Healing)**
+- **Strength-based decks**: Prioritize Strength buffs (e.g., "Inflame") and heavy attacks (e.g., "Heavy Blade").
+- **Self-damage decks**: Use HP-sacrificing cards wisely (e.g., "Berserk"), and maximize healing from relics or "Reaper".
+- **Exhaust mechanics**: If running "Exhaust" synergy, prioritize cards that benefit from Exhaust (e.g., "Feel No Pain").""",
+            "DEFECT":"""### **Defect (Orb & Focus)**
+- **Orb management**: If using **Lightning Orbs**, maximize damage with "Electrodynamics".
+- **Passive scaling**: If using **Focus-based decks**, play "Defragment" early for long-term benefits.
+- **Frost defense**: If using **Frost Orbs**, prioritize generating them before blocking."""
+
+        }
+        system_msg_2 = f"""You are an AI designed to play *Slay the Spire* as {self.role} and make optimal card choices during combat. 
+
+### Basic Game Rules:
+At the beginning of a turn, you will be given MAX_ENERGY and draw cards from the Draw Pile. You can only play cards from your Hand Pile, and each card costs a certain amount of energy. 
+
+A turn consists of multiple actions. On each action, you must choose **one** card to play (if energy allows) or **end the turn**.
+
+## **Character-Specific Strategies**
+{character_strategy[self.role]}
+
+### Combat Strategy:
+Your goal is to **win the combat while minimizing HP loss**. Follow these principles:
+
+  **Defense & Survival**:
+   - If enemies will deal high damage, prioritize block.
+   - Save block cards if no immediate threat.
+   
+  **Enemy Intent Analysis**
+    Before making a decision, evaluate enemy actions:
+    - If the enemy **will attack for high damage**, prioritize Block.
+    - If the enemy **intends to buff**, consider dealing high damage first.
+    - If the enemy **is about to die**, avoid defensive plays and finish them off.
+
+   
+## **Card Priority Guidelines**
+Your decisions should be based on the following priority rules:
+1. **Buff & Debuffs First**: Apply Strength, Poison, Focus, or Vulnerable early.
+2. **High-Impact Attacks**: Use cards that benefit from prior buffs (e.g., Heavy Blade after Strength).
+3. **Defense**: If enemies will deal significant damage, prioritize Block over offense.
+4. **Energy Efficiency**: Use energy effectively and avoid waste.
+5. **Combo Opportunities**: If a sequence of plays leads to higher value, prioritize the setup first.
+
+
+### Context:
+- **Floor**: 'floor'
+- **Turn Number**: 'turn_number'
+- **Current HP**: 'current_hp' / 'max_hp'
+- **Block**: 'block'
+- **Energy Available**: 'energy'
+- **Relics**: [ Relic ]
+- **Enemy List**: [ Enemy ]  Enemy format: "enermy_name( enermy_hp,enemy_intent,enemy_block,[enemy_status])"
+- **Hand Pile**: [ Card ]  Card format: "card_name( card_cost,is_card_has_target,card_type )"
+- **Draw Pile**: [ Card ]
+- **Discard Pile**: [ Card ]
+- **Player Status**: [ player_status ]
+
+### Previous Two actions:
+To improve decision-making, you are provided with the last two actions:
+[ {{ turn: int, operation: str }}, ...  ]
+
+### Response Format:
+{outputFormat}
+"""
+        self.battle_agent_sys_prompt = system_msg_2
+        messages = [{"role": "system", "content": system_msg_2}] + state["messages"]
         return {
             **state,  # 保留原 state 的所有属性
             "messages": [self.llm.invoke(messages)]
@@ -232,7 +301,7 @@ class BattleAgent:
                     **Enemy Lists**: [ Enemy ]  (a list of enemy,each Enemy is in format: 
                                 "enermy_name( enermy_hp,enemy_intent,enemy_block,[enemy_status])"  )
                     **Hand pile**: [ Card ] (list of cards available in the player’s hand, each Card is in
-                                format: "card_name( card_cost,is_card_has_target )" )
+                                format: "card_name( card_cost,is_card_has_target,card_type )" )
                     **Draw Pile**: [ Card ] (list of cards in draw pile)
                     **Discard Pile**: [ Card ](list of cards in discard pile)
                     **Player Status**: [ player_status ] (list of player status)
@@ -263,20 +332,48 @@ class BattleAgent:
         # suggestion_content += ("\nFor cards of the same type, prioritize cards with best overall effects "
         #                        "(evaluated based on its"
         #                        "value, additional effects, etc.)")
-        suggestion_content += ("When you are about to attack or defend, you should prioritize"
-                               " non-basic cards(cards that are not"
-                              "'Defend' or 'Strike'")
+        # suggestion_content += ("When you are about to attack or defend, you should prioritize"
+        #                        " non-basic cards(cards that are not"
+        #                       "'Defend' or 'Strike'")
         # suggestion_content += ("When facing multiple enemies which are leader and minions, prioritize"
         #                        "dealing with the leader.")
 
         no_attack_flag = 1
+        total_damage = 0
+        low_hp_flag = 0
+
         for monster in monsters:
             if monster.intent == Intent.ATTACK or monster.intent == Intent.ATTACK_BUFF or monster.intent == Intent.ATTACK_DEBUFF or monster.intent == Intent.ATTACK_DEFEND:
                 no_attack_flag = 0
-                break
+
+            if monster.current_hp < 10:
+                low_hp_flag = 1
+            total_damage += monster.move_hits * monster.move_adjusted_damage
+
+            if monster.monster_id == "GremlinNob":
+                suggestion_content += ("\nYou are facing Elite enemy GremlinNob,With the exception of the first turn, "
+                                       "where it has yet to apply  Enrage, playing Skills will make the Gremlin Nob "
+                                       "much more threatening. Since most  Block-granting cards are also Skills, "
+                                       "it can be worth more to not play them and take the damage instead. "
+                                       "Before using a Skill to mitigate damage, "
+                                       "consider how much longer the fight might take.")
+
         if no_attack_flag == 1:
             suggestion_content += ("\nenemies are not in attacking intention this round,"
                                    "you should prioritize dealing damage or buffering yourself.")
+        if low_hp_flag:
+            suggestion_content += ("\nEnemy is in low hp,check the maximum damage you can deal to see"
+                                   "if you can eliminate it.")
+        if len(monsters) > 1:
+            suggestion_content += ("\nYou are facing multiply enemies,you should prioritize"
+                                   "AOE card which can affect them all.")
+
+        # if total_damage - state["block"] >= 10:
+        #     suggestion_content += ("\nYou are facing huge incoming damage, consider building block or weakening enemy "
+        #                            "or eliminating enemy to reduce the damage!! "
+        #                            )
+
+
         zero_cost_card_flag = 0
         for card in hand:
             if card.cost == 0:
@@ -284,17 +381,12 @@ class BattleAgent:
         if zero_cost_card_flag == 1:
             suggestion_content += ("\nYou have 0 cost cards in your Hand Pile,"
                                    "you could consider prioritizing them as they cost no energy.")
-        low_hp_flag = 0
-        for monster in monsters:
-            if monster.current_hp < 10:
-                low_hp_flag = 1
-                break
-        if low_hp_flag:
-            suggestion_content += ("\nEnemy is in low hp,check the maximum damage you can deal to see"
-                                   "if you can eliminate it.")
-        if len(monsters) > 1:
-            suggestion_content += ("\nYou are facing multiply enemies,you should prioritize"
-                                   "AOE card which can affect them all.")
+
+
+
+
+
+
 
         self.ori_suggestion = suggestion_content
         with open(r'C:\Users\32685\Desktop\spirecomm\battle_agent.txt', 'a') as file:
@@ -310,7 +402,7 @@ class BattleAgent:
         return {
             **state,  # 保留原 state 的所有属性
             "messages": [AIMessage(content="can you help me analyse the deck and give me some guidance?")] + [
-                HumanMessage(content="**Deck Analysis**:\n"+self.deck_analysis)]
+                HumanMessage(content="**Deck Analysis**:\n"+self.deck_analysis+"\n"+suggestion_content)]
         }
 
     def router1(self, state: State):

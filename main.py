@@ -39,36 +39,36 @@ if __name__ == "__main__":
         coordinator.register_out_of_game_callback(agent.get_next_action_out_of_game)
 
         # Play games forever, cycling through the various classes
-        for chosen_class in itertools.cycle(PlayerClass):
-            agent.change_class(chosen_class)
-            agent.init_llm_env()
-            agent.init_common_llm()
-            agent.init_battle_llm()
-            agent.init_choose_card_llm()
-            agent.init_make_map_choice_llm()
-
-            result = coordinator.play_one_game(chosen_class)
-            with open(r'C:\Users\32685\Desktop\spirecomm\results.txt', 'a') as file:
-                if result:
-                    file.write(f"win as {chosen_class} at {datetime.now()}\n")
-                else:
-                    file.write(f"lose as {chosen_class} at {datetime.now()} at floor {agent.game.floor}\n")
-
-        # while True:
-        #     agent.change_class(PlayerClass.DEFECT)
-        #
+        # for chosen_class in itertools.cycle(PlayerClass):
+        #     agent.change_class(chosen_class)
         #     agent.init_llm_env()
         #     agent.init_common_llm()
         #     agent.init_battle_llm()
         #     agent.init_choose_card_llm()
         #     agent.init_make_map_choice_llm()
         #
-        #     result = coordinator.play_one_game(PlayerClass.DEFECT)
+        #     result = coordinator.play_one_game(chosen_class)
         #     with open(r'C:\Users\32685\Desktop\spirecomm\results.txt', 'a') as file:
         #         if result:
-        #             file.write(f"win as {PlayerClass.DEFECT} at {datetime.now()}\n")
+        #             file.write(f"win as {chosen_class} at {datetime.now()}\n")
         #         else:
-        #             file.write(f"lose as {PlayerClass.DEFECT} at {datetime.now()} at floor {agent.game.floor}\n")
+        #             file.write(f"lose as {chosen_class} at {datetime.now()} at floor {agent.game.floor}\n")
+
+        while True:
+            agent.change_class(PlayerClass.IRONCLAD)
+
+            agent.init_llm_env()
+            agent.init_common_llm()
+            agent.init_battle_llm()
+            agent.init_choose_card_llm()
+            agent.init_make_map_choice_llm()
+
+            result = coordinator.play_one_game(PlayerClass.IRONCLAD)
+            with open(r'C:\Users\32685\Desktop\spirecomm\results.txt', 'a') as file:
+                if result:
+                    file.write(f"win as {PlayerClass.IRONCLAD} at {datetime.now()}\n")
+                else:
+                    file.write(f"lose as {PlayerClass.IRONCLAD} at {datetime.now()} at floor {agent.game.floor}\n")
     except Exception as e:
         # 将错误信息记录到文件
         logging.error("An error occurred: %s\n\n\n\n\n", str(e), exc_info=True)
