@@ -10,7 +10,7 @@ from langchain_community.chat_models import ChatOllama
 from langchain_community.tools import TavilySearchResults
 from langchain_core.tools import tool
 
-from spirecomm.ai.battle_agent_2 import BattleAgent
+from spirecomm.ai.battle_agent import BattleAgent
 from spirecomm.ai.choose_card_agent import ChooseCardAgent
 from spirecomm.spire.game import Game
 from spirecomm.spire.character import Intent, PlayerClass
