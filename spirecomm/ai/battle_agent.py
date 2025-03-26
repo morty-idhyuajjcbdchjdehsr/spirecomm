@@ -74,12 +74,12 @@ class BattleAgent:
         )
         card_index_schema = ResponseSchema(
             name="cardIndex",
-            description="The index of the card you choose from Hand Pile; if you don't choose a card, just return -1",
+            description="The index of the card you choose from Hand Pile(Start with 0); if you don't choose a card, just return -1",
             type="Int"
         )
         target_index_schema = ResponseSchema(
             name="targetIndex",
-            description="The index of your card's target in enemy list; if your card's attribute 'is_card_has_target' is False, just return -1.",
+            description="The index of your card's target in enemy list(Start with 0); if your card's attribute 'is_card_has_target' is False, just return -1.",
             type="Int"
         )
         explanation_schema = ResponseSchema(
@@ -295,7 +295,7 @@ Your response should contain **two parts**:
             suggestion_content += ("\nEnemy is in low hp,check the maximum damage you can deal to see"
                                    "if you can eliminate it.")
         if len(monsters) > 1:
-            suggestion_content += ("\nYou are facing multiply enemies,you should prioritize"
+            suggestion_content += ("\nYou are facing multiply enemies,you should prioritize "
                                    "AOE card which can affect them all.")
 
         if total_damage - state["block"] >= 10:

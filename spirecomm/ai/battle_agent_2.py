@@ -1,7 +1,9 @@
 import json
+import time
 from collections import deque
 
 from langchain.output_parsers import ResponseSchema, StructuredOutputParser
+from langchain_community.chat_models import ChatOllama
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_openai import ChatOpenAI
 from langgraph.prebuilt import ToolNode
@@ -50,16 +52,21 @@ class State(TypedDict):
 
 
 class BattleAgent:
-    def __init__(self, role="DEFECT", llm=ChatOpenAI(model="gpt-3.5-turbo-0125", temperature=0)):
+    def __init__(self, role="DEFECT", llm=ChatOpenAI(model="gpt-3.5-turbo-0125", temperature=0),
+                 small_llm=ChatOllama(model="mistral:7b", temperature=0)):
+        self.deck_analysis = ''
+        self.ori_suggestion = None
+        self.end_turn_cnt = None
         self.battle_agent_sys_prompt = None
         self.router2_cnt = 0
         self.humanM = None
         self.explanation = None
         self.target_index = None
-        self.card_Index = None
+        self.card_Index = -1
         self.is_to_end_turn = None
         self.role = role
         self.llm = llm
+        self.small_llm = small_llm
 
         is_to_end_turn_schema = ResponseSchema(
             name="isToEndTurn",
@@ -67,12 +74,12 @@ class BattleAgent:
         )
         card_index_schema = ResponseSchema(
             name="cardIndex",
-            description="The index of the card you choose from Hand Pile; if you don't choose a card, just return -1",
+            description="The index of the card you choose from Hand Pile(Start with 0); if you don't choose a card, just return -1",
             type="Int"
         )
         target_index_schema = ResponseSchema(
             name="targetIndex",
-            description="The index of your card's target in enemy list; if your card's attribute 'is_card_has_target' is False, just return -1.",
+            description="The index of your card's target in enemy list(Start with 0); if your card's attribute 'is_card_has_target' is False, just return -1.",
             type="Int"
         )
         explanation_schema = ResponseSchema(
@@ -95,10 +102,8 @@ class BattleAgent:
         graph_builder.add_node("Tool", tool_node1)
         graph_builder.add_node("LLM", self.llm_1)
         graph_builder.add_node("Check", self.outputChecker)
-        graph_builder.add_node("Suggest", self.suggestionAdder)
 
-        graph_builder.add_edge(START, "Suggest")
-        graph_builder.add_edge("Suggest", "LLM")
+        graph_builder.add_edge(START, "LLM")
         graph_builder.add_conditional_edges("LLM", self.router1, ["Tool", "Check"])
         graph_builder.add_edge("Tool", "LLM")
         graph_builder.add_conditional_edges("Check", self.router2, ["LLM", END])
@@ -108,180 +113,45 @@ class BattleAgent:
         self.last_two_rounds = deque(maxlen=2)
 
     def llm_1(self, state: State):
-        basic_game_rules = """At the beginning of one turn, you will be given energy in the value of MAX_ENERGY,and
-                                    you will draw cards from **Draw Pile**.If your current energy is greater than the cost of 
-                                    the card, then you can play this card (NOTICE that even if your energy is 0, 
-                                    you can still play a 0 cost cards).One turn will be separated into several operations.
-                                    On each operation,you choose one card from **Hand pile** to play(you can ONLY play card 
-                                    from **Hand Pile**!!!).In the end of one turn, the remaining energy and block will be cleared.
-                                    """
-
-        general_guidance = """- before you choose a card, please figure out your combat strategy first based on the enemy you encounter.
-                            - if you don't have the relic 'Runic Dome', and your enemy's intent is UNKNOWN, it means the enemy doesn't
-                              attack this turn. Then you should prioritize attacking or enhance yourself rather than using 
-                              defensive cards.
-                            - Focus on maximizing damage if the enemy’s HP is low, or if you have a strong offensive option available,
-                              or you think you can terminate the enemy in this turn.
-                            - If enemy has high block now, you can prefer not to attack it in this turn, because in next turn it's 
-                              block will be removed.
-                            - Consider using defensive cards(cards that gain blocks or weaken the enemy) when enemy has an attack 
-                              intention and the damage is bigger than your block. when facing multiple enemies, prioritize 
-                              weaken the enemy with biggest damage.
-                            - prioritize Power card,as it can benefit you in all turns after.
-                            - when facing multiple enemies, AOE cards should be prioritized.
-                            - When you are about to attack or defend, you should prioritize non-basic cards(cards that are not 
-                              "Defend" or "Strike")
-                            - For cards of the same type, prioritize those with best overall effects (evaluated based on its 
-                              value, additional effects, etc.)
-                            - card with 0 cost can be chosen whatever your available energy is, so please prioritize it.
-                            - when you have 0 energy,don't easily end your turn, you can still play 0 cost card.
-                            - spend your energy at most.Don't easily leave unused energy in one turn.
-                            - Take into account any status effects that may alter the effectiveness of your cards 
-                              (e.g., *Vulnerable*, *Frailty*, etc.).
-                            - If you cannot play any card or you feel that playing a card will do much harm than good, 
-                              choose to end the turn.
-                            - If there are any synergy effects (e.g., combo cards or cards that strengthen with specific conditions)
-                              , consider playing those first.
-                            - Evaluate potential future turns: if you need to conserve status effects that 
-                              can be applied in future turns, account for that as well.
-                            - exhausting the status card is good for you, do it when you can."""
 
         outputFormat = self.battle_output_parser.get_format_instructions()
-        system_msg = f"""
-                            You are an AI designed to play *Slay the Spire* as the role {self.role} and make optimal 
-                            card choices during combat. Please read the Basic Game Rules below first.
-                            Basic Game Rules:
-                            {basic_game_rules}
+        system_msg_2 = f"""You are an AI designed to play *Slay the Spire* as {self.role} and make optimal card choices during combat. 
 
-                            On each operation, you need to choose one card to play or decide to 
-                            end the turn. you will be given info of previous two operations and context of this operation.
-                            Based on the context, please make your choice by combining user guidance,game rules and 
-                            the info of previous two operations.
+### deck Analysis:
+Analysis of your current deck.
 
-                            Context format:
-                               **Floor**: 'floor' (current floor in game)
-                               **Turn Number**: 'turn_number' (current turn in this combat)
-                               **Current HP**: 'current_hp' / 'max_hp'
-                               **Block**: 'block' (current block you have),
-                               **Energy Available**: 'energy' (how much energy is available for playing cards),
-                               **Relics**: [ Relic ],(the relics you have)
-                               **Enemy Lists**: [ Enemy ]  (a list of enemy,each Enemy is in format: 
-                                "enermy_name( enermy_hp,enemy_intent,enemy_block,[enemy_status])"  )
-                               **Hand pile**: [ Card ] (list of cards available in the player’s hand, each Card is in
-                                  format: "card_name( card_cost,is_card_has_target )" )
-                               **Draw Pile**: [ Card ] (list of cards in draw pile)
-                               **Discard Pile**: [ Card ](list of cards in discard pile)
-                               **Player Status**: [ player_status ] (list of player status)
+### Notice:
+things you should be aware of in the combat.
 
-                            Previous two operations Info Format:
-                            [ {{ turn: int, operation: str }}, ...  ]
+### Context:
+- **Floor**: 'floor'
+- **Turn Number**: 'turn_number'
+- **Current HP**: 'current_hp' / 'max_hp'
+- **Block**: 'block'
+- **Energy Available**: 'energy'
+- **Relics**: [ Relic ]
+- **Enemy List**: [ Enemy ]  Enemy format: "enermy_name( enermy_hp,enemy_intent,enemy_block,[enemy_status])"
+- **Hand Pile**: [ Card ]  Card format: "card_name( card_cost,is_card_has_target,card_type )"
+- **Draw Pile**: [ Card ]
+- **Discard Pile**: [ Card ]
+- **Player Status**: [ player_status ]
 
-                            Response format:
-                            {outputFormat}
+### Previous Two actions:
+To improve decision-making, you are provided with the last two actions:
+[ {{ turn: int, operation: str }}, ...  ]
 
-                            Attention:
-                            - Before giving your response,please check the chosen card's attribute 'is_card_has_target', 
-                              if it's True,then you need to appoint a target for the card, which means 'targetIndex' 
-                              in your response shouldn't be -1.
-                            - your response shouldn't contain annotation '//'
-                            """
-        self.battle_agent_sys_prompt = system_msg
-        messages = [{"role": "system", "content": system_msg}] + state["messages"]
+### Response Format:
+{outputFormat}
+"""
+
+
+        self.battle_agent_sys_prompt = system_msg_2
+        messages = [{"role": "system", "content": system_msg_2}] + state["messages"]
         return {
             **state,  # 保留原 state 的所有属性
             "messages": [self.llm.invoke(messages)]
         }
 
-    def suggestionAdder(self, state: State):
-        basic_game_rules = """At the beginning of one turn, you will be given energy in the value of MAX_ENERGY,and
-                            you will draw cards from **Draw Pile**.If your current energy is greater than the cost of 
-                            the card, then you can play this card (NOTICE that even if your energy is 0, 
-                            you can still play a 0 cost cards).One turn will be separated into several operations.
-                            On each operation,you choose one card from **Hand pile** to play(you can ONLY play card 
-                            from **Hand Pile**!!!).In the end of one turn, the remaining energy and block will be cleared.
-                            """
-
-        system_msg = f"""
-                    You are an AI designed to play *Slay the Spire* as the role {self.role} and analyse the current combat
-                    situation to generate guidance about making card choices. Please read the Basic Game Rules below first. 
-                    Basic Game Rules:
-                    {basic_game_rules}
-
-                    you will be given info of previous two operations and context of this operation.
-                    you will also be given a Ready made guidance.
-                    Based on them,your job is to analyze various aspects of combat situation(including Enemy,cards,etc)
-                    , and completion the Ready made guidance.
-
-                    Context Format:
-                    **Floor**: 'floor' (current floor in game)
-                    **Turn Number**: 'turn_number' (current round in the combat)
-                    **Current HP**: 'current_hp' / 'max_hp'
-                    **Block**: 'block' (current block you have),
-                    **Energy Available**: 'energy' (how much energy is available for playing cards),
-                    **Relics**: [ Relic ],(the relics you have)
-                    **Enemy Lists**: [ Enemy ]  (a list of enemy,each Enemy is in format: 
-                                "enermy_name( enermy_hp,enemy_intent,enemy_block,[enemy_status])"  )
-                    **Hand pile**: [ Card ] (list of cards available in the player’s hand, each Card is in
-                                format: "card_name( card_cost,is_card_has_target )" )
-                    **Draw Pile**: [ Card ] (list of cards in draw pile)
-                    **Discard Pile**: [ Card ](list of cards in discard pile)
-                    **Player Status**: [ player_status ] (list of player status)
-
-                    Previous two operations Info Format:
-                    [ {{ turn: int, operation: str }}, ...  ]
-
-
-                    Response:
-                    completion the Ready made guidance. you should add 2 parts into the guidance:
-                    1. Introduction of the enemy and strategy to deal with it.
-                    2. analysis of current state of User
-                    your response should follow the format: 
-                    **Guidance**:
-                            xxxxxxxxxxxxx
-                    Refine your response and limit your response to 100 words.
-                    """
-
-        suggestion_content = '**Guidance**:'
-
-        # 人工添加建议：
-        monsters = state["monsters"]
-        hand = state["hand"]
-        current_hp = state["current_hp"]
-
-        no_attack_flag = 1
-        for monster in monsters:
-            if monster.intent == Intent.ATTACK or monster.intent == Intent.ATTACK_BUFF or monster.intent == Intent.ATTACK_DEBUFF or monster.intent == Intent.ATTACK_DEFEND:
-                no_attack_flag = 0
-                break
-        if no_attack_flag == 1:
-            suggestion_content += ("\nenemies are not in attacking intention this round,"
-                                   "you should prioritize dealing damage or buffering yourself.")
-        zero_cost_card_flag = 0
-        for card in hand:
-            if card.cost == 0:
-                zero_cost_card_flag = 1
-        if zero_cost_card_flag == 1:
-            suggestion_content += ("\nYou have 0 cost cards in your Hand Pile,"
-                                   "you could consider prioritizing them as they cost no energy.")
-        low_hp_flag = 0
-        for monster in monsters:
-            if monster.current_hp < 10:
-                low_hp_flag = 1
-                break
-        if low_hp_flag:
-            suggestion_content += ("\nEnemy is in low hp,check the maximum damage you can deal to see"
-                                   "if you can eliminate it.")
-
-        # messages = [{"role": "system", "content": system_msg}] + [
-        #     HumanMessage(content=self.humanM + '\n' + suggestion_content)]
-        # response = self.llm.invoke(messages)
-        # suggestion_content = response.content
-
-        return {
-            **state,  # 保留原 state 的所有属性
-            "messages": [AIMessage(content="can you help me analyse the condition and give me some guidance?")] + [
-                HumanMessage(content=suggestion_content)]
-        }
 
     def router1(self, state: State):
         messages = state["messages"]
@@ -316,31 +186,47 @@ class BattleAgent:
         available_monsters = [monster for monster in state["monsters"] if
                               monster.current_hp > 0 and not monster.half_dead and not monster.is_gone]
         playable_cards = [card for card in state["hand"] if card.is_playable]
+        hand_cards = state["hand"]
         zero_cost_card = 0
         for card in playable_cards:
             if card.cost == 0:
                 zero_cost_card = 1
 
         if self.is_to_end_turn == 'Yes':
-            if state["energy"] == 0 and zero_cost_card:
-                return {
-                    **state,  # 保留原 state 的所有属性
-                    "messages": [{"role": "user", "content": "There are 0 cost cards in your Hand Pile,"
-                                                             "you can play them even if your energy is 0."
-                                                             "are you sure to end the turn?"}]
-                }
+            self.end_turn_cnt += 1
+            if self.end_turn_cnt == 1:
+                if state["energy"] == 0 and zero_cost_card:
+                    return {
+                        **state,  # 保留原 state 的所有属性
+                        "messages": [{"role": "user", "content": "There are 0 cost cards in your Hand Pile,"
+                                                                 "you can play them even if your energy is 0."
+                                                                 "are you sure to end the turn?"
+                                                                 "please regenerate the answer."}]
+                    }
+                if state["energy"] > 0 and len(playable_cards) > 0:
+                    return {
+                        **state,  # 保留原 state 的所有属性
+                        "messages": [{"role": "user", "content": "you have unused energy and there are still"
+                                                                 "playable cards,are you sure to end the turn?"
+                                                                 "please regenerate the answer."}]
+                    }
             return {
                 **state,
                 "messages": [AIMessage(content="output check pass!!")]
             }
 
-        if 0 <= self.card_Index < len(playable_cards):
-            card_to_play1 = playable_cards[self.card_Index]
+        if self.card_Index is not None and 0 <= self.card_Index < len(hand_cards):
+            card_to_play1 = hand_cards[self.card_Index]
+            if not card_to_play1.is_playable:
+                return {
+                    **state,  # 保留原 state 的所有属性
+                    "messages": [{"role": "user", "content": "Your chosen card is not playable,"
+                                                             " please regenerate it!"}]
+                }
         else:
             return {
                 **state,  # 保留原 state 的所有属性
-                "messages": [{"role": "user", "content": "Your card_Index is out of range or the "
-                                                         "chosen card is unplayable,"
+                "messages": [{"role": "user", "content": "Your card_Index is out of range,"
                                                          " please regenerate it!"}]
             }
         target1 = None
@@ -377,7 +263,11 @@ class BattleAgent:
             self.router2_cnt += 1
             with open(r'C:\Users\32685\Desktop\spirecomm\battle_agent.txt', 'a') as file:
                 file.write('cnt is:' + str(self.router2_cnt) + '\n')
-            if self.router2_cnt >= 3:
+            if self.router2_cnt >= 2:
+                self.is_to_end_turn = 'NO'
+                self.card_Index = -1
+                self.target_index = -1
+                self.explanation = 'router2 reach recursion limit! use algorithm to choose card!'
                 return END
             return "LLM"
 
@@ -393,7 +283,9 @@ class BattleAgent:
                discardPile: list,
                powers: list,
                orbs: list,
+               deck_analysis: str,
                config=None):
+        start_time = time.time()  # 记录开始时间
 
         last_two_rounds_info = '['
         for item in list(self.last_two_rounds):
@@ -401,26 +293,85 @@ class BattleAgent:
         last_two_rounds_info += ']'
 
         self.router2_cnt = 0
-        template_string = """ 
-                            context:
-                            **Floor**: {floor}, 
-                            **Turn Number**: {turn}, 
-                            **Current HP**: {hp},
-                            **Block**: {block},
-                            **Energy Available**: {energy},
-                            **Relics**:{relics},
-                            **Hand pile**(the cards in your hand): {hand},
-                            **Enemy Lists**:{monsters},
-                            **Draw Pile**(the cards in draw pile): {drawPile},
-                            **Discard Pile**(the cards in discard pile):{discardPile},
-                            **Player Status**(list of player status):{pStatus}
-                            **Orbs**(if you are DEFECT): {orbs}
+        self.end_turn_cnt = 0
+        self.deck_analysis = deck_analysis
 
-                            Previous two operations Info:
-                            {last_two_rounds_info}
 
-                            now give the response.
-                        """
+
+        # 人工添加建议：
+        suggestion_content = ''
+        suggestion_content += '**Notice**:'
+        no_attack_flag = 1
+        total_damage = 0
+        low_hp_flag = 0
+        low_hp_m_list = []
+
+        for monster in monsters:
+            if (monster.intent == Intent.ATTACK or monster.intent == Intent.ATTACK_BUFF or
+                    monster.intent == Intent.ATTACK_DEBUFF or monster.intent == Intent.ATTACK_DEFEND):
+                no_attack_flag = 0
+
+            if monster.current_hp < 10:
+                low_hp_flag = 1
+                low_hp_m_list.append(monster)
+
+            total_damage += monster.move_hits * monster.move_adjusted_damage
+
+            if monster.monster_id == "GremlinNob":
+                suggestion_content += ("\nYou are facing Elite enemy GremlinNob,With the exception of the first turn, "
+                                       "where it has yet to apply  Enrage, playing Skills will make the Gremlin Nob "
+                                       "much more threatening. Since most  Block-granting cards are also Skills, "
+                                       "it can be worth more to not play them and take the damage instead. "
+                                       "Before using a Skill to mitigate damage, "
+                                       "consider how much longer the fight might take.")
+
+        if no_attack_flag == 1:
+            suggestion_content += ("\nenemies are not in attacking intention this round,"
+                                   "you should prioritize dealing damage or buffing yourself.")
+        if low_hp_flag:
+            suggestion_content += ("\nEnemy is in low hp,check the maximum damage you can deal to see"
+                                   "if you can eliminate it.")
+        if len(monsters) > 1:
+            suggestion_content += ("\nYou are facing multiply enemies,you should prioritize"
+                                   "AOE card which can affect them all.")
+
+        if total_damage - block >= 10:
+            suggestion_content += f"\nYou are facing huge incoming damage, which will make you lose {total_damage - block} hp"
+
+
+        zero_cost_card_flag = 0
+        for card in hand:
+            if card.cost == 0:
+                zero_cost_card_flag = 1
+        if zero_cost_card_flag == 1:
+            suggestion_content += ("\nYou have 0 cost cards in your Hand Pile,"
+                                   "you could consider prioritizing them as they cost no energy.")
+
+
+        template_string = """       
+{deck_analysis}        
+        
+{notice}        
+        
+context:
+        **Floor**: {floor}, 
+        **Turn Number**: {turn}, 
+        **Current HP**: {hp},
+        **Block**: {block},
+        **Energy Available**: {energy},
+        **Relics**:{relics},
+        **Hand pile**(the cards in your hand): {hand},
+        **Enemy Lists**:{monsters},
+        **Draw Pile**(the cards in draw pile): {drawPile},
+        **Discard Pile**(the cards in discard pile):{discardPile},
+        **Player Status**(list of player status):{pStatus}
+        **Orbs**(if you are DEFECT): {orbs}
+
+Previous two operations Info:
+        {last_two_rounds_info}
+
+        now give the response.
+"""
         template1 = ChatPromptTemplate.from_template(template_string)
         messages = template1.format_messages(
             floor=floor,
@@ -436,7 +387,9 @@ class BattleAgent:
             pStatus=get_lists_str(powers),
             # output_format=outputFormat,
             orbs=get_lists_str(orbs),
-            last_two_rounds_info=last_two_rounds_info
+            last_two_rounds_info=last_two_rounds_info,
+            notice=suggestion_content,
+            deck_analysis = deck_analysis
         )
         self.humanM = messages[0].content
         state = State(messages=messages, turn=turn, current_hp=current_hp, max_hp=max_hp,
@@ -447,6 +400,9 @@ class BattleAgent:
             result = self.graph.invoke(state, config)
         else:
             result = self.graph.invoke(state)
+
+        end_time = time.time()  # 记录结束时间
+        elapsed_time = end_time - start_time  # 计算耗时
 
         # 添加round信息到队列
         available_monsters = [monster for monster in monsters if
@@ -469,11 +425,13 @@ class BattleAgent:
         round_info = f"{{ turn:{turn},operation:{operation} }}"
         self.last_two_rounds.append(round_info)
 
+        # 输出log
         with open(r'C:\Users\32685\Desktop\spirecomm\battle_agent.txt', 'a') as file:
             file.write('--------------round start-------------------------\n')
-            file.write("System:\n" + self.battle_agent_sys_prompt + '\n')
+            # file.write("System:\n" + self.battle_agent_sys_prompt + '\n')
             for response in result["messages"]:
                 file.write(type(response).__name__ + ":\n" + response.content.__str__() + '\n')
+            file.write(f"invoke time: {elapsed_time:.6f} s\n")
             file.write('--------------round end-------------------------\n')
 
         return result

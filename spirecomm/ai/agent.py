@@ -10,7 +10,7 @@ from langchain_community.chat_models import ChatOllama
 from langchain_community.tools import TavilySearchResults
 from langchain_core.tools import tool
 
-from spirecomm.ai.battle_agent import BattleAgent
+from spirecomm.ai.battle_agent_2 import BattleAgent
 from spirecomm.ai.choose_card_agent import ChooseCardAgent
 from spirecomm.spire.game import Game
 from spirecomm.spire.character import Intent, PlayerClass
@@ -777,7 +777,7 @@ class SimpleAgent:
     def init_common_llm(self):
         # tools = load_tools(["wikipedia"],llm=self.search_llm)
         tools = []
-        agent = create_react_agent(ChatOpenAI(model="gpt-4o-mini",temperature=0), tools=tools)
+        agent = create_react_agent(ChatOpenAI(model="gpt-3.5-turbo-0125",temperature=0), tools=tools)
         self.common_agent = agent
     
     @tool("search_card_tool")
@@ -828,8 +828,8 @@ class SimpleAgent:
         # self.llm = ChatOpenAI(model="gemini-1.5-flash-latest", temperature=0)
         # self.llm = ChatOpenAI(model="gemini-2.0-flash-exp", temperature=0)  # 便宜
         # self.llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)  # good
-        self.llm = ChatOpenAI(model="gpt-3.5-turbo-0125", temperature=0)
-        # self.llm = ChatOpenAI(model="gpt-3.5-turbo-ca", temperature=0)  # 史
+        # self.llm = ChatOpenAI(model="gpt-3.5-turbo-0125", temperature=0)
+        self.llm = ChatOpenAI(model="gpt-3.5-turbo-ca", temperature=0)  # 史
         # self.llm = ChatOpenAI(model="gpt-4o-mini-ca", temperature=0)  # good
         # self.llm = ChatOpenAI(model="deepseek-v3", temperature=0)
         # self.llm = ChatOpenAI(model="gemini-2.0-flash", temperature=0)
@@ -853,10 +853,12 @@ class SimpleAgent:
 
         # self.llm = ChatOllama(model="deepseek-r1:7b", temperature=0) # 有<think>
         # self.llm = ChatOllama(model="mistral:7b", temperature=0) # 还行
-        # self.llm = ChatOllama(model="hermes3:3b", temperature=0) # 老出错
+        # self.llm = ChatOllama(model="hermes3:3b", temperature=0) # 还不赖
         # self.llm = ChatOllama(model="qwen2.5:3b", temperature=0)  #不赖 10s+
         # self.llm = ChatOllama(model="qwen2.5:1.5b", temperature=0) # shi
         # self.llm = ChatOllama(model="gemma2:2b", temperature=0) #man
+        # self.llm = ChatOllama(model="gemma3:1b-it-q4_K_M", temperature=0) #只会e键爬塔
+
         # self.llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash",temperature=0,transport='rest') #有限额
 
     def get_role_guidelines(self,chosen_class):

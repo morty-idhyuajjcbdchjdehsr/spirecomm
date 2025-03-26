@@ -17,13 +17,37 @@ from langgraph.graph.message import add_messages
 
 from langchain_core.messages import AIMessage, BaseMessage, HumanMessage
 
-from spirecomm.spire.card import Card
+from spirecomm.spire.card import Card, CardRarity
 from spirecomm.spire.character import Monster, Intent
 from spirecomm.spire.relic import Relic
 
 os.environ["OPENAI_API_KEY"] = "sk-Nxr5VkCGRNruaDUzUZz3uCkKUtMvg0u3V7uiXJhJSbo0wAIp"
 os.environ["OPENAI_API_BASE"] = "https://api.chatanywhere.tech/v1"
 
+
+def get_lists_str_with_r(lists):
+    str = "[ "
+    for item in lists:
+        str += item.name
+        rarity = ''
+        if item.rarity == CardRarity.BASIC:
+            rarity = 'BASIC'
+        if item.rarity == CardRarity.COMMON:
+            rarity = 'COMMON'
+        if item.rarity == CardRarity.UNCOMMON:
+            rarity = 'UNCOMMON'
+        if item.rarity == CardRarity.RARE:
+            rarity = 'RARE'
+        if item.rarity == CardRarity.SPECIAL:
+            rarity = 'SPECIAL'
+        if item.rarity == CardRarity.CURSE:
+            rarity = 'CURSE'
+
+        str += '(' + rarity +')'
+        if item != lists[-1]:
+            str += ", "
+    str = str + " ]"
+    return str
 
 def get_lists_str(lists):
     str = "[ "
@@ -149,27 +173,17 @@ class ChooseCardAgent:
 
     def strategyGenerator(self,state:State):
         system_msg = """
-You are an advanced *Slay the Spire* deck strategy analyst. Your task is to analyze the current deck and provide a comprehensive **game plan** that describes the overall strategy for playing this deck effectively. The game plan should include a high-level approach to playing the deck and detailed tactical instructions on how to execute the strategy.
+You are an advanced *Slay the Spire* deck strategy analyst. Your task is to analyze the current deck and provide a comprehensive 
+**game plan** that describes the overall strategy for playing this deck effectively. The game plan should include 
+a high-level approach to playing the deck and detailed tactical instructions on how to execute the strategy.
 
 ### **1. Output Format**:
 Your response should be structured in the following format:
-```json
-{
-  "game_plan": "A high-level description of how this deck should be played, including its core strategy, strengths, weaknesses, and general approach to fights.",
-  "card_roles": {
-    "offensive": ["List of cards primarily used for dealing damage"],
-    "defensive": ["List of cards used for blocking or mitigating damage"],
-    "setup": ["List of cards that enable combos, buffs, or deck cycling"],
-    "utility": ["List of cards that provide energy, card draw, or special effects"]
-  },
-  "combos": [
-    {
-      "name": "Combo Name",
-      "sequence": ["Card X", "Card Y", "Card Z"],
-      "effect": "Describes the purpose and effect of this combo"
-    }
-  ],
-}
+**deck Analysis**: 
+"A high-level description of how this deck should be played, including its core strategy, strengths, weaknesses,
+ and general approach to fights.",
+ 
+ refine your response and limit it up to 100 words.
 
 """
 
@@ -208,7 +222,6 @@ Your response should be structured in JSON format as follows:
   "card_evaluation": [
     {
       "card_name": "Card A",
-      "Rarity": "rarity of the card",
       "justification": "Explain why this card is good or bad for the deck.",
       "synergies": ["List cards in the deck that this card synergizes with, if any."],
       "anti_synergies": ["List cards in the deck that this card conflicts with, if any."],
@@ -233,7 +246,7 @@ Context Format:
                 - **Current Deck:** {get_lists_str(state["deck"])}
                 - **Floor**: {state["floor"]}
                 - **Player's Health:** {state["current_hp"]}
-                - **Available Cards:** {get_lists_str(state["reward_cards"])}
+                - **Available Cards:** {get_lists_str_with_r(state["reward_cards"])}
                 now give your response. """
 
         messages = [{"role": "system", "content": system_msg}] + [
@@ -338,7 +351,7 @@ Context Format:
             floor=floor,
             hp=f"{current_hp}/{max_hp}",
             deck = get_lists_str(deck),
-            reward_cards=get_lists_str(reward_cards),
+            reward_cards=get_lists_str_with_r(reward_cards),
             relic_bowl=relic_bowl
         )
         self.humanM = messages[0].content
