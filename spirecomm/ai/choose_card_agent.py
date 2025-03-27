@@ -88,7 +88,8 @@ class ChooseCardAgent:
 
         card_name_schema = ResponseSchema(
             name="cardName",
-            description="The name of the card you choose,if you decide to choose no card,return ''.if you choose to use relic 'Bowl',return 'Bowl'"
+            description="The name of the card you choose.**should not contain '()'**."
+                        "if you decide to choose no card,return ''.if you choose to use relic 'Bowl',return 'Bowl'"
         )
         explanation_schema = ResponseSchema(
             name="explanation",
@@ -297,6 +298,12 @@ Context Format:
             reward_cards = state["reward_cards"]
             card_to_choose = next((card for card in reward_cards if card.name == self.card_name), None)
             if card_to_choose is None:
+                if self.card_name.count('(') > 0:
+                    return {
+                        **state,  # 保留原 state 的所有属性
+                        "messages": [{"role": "user", "content": "Your provided card_name should not contain '()',"
+                                                                 " please regenerate it!"}]
+                    }
                 return {
                     **state,  # 保留原 state 的所有属性
                     "messages": [{"role": "user", "content": "Your provided card_name is not in reward_cards,"

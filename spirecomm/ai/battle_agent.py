@@ -120,9 +120,6 @@ class BattleAgent:
 ### deck Analysis:
 Analysis of your current deck.
 
-### Notice:
-things you should be aware of in the combat.
-
 ### Context:
 - **Floor**: 'floor'
 - **Turn Number**: 'turn_number'
@@ -137,8 +134,14 @@ things you should be aware of in the combat.
 - **Player Status**: [ player_status ]
 
 ### Previous Two actions:
-To improve decision-making, you are provided with the last two actions:
-[ {{ turn: int, operation: str }}, ...  ]
+To improve decision-making, you are provided with the previous two actions:
+[ 
+  {{ turn: int, operation: str }}, // previous two
+  {{ turn: int, operation: str }}, // previous one 
+]
+
+### Notice:
+things you should be aware of in the combat.
 
 ### Response Format:
 {outputFormat}
@@ -216,6 +219,13 @@ To improve decision-making, you are provided with the last two actions:
         if self.card_Index is not None and 0 <= self.card_Index < len(hand_cards):
             card_to_play1 = hand_cards[self.card_Index]
             if not card_to_play1.is_playable:
+                if card_to_play1.cost > state["energy"]:
+                    return {
+                        **state,  # 保留原 state 的所有属性
+                        "messages": [{"role": "user", "content": "Your chosen card's cost is greater than your energy!,"
+                                                                 " please regenerate it!"}]
+                    }
+
                 return {
                     **state,  # 保留原 state 的所有属性
                     "messages": [{"role": "user", "content": "Your chosen card is not playable,"
@@ -228,7 +238,7 @@ To improve decision-making, you are provided with the last two actions:
                                                          " please regenerate it!"}]
             }
         target1 = None
-        if self.target_index != -1 and 0 <= self.target_index < len(available_monsters):
+        if self.target_index is not None and self.target_index != -1 and 0 <= self.target_index < len(available_monsters):
             target1 = available_monsters[self.target_index]
 
         if card_to_play1 is not None:
@@ -345,8 +355,6 @@ To improve decision-making, you are provided with the last two actions:
         template_string = """       
 {deck_analysis}        
 
-{notice}        
-
 context:
         **Floor**: {floor}, 
         **Turn Number**: {turn}, 
@@ -364,7 +372,9 @@ context:
 Previous two operations Info:
         {last_two_rounds_info}
 
-        now give the response.
+{notice}        
+
+now give the response.
 """
         template1 = ChatPromptTemplate.from_template(template_string)
         messages = template1.format_messages(
@@ -406,7 +416,7 @@ Previous two operations Info:
         if 0 <= self.card_Index < len(playable_cards):
             card_to_play = playable_cards[self.card_Index]
         target1 = None
-        if self.target_index != -1 and 0 <= self.target_index < len(available_monsters):
+        if self.target_index is not None and self.target_index != -1 and 0 <= self.target_index < len(available_monsters):
             target1 = available_monsters[self.target_index]
 
         operation = ""

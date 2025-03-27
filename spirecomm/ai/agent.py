@@ -777,7 +777,7 @@ class SimpleAgent:
     def init_common_llm(self):
         # tools = load_tools(["wikipedia"],llm=self.search_llm)
         tools = []
-        agent = create_react_agent(ChatOpenAI(model="gpt-3.5-turbo-0125",temperature=0), tools=tools)
+        agent = create_react_agent(model=self.llm, tools=tools)
         self.common_agent = agent
     
     @tool("search_card_tool")
