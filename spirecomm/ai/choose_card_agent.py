@@ -207,8 +207,23 @@ You are an advanced *Slay the Spire* deck-building AI assistant. Your task is to
 and provide guidance on selecting post-battle card rewards. Your analysis should determine whether 
 adding a card is beneficial and which option best aligns with the deck’s current strategy.
 
-### Notice:
-Prioritize cards that can help regain health or mitigate damage .
+Context Format:
+- **Current Deck:** [List of cards currently in the deck] - 
+- **Floor**: [Current floor]
+- **Player's Health:** [Current health points]
+- **Available Cards:** [List of cards available for selection] 
+
+### Considerations:
+1.**Deck Size Management**: Maintain a streamlined deck. A larger deck can dilute card effectiveness and 
+make it harder to draw key cards. If the available cards do not significantly improve the deck  , 
+consider skipping the card selection. Don't grab too many cards of the same type.
+2. **Card Rarity:** Evaluate the rarity of the available cards. Prioritize higher rarity cards for their
+unique abilities and potential impact on the gameplay.
+3. **Upgraded:** Prioritize upgraded cards( 'card_name+' ) for their upgraded abilities.
+4. **Synergy with Archetypes:** Assess how well each card fits into a specific archetype or deck strategy.
+Look for cards that complement and enhance the current build, creating powerful synergies.
+5. **Health Management:** Prioritize cards that can help regain health or mitigate damage .
+6. **Scaling:** Consider cards that scale well into the later acts of the game.                        
 
 ###  Output Format**
 Your response should be structured in JSON format as follows:
@@ -216,8 +231,6 @@ Your response should be structured in JSON format as follows:
 {
   "deck_analysis": {
     "current_strategy": "Briefly describe the deck's current core strategy.",
-    "strengths": ["List the deck's key strengths."],
-    "weaknesses": ["List the deck's current weaknesses."],
     "missing_elements": ["List what the deck lacks to improve its strategy."]
   },
   "card_evaluation": [
@@ -236,11 +249,7 @@ Your response should be structured in JSON format as follows:
   }
 }
 
-Context Format:
-- **Current Deck:** [List of cards currently in the deck] - 
-- **Floor**: [Current floor]
-- **Player's Health:** [Current health points]
-- **Available Cards:** [List of cards available for selection]   
+  
 """
 
         human_msg = f""" Context:
@@ -371,7 +380,6 @@ Context Format:
 
         end_time = time.time()  # 记录结束时间
         elapsed_time = end_time - start_time  # 计算耗时
-
 
         # 输出log
         with open(r'C:\Users\32685\Desktop\spirecomm\choose_card_agent.txt', 'a',encoding="utf-8") as file:

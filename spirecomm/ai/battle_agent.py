@@ -116,11 +116,17 @@ class BattleAgent:
 
         outputFormat = self.battle_output_parser.get_format_instructions()
         system_msg_2 = f"""You are an AI designed to play *Slay the Spire* as {self.role} and make optimal card choices during combat. 
+### Basic Game Rules:
+At the beginning of a turn, you will be given MAX_ENERGY and draw cards from the Draw Pile. 
+You can only play cards from your Hand Pile, and each card costs a certain amount of energy. 
+A turn consists of multiple actions. 
+On each action, your job is to choose **one** card to play (if energy allows) or **end the turn**.
 
 ### deck Analysis:
-Analysis of your current deck.
+To improve decision-making, you are provided with Analysis of your current deck.
 
 ### Context:
+info of the current action
 - **Floor**: 'floor'
 - **Turn Number**: 'turn_number'
 - **Current HP**: 'current_hp' / 'max_hp'
