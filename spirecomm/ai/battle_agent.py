@@ -337,6 +337,11 @@ things you should be aware of in the combat.
                                        "Before using a Skill to mitigate damage, "
                                        "consider how much longer the fight might take.")
 
+            if monster.monster_id == "Sentry" and len(monsters)==3:
+                suggestion_content += ("\n You are facing Elite enemies Sentry*3.It is usually a good idea to "
+                                       "kill the front or back sentry, to ensure that you never need to block "
+                                       "for more than one sentry's damage.")
+
         if no_attack_flag == 1:
             suggestion_content += ("\nenemies are not in attacking intention this round,"
                                    "you should prioritize dealing damage or buffing yourself.")
@@ -348,15 +353,23 @@ things you should be aware of in the combat.
                                    "AOE card which can affect them all.")
 
         if total_damage - block >= 10:
-            suggestion_content += f"\nYou are facing huge incoming damage, which will make you lose {total_damage - block} hp"
+            suggestion_content += (f"\nYou are facing huge incoming damage, which will make you lose {total_damage - block} hp."
+                                   f"maybe you should consider mitigate the damage.")
 
         zero_cost_card_flag = 0
         for card in hand:
             if card.cost == 0:
                 zero_cost_card_flag = 1
+
+            if card.name == "Body Slam":
+                suggestion_content += ("\nYou have 'Body Slam' in your Hand Pile,"
+                                       "this card deals damage based on your current block,make sure you have enough block"
+                                       "before playing it.")
+
+
         if zero_cost_card_flag == 1:
-            suggestion_content += ("\nYou have 0 cost cards in your Hand Pile,"
-                                   "you could consider prioritizing them as they cost no energy.")
+            suggestion_content += "\nYou have 0 cost cards in your Hand Pile."
+
 
         template_string = """       
 {deck_analysis}        

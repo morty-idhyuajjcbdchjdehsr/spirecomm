@@ -387,12 +387,12 @@ class SimpleAgent:
                 **Current Deck:** {available_cards}
                 **Player's Health:** {hp}
                 
-                Goals:
+                ###Goals###:
                 now you need to choose {num_cards} card{s} from Current Deck for {intent}, you can search the content of 
                 card on wikipedia.
                 please make your choice based on the context, and provide the reason.
                 
-                Instructions:
+                ###Instructions###:
                 Upgrade: choose the best card to upgrade.
                          1.Consider Card Rarity,Prioritize upgrading higher rarity cards, 
                             as they often provide more powerful effects.
@@ -403,7 +403,7 @@ class SimpleAgent:
                        2.purge low level card to improve your deck.("Strike","Defend"....)
                 transform: transform low level card to improve your deck.("Strike","Defend"....)
                 
-                Response format:
+                ###Response format###:
                 {output_format}
                 
                 Attention:
@@ -753,13 +753,14 @@ class SimpleAgent:
         - **Relics**: [ Relic ],the relics you have
         
         ### Instructions:
-        1. Evaluate the possible paths from the current node.
+        1. Analysis the map tree.Evaluate the possible paths from the current node.
         2. Consider the names of the nodes (e.g., Merchant, Elite, Treasure, etc.) 
             to determine their potential benefits and risks.
         3. Choose the next node to progress to based on the following criteria:
            - Prioritize nodes that offer beneficial encounters (e.g., Merchant, Treasure).
-           - Avoid nodes that may lead to difficult battles unless necessary for progression.
            - Consider the overall strategy and current resources (hp , deck, relics) when making your decision.
+           - Avoid nodes that may lead to difficult battles unless necessary for progression.
+           
         
         Your response should include:
         - The index of the chosen node from Choice List (0~9).
@@ -800,8 +801,8 @@ class SimpleAgent:
         # chatanywhere
         # free
         # os.environ["OPENAI_API_KEY"] = "sk-KCmRtnkbFhG5H17LiQSJ9Y76EjACuiSH0Bgjq83Ld7QiBKs4"
-        # os.environ["OPENAI_API_KEY"] = "sk-Nxr5VkCGRNruaDUzUZz3uCkKUtMvg0u3V7uiXJhJSbo0wAIp"
-        # os.environ["OPENAI_API_BASE"] = "https://api.chatanywhere.tech/v1"
+        os.environ["OPENAI_API_KEY"] = "sk-Nxr5VkCGRNruaDUzUZz3uCkKUtMvg0u3V7uiXJhJSbo0wAIp"
+        os.environ["OPENAI_API_BASE"] = "https://api.chatanywhere.tech/v1"
 
 
         #silicon
@@ -814,8 +815,8 @@ class SimpleAgent:
         os.environ["GOOGLE_API_KEY"] = "AIzaSyDUhCQJYnjYpez1v_2BH03Kzw-sDLWYTyI"
 
         #AGICTO
-        os.environ["OPENAI_API_KEY"] = "sk-dXqzgPLzOmxdo24tl4lqL8Ioh9udaG4ctTQMuDq1fDfwS4mM"
-        os.environ["OPENAI_API_BASE"] = "https://api.agicto.cn/v1"
+        # os.environ["OPENAI_API_KEY"] = "sk-dXqzgPLzOmxdo24tl4lqL8Ioh9udaG4ctTQMuDq1fDfwS4mM"
+        # os.environ["OPENAI_API_BASE"] = "https://api.agicto.cn/v1"
 
         # self.search_llm = ChatOpenAI(model="THUDM/chatglm3-6b", temperature=0)
         self.battle_thread_id = ''.join(random.choices('abcdefghijklmnopqrstuvwxyz0123456789', k=10))
@@ -831,11 +832,11 @@ class SimpleAgent:
         # self.llm = ChatOpenAI(model="gpt-3.5-turbo-0125", temperature=0)
         # self.llm = ChatOpenAI(model="gpt-3.5-turbo-ca", temperature=0)  # 史
         # self.llm = ChatOpenAI(model="gpt-4o-mini-ca", temperature=0)  # good
-        # self.llm = ChatOpenAI(model="deepseek-v3", temperature=0)
+        self.llm = ChatOpenAI(model="deepseek-v3", temperature=0.5)  # 还行
         # self.llm = ChatOpenAI(model="gemini-2.0-flash", temperature=0)
 
         # self.llm = ChatOpenAI(model="qwen-turbo-latest", temperature=0) # 便宜又快！！
-        self.llm = ChatOpenAI(model="qwen-plus-latest", temperature=0)
+        # self.llm = ChatOpenAI(model="qwen-plus-latest", temperature=0)
         # self.llm = ChatOpenAI(model="hunyuan-turbos-latest", temperature=0)  #慢
         # self.llm = ChatOpenAI(model="ERNIE-Speed-128K", temperature=0.7) #shi
         # self.llm = ChatOpenAI(model="glm-4-flashx", temperature=0) #慢
