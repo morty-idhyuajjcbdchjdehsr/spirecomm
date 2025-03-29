@@ -12,7 +12,7 @@ from langchain_core.tools import tool
 
 from spirecomm.ai.battle_agent import BattleAgent
 from spirecomm.ai.choose_card_agent import ChooseCardAgent
-from spirecomm.spire.game import Game
+from spirecomm.spire.game import Game, RoomPhase
 from spirecomm.spire.character import Intent, PlayerClass
 import spirecomm.spire.card
 from spirecomm.spire.map import Node
@@ -154,6 +154,7 @@ class SimpleAgent:
         available_monsters = [monster for monster in self.game.monsters if
                               monster.current_hp > 0 and not monster.half_dead and not monster.is_gone]
         playable_cards = [card for card in self.game.hand if card.is_playable]
+        hand_cards = self.game.hand
         config = {"configurable": {"thread_id": self.battle_thread_id}}
         responses = self.battle_agent.invoke(
             floor=self.game.floor,
@@ -203,8 +204,8 @@ class SimpleAgent:
             file.write(self.game.__str__())
 
         card_to_play1 = None
-        if 0 <= card_Index < len(playable_cards):
-            card_to_play1 = playable_cards[card_Index]
+        if 0 <= card_Index < len(hand_cards):
+            card_to_play1 = hand_cards[card_Index]
 
         target1 = None
         if target_index != -1 and 0 <= target_index < len(available_monsters):
@@ -508,6 +509,12 @@ class SimpleAgent:
     def choose_card_reward(self):
 
         config = {"configurable": {"thread_id": self.choose_card_thread_id}}
+
+        # to do: 增加战斗期间的选牌agent
+        # if self.game.room_phase == RoomPhase.COMBAT:
+        #     response = self.choose_card_agent_in_battle.invoke()
+        #     self.game.cancel_available
+
         responses = self.choose_card_agent.invoke(
             floor=self.game.floor,
             current_hp=self.game.current_hp,

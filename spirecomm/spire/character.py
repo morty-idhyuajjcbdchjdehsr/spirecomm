@@ -21,6 +21,7 @@ class Intent(Enum):
     SLEEP = 15
     STUN = 16
     UNKNOWN = 17
+    NON_ATTACK = 18
 
     def is_attack(self):
         return self in [Intent.ATTACK, Intent.ATTACK_BUFF, Intent.ATTACK_DEBUFF, Intent.ATTACK_DEFEND]
@@ -114,6 +115,13 @@ class Monster(Character):
         move_base_damage = json_object.get("move_base_damage", 0)
         move_adjusted_damage = json_object.get("move_adjusted_damage", 0)
         move_hits = json_object.get("move_hits", 0)
+
+        if intent == Intent.DEBUG:
+            if move_adjusted_damage > 0:
+                intent = Intent.ATTACK
+            else:
+                intent = Intent.NON_ATTACK
+
         monster = cls(name, monster_id, max_hp, current_hp, block, intent, half_dead, is_gone, move_id, last_move_id, second_last_move_id, move_base_damage, move_adjusted_damage, move_hits)
         monster.powers = [Power.from_json(json_power) for json_power in json_object["powers"]]
         return monster
@@ -128,6 +136,7 @@ class Monster(Character):
         return False
 
     def __str__(self):
+
         str = f"{self.monster_id}( {self.current_hp}/{self.max_hp} ,{self.intent}"
         if self.intent == Intent.ATTACK or self.intent == Intent.ATTACK_BUFF or self.intent == Intent.ATTACK_DEBUFF or self.intent == Intent.ATTACK_DEFEND:
             str+= f" {self.move_adjusted_damage}*{self.move_hits}"

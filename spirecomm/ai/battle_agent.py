@@ -210,13 +210,14 @@ things you should be aware of in the combat.
                                                                  "are you sure to end the turn?"
                                                                  "please regenerate the answer."}]
                     }
-                if state["energy"] > 0 and len(playable_cards) > 0:
-                    return {
-                        **state,  # 保留原 state 的所有属性
-                        "messages": [{"role": "user", "content": "you have unused energy and there are still"
-                                                                 "playable cards,are you sure to end the turn?"
-                                                                 "please regenerate the answer."}]
-                    }
+                # 相信ai的能力就注释掉这个
+                # if state["energy"] > 0 and len(playable_cards) > 0:
+                #     return {
+                #         **state,  # 保留原 state 的所有属性
+                #         "messages": [{"role": "user", "content": "you have unused energy and there are still"
+                #                                                  "playable cards,are you sure to end the turn?"
+                #                                                  "please regenerate the answer."}]
+                #     }
             return {
                 **state,
                 "messages": [AIMessage(content="output check pass!!")]
@@ -317,6 +318,7 @@ things you should be aware of in the combat.
         total_damage = 0
         low_hp_flag = 0
         low_hp_m_list = []
+        Sentry_flag = 0
 
         for monster in monsters:
             if (monster.intent == Intent.ATTACK or monster.intent == Intent.ATTACK_BUFF or
@@ -337,10 +339,60 @@ things you should be aware of in the combat.
                                        "Before using a Skill to mitigate damage, "
                                        "consider how much longer the fight might take.")
 
-            if monster.monster_id == "Sentry" and len(monsters)==3:
-                suggestion_content += ("\n You are facing Elite enemies Sentry*3.It is usually a good idea to "
-                                       "kill the front or back sentry, to ensure that you never need to block "
-                                       "for more than one sentry's damage.")
+            if monster.monster_id == "Sentry" and len(monsters)==3 and Sentry_flag==0:
+                suggestion_content += ("\n You are facing Elite enemies Sentry*3.You should prioritize killing  "
+                                       "the first or third sentry(instead of the second one), to ensure that you never"
+                                       " need to block for more than one sentry's damage."
+                                       )
+                Sentry_flag = 1
+
+            if monster.monster_id == "Lagavulin":
+                suggestion_content += ("You are facing Elite enemy Lagavulin,The Lagavulin will awake at the "
+                                       "end of its 3rd turn or when any HP damage is taken through the  Block,"
+                                       "Use the three turns before the Lagavulin wakes up to prepare for the "
+                                       "fight by using Powers, or Bash as the Ironclad.")
+            if monster.monster_id == "Gremlin Leader":
+                suggestion_content += ("You are facing Elite enemy Gremlin Leader and their minions.Any minion from this "
+                                       "fight (i.e. spawned gremlins or gremlins that come in the fight) will retreat "
+                                       "and be defeated if the Gremlin Leader is defeated.If you lack considerable damage"
+                                       " to burst down the Gremlin Leader, killing the gremlins spawned will increase "
+                                       "the likelyhood of her not attacking (Rallying and Encouraging instead), "
+                                       "hence giving you turns to continue chipping her health"
+                                        )
+            if monster.monster_id == "Book of Stabbing":
+                suggestion_content += ("You are facing Elite enemy Book of Stabbing,It is important to try and kill"
+                                       " the Book as quickly as possible, because its attacks will only get worse "
+                                       "and can become overwhelming.The Book suffers greatly against  Weak,  Thorns, "
+                                       "and  Strength reduction due to its scaling being solely said multi-hit attacks "
+                                       "and its lack of ability to apply any kind of debuff on the player to reduce "
+                                       "their ability to  Block.")
+
+            if monster.monster_id == "The Guardian":
+                suggestion_content += ("You are facing Boss The Guardian.The Guardian is a defensive-oriented boss"
+                                       ", known for its Mode Shift ability. After taking 30 damage, it switches from "
+                                       "Defensive Mode to Offensive Mode, changing its attack patterns. "
+                                       "In Defensive Mode, it gains Block and thorns damage when attacked. "
+                                       "In Offensive Mode, it deals high damage with multi-hit attacks."
+                                       "Effective strategies include dealing burst damage to trigger Mode Shift quickly"
+                                       ", avoiding excessive attacks during Sharp Hide, and using block to mitigate "
+                                       "its high-damage attacks. Plan ahead to exploit its transition phases and "
+                                       "minimize incoming damage.")
+            if monster.monster_id == "Slime Boss":
+                suggestion_content += ("You are facing Boss Slime Boss.The Slime Boss is an Act 1 boss"
+                                       " with a unique Split mechanic. When its HP falls below 50%, it splits into two "
+                                       "smaller slimes, each with half of its remaining HP. It uses Goop Spray to "
+                                       "weaken the player and follows up with heavy attacks. The key strategy is to "
+                                       "time your damage output carefully—avoid triggering the split when the boss "
+                                       "has too much HP left, or you’ll face two strong slimes instead of weaker ones."
+                                       " Use area-of-effect (AoE) attacks to handle the split slimes efficiently.")
+            if monster.monster_id == "Hexaghost":
+                suggestion_content += ("You are facing Boss Hexaghost.Hexaghost is a boss with a unique Burning Hex "
+                                       "attack pattern. On its first turn, it unleashes a devastating Inferno attack, "
+                                       "dealing six hits based on the player's HP (lower HP means less damage). "
+                                       "After that, its attacks follow a six-turn cycle, alternating between weak hits,"
+                                       " burns, and another big attack.Prioritize damage output to shorten the fight "
+                                       "and manage burn cards efficiently.")
+
 
         if no_attack_flag == 1:
             suggestion_content += ("\nenemies are not in attacking intention this round,"
