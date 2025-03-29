@@ -311,12 +311,12 @@ things you should be aware of in the combat.
         # 获取当前turn的所有action
         previous_rounds_info = '['
         for item in list(self.previous_rounds_info):
-            match = re.search(r"turn:(\d+)", item)
-            tmp_turn = -1
-            if match:
-                tmp_turn = int(match.group(1))
-            if tmp_turn == turn:
-                previous_rounds_info += (str(item) + '\n')
+
+            tmp_turn = item['turn']
+            tmp_floor = item['floor']
+            if tmp_turn == turn and tmp_floor == floor:
+                tmp_str = f"{{ turn:{tmp_turn},operation:{item['operation']} }}"
+                previous_rounds_info += (tmp_str + '\n')
         previous_rounds_info += ']'
 
         self.router2_cnt = 0
@@ -378,7 +378,7 @@ things you should be aware of in the combat.
                                        "the likelyhood of her not attacking (Rallying and Encouraging instead), "
                                        "hence giving you turns to continue chipping her health"
                                         )
-            if monster.monster_id == "Book of Stabbing":
+            if monster.monster_id == "BookOfStabbing":
                 suggestion_content += ("You are facing Elite enemy Book of Stabbing,It is important to try and kill"
                                        " the Book as quickly as possible, because its attacks will only get worse "
                                        "and can become overwhelming.The Book suffers greatly against  Weak,  Thorns, "
@@ -516,7 +516,13 @@ now give the response.
             operation += f"choose card '{card_to_play.name}'"
             if card_to_play.has_target and target1 is not None:
                 operation += f" towards '{target1.name}(target_index={self.target_index})'"
-        round_info = f"{{ turn:{turn},operation:{operation} }}"
+
+        # round_info = f"{{ turn:{turn},operation:{operation} }}"
+        round_info = {
+            'floor':floor,
+            'turn':turn,
+            'operation':operation
+        }
         self.previous_rounds_info.append(round_info)
 
         # 输出log
