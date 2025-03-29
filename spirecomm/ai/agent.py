@@ -203,6 +203,7 @@ class SimpleAgent:
             file.write('--------------current state---------------\n')
             file.write(self.game.__str__())
 
+
         card_to_play1 = None
         if 0 <= card_Index < len(hand_cards):
             card_to_play1 = hand_cards[card_Index]
@@ -318,6 +319,15 @@ class SimpleAgent:
                     return BuyRelicAction(relic)
             return CancelAction()
         elif self.game.screen_type == ScreenType.GRID:
+
+            with open(r'C:\Users\32685\Desktop\spirecomm\grid.txt', 'w') as file:
+                file.write('self.game.cards is:{},self.game.screen.num_cards is:{},self.game.screen.selected_cards is:{}\n\n'
+                           .format(self.get_card_list_str(self.game.screen.cards),self.game.screen.num_cards,self.game.screen.selected_cards))
+
+            # self.screen.any_number :use for Watcher to foresee
+            if self.game.screen.any_number:
+                return CardSelectAction([])
+
             # 网格选择
             if not self.game.choice_available:
                 return ProceedAction()
@@ -544,8 +554,9 @@ class SimpleAgent:
 
 
         if card_name == '':
-            self.skipped_cards = True
-            return CancelAction()
+            if self.game.cancel_available:
+                self.skipped_cards = True
+                return CancelAction()
         elif card_name=="Bowl":
             return CardRewardAction(bowl=True)
         else:
@@ -557,21 +568,21 @@ class SimpleAgent:
             return CardRewardAction(card_to_choose)
 
 
-
-        # reward_cards = self.game.screen.cards
-        # if self.game.screen.can_skip and not self.game.in_combat:
-        #     pickable_cards = [card for card in reward_cards if
-        #                       self.priorities.needs_more_copies(card, self.count_copies_in_deck(card))]
-        # else:
-        #     pickable_cards = reward_cards
-        # if len(pickable_cards) > 0:
-        #     potential_pick = self.priorities.get_best_card(pickable_cards)
-        #     return CardRewardAction(potential_pick)
-        # elif self.game.screen.can_bowl:
-        #     return CardRewardAction(bowl=True)
-        # else:
-        #     self.skipped_cards = True
-        #     return CancelAction()
+        # algorithm
+        reward_cards = self.game.screen.cards
+        if self.game.screen.can_skip and not self.game.in_combat:
+            pickable_cards = [card for card in reward_cards if
+                              self.priorities.needs_more_copies(card, self.count_copies_in_deck(card))]
+        else:
+            pickable_cards = reward_cards
+        if len(pickable_cards) > 0:
+            potential_pick = self.priorities.get_best_card(pickable_cards)
+            return CardRewardAction(potential_pick)
+        elif self.game.screen.can_bowl:
+            return CardRewardAction(bowl=True)
+        else:
+            self.skipped_cards = True
+            return CancelAction()
 
     def get_card_list_str(self, cardlist):
         str = '['
@@ -839,7 +850,8 @@ class SimpleAgent:
         # self.llm = ChatOpenAI(model="gpt-3.5-turbo-0125", temperature=0)
         # self.llm = ChatOpenAI(model="gpt-3.5-turbo-ca", temperature=0)  # 史
         # self.llm = ChatOpenAI(model="gpt-4o-mini-ca", temperature=0)  # good
-        self.llm = ChatOpenAI(model="deepseek-v3", temperature=0.5)  # 还行
+        self.llm = ChatOpenAI(model="deepseek-v3", temperature=0.3)  # 神！！！！！！！！！
+        # self.llm = ChatOpenAI(model="claude-3-5-haiku-20241022", temperature=0.5) #shi
         # self.llm = ChatOpenAI(model="gemini-2.0-flash", temperature=0)
 
         # self.llm = ChatOpenAI(model="qwen-turbo-latest", temperature=0) # 便宜又快！！

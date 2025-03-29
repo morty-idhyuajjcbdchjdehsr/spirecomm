@@ -263,7 +263,9 @@ class CardSelectAction(Action):
         if screen_type == ScreenType.GRID and not screen.any_number and len(self.cards) != num_remaining_cards:
             raise Exception("Wrong number of cards selected for CardSelectAction (provided {}, need {})".format(len(self.cards), num_remaining_cards))
         elif len(self.cards) > num_remaining_cards:
-            raise Exception("Too many cards selected for CardSelectAction (provided {}, max {})".format(len(self.cards), num_remaining_cards))
+            raise Exception("Too many cards selected for CardSelectAction (provided {}, max {})".format(len(self.cards), num_remaining_cards)
+                            +"screen_type is:{},screen is {}"
+                            .format(screen_type,vars(screen)))
         chosen_indices = []
         for card in self.cards:
             if card not in available_cards:

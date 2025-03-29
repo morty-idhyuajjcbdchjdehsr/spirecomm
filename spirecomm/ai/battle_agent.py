@@ -1,4 +1,5 @@
 import json
+import re
 import time
 from collections import deque
 
@@ -110,7 +111,7 @@ class BattleAgent:
 
         self.graph = graph_builder.compile()
 
-        self.last_two_rounds = deque(maxlen=2)
+        self.previous_rounds_info = deque(maxlen=5)
 
     def llm_1(self, state: State):
 
@@ -139,11 +140,12 @@ info of the current action
 - **Discard Pile**: [ Card ]
 - **Player Status**: [ player_status ]
 
-### Previous Two actions:
-To improve decision-making, you are provided with the previous two actions:
+### Previous turn actions:
+To improve decision-making, you are provided with the previous actions in this turn:
 [ 
-  {{ turn: int, operation: str }}, // previous two
-  {{ turn: int, operation: str }}, // previous one 
+  {{ turn: int, operation: str }}, //first action in this turn
+  .......
+  {{ turn: int, operation: str }}, // last action in this turn
 ]
 
 ### Notice:
@@ -211,13 +213,17 @@ things you should be aware of in the combat.
                                                                  "please regenerate the answer."}]
                     }
                 # 相信ai的能力就注释掉这个
-                # if state["energy"] > 0 and len(playable_cards) > 0:
-                #     return {
-                #         **state,  # 保留原 state 的所有属性
-                #         "messages": [{"role": "user", "content": "you have unused energy and there are still"
-                #                                                  "playable cards,are you sure to end the turn?"
-                #                                                  "please regenerate the answer."}]
-                #     }
+                if state["energy"] > 0 and len(playable_cards) > 0:
+                    return {
+                        **state,  # 保留原 state 的所有属性
+                        "messages": [{"role": "user", "content": "you have unused energy and there are still"
+                                                                 "playable cards,are you sure to end the turn?You need "
+                                                                 "to make full use of your energy.If there "
+                                                                 "is really no need to play more cards or "
+                                                                 "it is harmful to play more cards,insist on"
+                                                                 "your choice."
+                                                                 "please regenerate the answer."}]
+                    }
             return {
                 **state,
                 "messages": [AIMessage(content="output check pass!!")]
@@ -302,10 +308,16 @@ things you should be aware of in the combat.
                config=None):
         start_time = time.time()  # 记录开始时间
 
-        last_two_rounds_info = '['
-        for item in list(self.last_two_rounds):
-            last_two_rounds_info += (str(item) + '\n')
-        last_two_rounds_info += ']'
+        # 获取当前turn的所有action
+        previous_rounds_info = '['
+        for item in list(self.previous_rounds_info):
+            match = re.search(r"turn:(\d+)", item)
+            tmp_turn = -1
+            if match:
+                tmp_turn = int(match.group(1))
+            if tmp_turn == turn:
+                previous_rounds_info += (str(item) + '\n')
+        previous_rounds_info += ']'
 
         self.router2_cnt = 0
         self.end_turn_cnt = 0
@@ -320,9 +332,16 @@ things you should be aware of in the combat.
         low_hp_m_list = []
         Sentry_flag = 0
 
+        for relic in relics:
+            if relic.name == "Runic Dome":
+                suggestion_content += ("You have the Runic Dome relic, which provides energy each turn "
+                                       "but prevents you from seeing enemy intents. This means you won’t "
+                                       "know whether enemies will attack, defend, or use debuffs.")
+
         for monster in monsters:
             if (monster.intent == Intent.ATTACK or monster.intent == Intent.ATTACK_BUFF or
-                    monster.intent == Intent.ATTACK_DEBUFF or monster.intent == Intent.ATTACK_DEFEND):
+                    monster.intent == Intent.ATTACK_DEBUFF or monster.intent == Intent.ATTACK_DEFEND or
+                    monster.intent == Intent.NONE):
                 no_attack_flag = 0
 
             if monster.current_hp < 10:
@@ -351,7 +370,7 @@ things you should be aware of in the combat.
                                        "end of its 3rd turn or when any HP damage is taken through the  Block,"
                                        "Use the three turns before the Lagavulin wakes up to prepare for the "
                                        "fight by using Powers, or Bash as the Ironclad.")
-            if monster.monster_id == "Gremlin Leader":
+            if monster.monster_id == "GremlinLeader":
                 suggestion_content += ("You are facing Elite enemy Gremlin Leader and their minions.Any minion from this "
                                        "fight (i.e. spawned gremlins or gremlins that come in the fight) will retreat "
                                        "and be defeated if the Gremlin Leader is defeated.If you lack considerable damage"
@@ -367,7 +386,7 @@ things you should be aware of in the combat.
                                        "and its lack of ability to apply any kind of debuff on the player to reduce "
                                        "their ability to  Block.")
 
-            if monster.monster_id == "The Guardian":
+            if monster.monster_id == "TheGuardian":
                 suggestion_content += ("You are facing Boss The Guardian.The Guardian is a defensive-oriented boss"
                                        ", known for its Mode Shift ability. After taking 30 damage, it switches from "
                                        "Defensive Mode to Offensive Mode, changing its attack patterns. "
@@ -377,7 +396,7 @@ things you should be aware of in the combat.
                                        ", avoiding excessive attacks during Sharp Hide, and using block to mitigate "
                                        "its high-damage attacks. Plan ahead to exploit its transition phases and "
                                        "minimize incoming damage.")
-            if monster.monster_id == "Slime Boss":
+            if monster.monster_id == "SlimeBoss":
                 suggestion_content += ("You are facing Boss Slime Boss.The Slime Boss is an Act 1 boss"
                                        " with a unique Split mechanic. When its HP falls below 50%, it splits into two "
                                        "smaller slimes, each with half of its remaining HP. It uses Goop Spray to "
@@ -440,8 +459,8 @@ context:
         **Player Status**(list of player status):{pStatus}
         **Orbs**(if you are DEFECT): {orbs}
 
-Previous two operations Info:
-        {last_two_rounds_info}
+Previous turn actions:
+{previous_rounds_info}
 
 {notice}        
 
@@ -462,7 +481,7 @@ now give the response.
             pStatus=get_lists_str(powers),
             # output_format=outputFormat,
             orbs=get_lists_str(orbs),
-            last_two_rounds_info=last_two_rounds_info,
+            previous_rounds_info=previous_rounds_info,
             notice=suggestion_content,
             deck_analysis=deck_analysis
         )
@@ -498,7 +517,7 @@ now give the response.
             if card_to_play.has_target and target1 is not None:
                 operation += f" towards '{target1.name}(target_index={self.target_index})'"
         round_info = f"{{ turn:{turn},operation:{operation} }}"
-        self.last_two_rounds.append(round_info)
+        self.previous_rounds_info.append(round_info)
 
         # 输出log
         with open(r'C:\Users\32685\Desktop\spirecomm\battle_agent.txt', 'a') as file:

@@ -161,7 +161,7 @@ class Game:
                 f"Limbo: {self.limbo}\n"
                 f"Card in Play: {self.card_in_play}\n"
                 f"Turn: {self.turn}, Cards Discarded This Turn: {self.cards_discarded_this_turn}\n"
-                f"Screen: {self.screen}, Screen Up: {self.screen_up}\n"
+                f"Screen: {vars(self.screen)}, Screen Up: {self.screen_up}\n"
                 f"Screen Type: {self.screen_type}, Room Phase: {self.room_phase}, Room Type: {self.room_type}\n"
                 f"Choices: {self.choice_list}, Choices Available: {self.choice_available}\n"
                 f"End Available: {self.end_available}, Potion Available: {self.potion_available}\n"

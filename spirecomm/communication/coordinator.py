@@ -102,6 +102,8 @@ class Coordinator:
         :return: None
         """
         action = self.action_queue.popleft()
+        with open(r'C:\Users\32685\Desktop\spirecomm\action_list.txt', 'a') as file:
+            file.write("["+action.__str__()+']\n\n')
         action.execute(self)
 
     def execute_next_action_if_ready(self):

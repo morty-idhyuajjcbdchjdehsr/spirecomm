@@ -73,6 +73,8 @@ class Player(Character):
 
     @classmethod
     def from_json(cls, json_object):
+        # with open(r'C:\Users\32685\Desktop\spirecomm\player.txt', 'w') as file:
+        #     file.write(str(json_object))
         player = cls(json_object["max_hp"], json_object["current_hp"], json_object["block"], json_object["energy"])
         player.powers = [Power.from_json(json_power) for json_power in json_object["powers"]]
         player.orbs = [Orb.from_json(orb) for orb in json_object["orbs"]]
