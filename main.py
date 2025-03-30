@@ -37,7 +37,7 @@ if __name__ == "__main__":
         coordinator.signal_ready()
 
         coordinator.register_command_error_callback(agent.handle_error)
-        coordinator.register_state_change_callback(agent.get_next_action_in_game)
+        coordinator.register_state_change_callback(agent.get_next_action_in_game_new)
         coordinator.register_out_of_game_callback(agent.get_next_action_out_of_game)
 
         # Play games forever, cycling through the various classes
@@ -49,7 +49,7 @@ if __name__ == "__main__":
             agent.init_choose_card_llm()
             agent.init_make_map_choice_llm()
 
-            result = coordinator.play_one_game(chosen_class)
+            result = coordinator.play_one_game(chosen_class,seed="2ZK5PHFXAGB3X")
             with open(r'C:\Users\32685\Desktop\spirecomm\results.txt', 'a') as file:
                 if result:
                     file.write(f"win as {chosen_class} at {datetime.now()}\n")

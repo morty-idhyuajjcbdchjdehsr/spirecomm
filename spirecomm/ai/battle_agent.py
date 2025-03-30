@@ -332,10 +332,16 @@ things you should be aware of in the combat.
         low_hp_m_list = []
         Sentry_flag = 0
 
+        for power in powers:
+            if power.power_name == "Strength":
+                suggestion_content += (f"You have Strength {power.amount}, If you want to Attack,"
+                                       f"prioritize cards with multiple hits (e.q. 'Twin Strike',"
+                                       f"'Sword Boomerang')")
+
         for relic in relics:
             if relic.name == "Runic Dome":
                 suggestion_content += ("You have the Runic Dome relic, which provides energy each turn "
-                                       "but prevents you from seeing enemy intents. This means you won’t "
+                                       "but prevents you from seeing enemy intents. This means you won't "
                                        "know whether enemies will attack, defend, or use debuffs.")
 
         for monster in monsters:
@@ -344,7 +350,7 @@ things you should be aware of in the combat.
                     monster.intent == Intent.NONE):
                 no_attack_flag = 0
 
-            if monster.current_hp < 10:
+            if (floor<=16 and monster.current_hp < 10) or (floor > 16 and monster.current_hp < 20) :
                 low_hp_flag = 1
                 low_hp_m_list.append(monster)
 
@@ -389,13 +395,21 @@ things you should be aware of in the combat.
             if monster.monster_id == "TheGuardian":
                 suggestion_content += ("You are facing Boss The Guardian.The Guardian is a defensive-oriented boss"
                                        ", known for its Mode Shift ability. After taking 30 damage, it switches from "
-                                       "Defensive Mode to Offensive Mode, changing its attack patterns. "
+                                       "Offensive Mode to Defensive Mode, changing its attack patterns. "
                                        "In Defensive Mode, it gains Block and thorns damage when attacked. "
                                        "In Offensive Mode, it deals high damage with multi-hit attacks."
                                        "Effective strategies include dealing burst damage to trigger Mode Shift quickly"
                                        ", avoiding excessive attacks during Sharp Hide, and using block to mitigate "
                                        "its high-damage attacks. Plan ahead to exploit its transition phases and "
-                                       "minimize incoming damage.")
+                                       "minimize incoming damage.\n")
+                for power in monster.powers:
+                    if power.power_name == "Mode Shift":
+                        suggestion_content += """The Guardian is in Offensive Mode now, after taking {} damage,it switches to Defensive Mode""".format(power.amount)
+
+                    if power.power_name == "Sharp Hide":
+                        suggestion_content += """The Guardian is in Defensive Mode now,it will thorns 3 damage when attacked."""
+
+
             if monster.monster_id == "SlimeBoss":
                 suggestion_content += ("You are facing Boss Slime Boss.The Slime Boss is an Act 1 boss"
                                        " with a unique Split mechanic. When its HP falls below 50%, it splits into two "
@@ -411,6 +425,41 @@ things you should be aware of in the combat.
                                        "After that, its attacks follow a six-turn cycle, alternating between weak hits,"
                                        " burns, and another big attack.Prioritize damage output to shorten the fight "
                                        "and manage burn cards efficiently.")
+            if monster.monster_id == "TheCollector":
+                suggestion_content += ("You are facing Boss The Collector.The Collector is an Act 2 boss that "
+                                       "alternates between summoning Torch Heads, "
+                                       "attacking, and buffing itself. The Torch Heads deal damage in every turn. "
+                                       "The Collector also gains Strength as the battle progresses, making its attacks "
+                                       "increasingly dangerous. Deciding whether to eliminate the minions or focus on "
+                                       "the boss is crucial, as leaving the Torch Heads alive can lead to overwhelming "
+                                       "damage, while targeting the boss directly may shorten the fight but "
+                                       "at a higher risk. Careful resource management is essential to survive "
+                                       "this encounter.")
+
+            if monster.monster_id == "TheChamp":
+                suggestion_content += ("You are facing Boss The Champ.The Champ is an Act 2 boss with two distinct "
+                                       "phases. In the first phase, it alternates between attacking, blocking, and "
+                                       "debuffing the player with Weak and Vulnerable. When its HP drops below 50%, "
+                                       "it enters the second phase, immediately purging all debuffs and gaining "
+                                       "Strength. In this phase, it becomes significantly more aggressive, "
+                                       "using heavy attacks and a powerful Execute, which deals massive damage. "
+                                       "Generally, you need to spend the first half of the fight setting up, and then "
+                                       "you need to very quickly kill the Champ once his HP drops below half.")
+
+            if monster.monster_id == "BronzeAutomaton":
+                suggestion_content += ("You are facing Boss Bronze Automaton.Bronze Automaton is an Act 2 boss that "
+                                       "starts the fight by summoning two Orbs, which can steal your card, attack you "
+                                       "and provide blocks to The Automaton."
+                                       "The Automaton cycles between strong attacks, a multi-hit attack, "
+                                       "and Hyper Beam,"
+                                       " a devastating attack that deals massive damage but leaves it "
+                                       "Stunned (does nothing) the next turn. The Automaton also has Artifact charges, "
+                                       "preventing debuffs like Weak and Vulnerable until removed. "
+                                       "Its Orbs can be dangerous if left unchecked, and managing them while "
+                                       "preparing for Hyper Beam is key to survival. The fight demands balancing "
+                                       "offense and defense to outlast its high-damage patterns.")
+
+
 
 
         if no_attack_flag == 1:
@@ -425,7 +474,8 @@ things you should be aware of in the combat.
 
         if total_damage - block >= 10:
             suggestion_content += (f"\nYou are facing huge incoming damage, which will make you lose {total_damage - block} hp."
-                                   f"maybe you should consider mitigate the damage.")
+                                   f"you should consider mitigate the damage by"
+                                   f"1. build block, 2.weaken enemy 3.eliminate enemy")
 
         zero_cost_card_flag = 0
         for card in hand:

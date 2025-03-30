@@ -2,6 +2,7 @@ import json
 import os
 import time
 import random
+from collections import deque
 
 from langchain.memory import ConversationBufferWindowMemory, ConversationSummaryBufferMemory
 from langchain.output_parsers import ResponseSchema, StructuredOutputParser
@@ -58,7 +59,8 @@ class SimpleAgent:
         self.map_route = []
         self.chosen_class = chosen_class
         self.priorities = Priority()
-        self.change_class(chosen_class)
+        # self.change_class(chosen_class)
+        self.in_game_action_list = deque(maxlen=50)
 
     def change_class(self, new_class):
         self.chosen_class = new_class
@@ -92,25 +94,31 @@ class SimpleAgent:
         if self.game.proceed_available:
             return ProceedAction()
         if self.game.play_available:
+
+            potion_action = None
             if self.game.room_type == "MonsterRoomBoss" and len(self.game.get_real_potions()) > 0:
                 potion_action = self.use_next_potion()
-                if potion_action is not None:
-                    return potion_action
+
             if (self.game.room_type == "MonsterRoom" and len(self.game.get_real_potions()) > 0
                     and self.game.current_hp <= 30):
                 potion_action = self.use_next_potion()
-                if potion_action is not None:
-                    return potion_action
+
             if (self.game.room_type == "MonsterRoomElite" and len(self.game.get_real_potions()) > 0
                     and self.game.current_hp <= 50):
                 potion_action = self.use_next_potion()
-                if potion_action is not None:
-                    return potion_action
+
+            if potion_action is not None and not isinstance(self.in_game_action_list[-1], PotionAction):
+                return potion_action
             return self.get_play_card_action()
         if self.game.end_available:
             return EndTurnAction()
         if self.game.cancel_available:
             return CancelAction()
+
+    def get_next_action_in_game_new(self, game_state):
+        action = self.get_next_action_in_game(game_state)
+        self.in_game_action_list.append(action)
+
 
     def get_next_action_out_of_game(self):
         return StartGameAction(self.chosen_class)
@@ -856,6 +864,7 @@ class SimpleAgent:
 
         # self.llm = ChatOpenAI(model="qwen-turbo-latest", temperature=0) # 便宜又快！！
         # self.llm = ChatOpenAI(model="qwen-plus-latest", temperature=0)
+        # self.llm = ChatOpenAI(model="qwen-plus-0919", temperature=0.3)
         # self.llm = ChatOpenAI(model="hunyuan-turbos-latest", temperature=0)  #慢
         # self.llm = ChatOpenAI(model="ERNIE-Speed-128K", temperature=0.7) #shi
         # self.llm = ChatOpenAI(model="glm-4-flashx", temperature=0) #慢
