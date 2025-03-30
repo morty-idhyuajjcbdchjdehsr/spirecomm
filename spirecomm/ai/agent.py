@@ -118,7 +118,7 @@ class SimpleAgent:
     def get_next_action_in_game_new(self, game_state):
         action = self.get_next_action_in_game(game_state)
         self.in_game_action_list.append(action)
-
+        return action
 
     def get_next_action_out_of_game(self):
         return StartGameAction(self.chosen_class)
