@@ -168,3 +168,13 @@ lose as PlayerClass.THE_SILENT at 2025-01-27 20:34:27.339993 at floor 14
 lose as PlayerClass.DEFECT at 2025-01-27 20:43:32.381027 at floor 16
 lose as PlayerClass.IRONCLAD at 2025-01-27 20:51:18.201759 at floor 16
 lose as PlayerClass.IRONCLAD at 2025-01-27 21:04:22.839347 at floor 7
+lose as PlayerClass.IRONCLAD at 2025-03-28 14:05:36.669525 at floor 16
+lose as PlayerClass.THE_SILENT at 2025-03-28 14:22:28.688389 at floor 16
+lose as PlayerClass.DEFECT at 2025-03-28 14:37:36.642627 at floor 11
+lose as PlayerClass.IRONCLAD at 2025-03-28 15:20:01.848343 at floor 28
+lose as PlayerClass.IRONCLAD at 2025-03-31 15:57:25.666687 at floor 33
+lose as PlayerClass.THE_SILENT at 2025-03-31 16:33:33.384412 at floor 16
+lose as PlayerClass.DEFECT at 2025-03-31 17:55:29.845498 at floor 44
+lose as PlayerClass.IRONCLAD at 2025-03-31 18:42:05.028038 at floor 33
+lose as PlayerClass.THE_SILENT at 2025-03-31 20:44:20.516184 at floor 50
+lose as PlayerClass.IRONCLAD at 2025-03-31 21:00:54.864323 at floor 6

@@ -472,7 +472,7 @@ things you should be aware of in the combat.
             suggestion_content += ("\nYou are facing multiply enemies,you should prioritize"
                                    "AOE card which can affect them all.")
 
-        if total_damage - block >= 10:
+        if total_damage - block >= 7:
             suggestion_content += (f"\nYou are facing huge incoming damage, which will make you lose {total_damage - block} hp."
                                    f"you should consider mitigate the damage by"
                                    f"1. build block, 2.weaken enemy 3.eliminate enemy")
@@ -488,8 +488,8 @@ things you should be aware of in the combat.
                                        .format(block))
 
 
-        if zero_cost_card_flag == 1:
-            suggestion_content += "\nYou have 0 cost cards in your Hand Pile."
+        # if zero_cost_card_flag == 1:
+        #     suggestion_content += "\nYou have 0 cost cards in your Hand Pile."
 
 
         template_string = """       

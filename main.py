@@ -50,6 +50,8 @@ if __name__ == "__main__":
             agent.init_make_map_choice_llm()
             seed = "2ZK5PHFXAGB3X" # 重锤开，二层圆顶
             seed = "3FR420LZN9M7H" # 35层，力量战
+            seed = "16G2XGIZWIVPY" # 44层，鸡煲
+            seed = "16QXPYKRH7U5W" # 50层，毒贼
 
             result = coordinator.play_one_game(chosen_class)
             with open(r'C:\Users\32685\Desktop\spirecomm\results.txt', 'a') as file:
