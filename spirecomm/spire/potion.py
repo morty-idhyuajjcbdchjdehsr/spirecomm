@@ -21,3 +21,6 @@ class Potion:
             requires_target=json_object.get("requires_target", False),
             price=json_object.get("price", 0)
         )
+
+    def __str__(self):
+        return vars(self).__str__()

@@ -48,8 +48,10 @@ if __name__ == "__main__":
             agent.init_battle_llm()
             agent.init_choose_card_llm()
             agent.init_make_map_choice_llm()
+            seed = "2ZK5PHFXAGB3X" # 重锤开，二层圆顶
+            seed = "3FR420LZN9M7H" # 35层，力量战
 
-            result = coordinator.play_one_game(chosen_class,seed="2ZK5PHFXAGB3X")
+            result = coordinator.play_one_game(chosen_class)
             with open(r'C:\Users\32685\Desktop\spirecomm\results.txt', 'a') as file:
                 if result:
                     file.write(f"win as {chosen_class} at {datetime.now()}\n")

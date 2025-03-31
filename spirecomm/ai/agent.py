@@ -96,6 +96,14 @@ class SimpleAgent:
         if self.game.play_available:
 
             potion_action = None
+
+            # discard SmokeBomb! No surrender!
+            for potion in self.game.get_real_potions():
+                if potion.can_use:
+                    if potion.potion_id == "SmokeBomb":
+                        return PotionAction(False, potion=potion)
+
+
             if self.game.room_type == "MonsterRoomBoss" and len(self.game.get_real_potions()) > 0:
                 potion_action = self.use_next_potion()
 
@@ -827,8 +835,8 @@ class SimpleAgent:
         # chatanywhere
         # free
         # os.environ["OPENAI_API_KEY"] = "sk-KCmRtnkbFhG5H17LiQSJ9Y76EjACuiSH0Bgjq83Ld7QiBKs4"
-        os.environ["OPENAI_API_KEY"] = "sk-Nxr5VkCGRNruaDUzUZz3uCkKUtMvg0u3V7uiXJhJSbo0wAIp"
-        os.environ["OPENAI_API_BASE"] = "https://api.chatanywhere.tech/v1"
+        # os.environ["OPENAI_API_KEY"] = "sk-Nxr5VkCGRNruaDUzUZz3uCkKUtMvg0u3V7uiXJhJSbo0wAIp"
+        # os.environ["OPENAI_API_BASE"] = "https://api.chatanywhere.tech/v1"
 
 
         #silicon
@@ -843,6 +851,10 @@ class SimpleAgent:
         #AGICTO
         # os.environ["OPENAI_API_KEY"] = "sk-dXqzgPLzOmxdo24tl4lqL8Ioh9udaG4ctTQMuDq1fDfwS4mM"
         # os.environ["OPENAI_API_BASE"] = "https://api.agicto.cn/v1"
+
+        #aihubmix
+        os.environ["OPENAI_API_KEY"] = "sk-vJnE3cpi4m837up7B34971C0250b42C2818e02C517BeE44e"
+        os.environ["OPENAI_API_BASE"] = "https://aihubmix.com/v1"
 
         # self.search_llm = ChatOpenAI(model="THUDM/chatglm3-6b", temperature=0)
         self.battle_thread_id = ''.join(random.choices('abcdefghijklmnopqrstuvwxyz0123456789', k=10))
@@ -890,6 +902,11 @@ class SimpleAgent:
         # self.llm = ChatOllama(model="gemma3:1b-it-q4_K_M", temperature=0) #只会e键爬塔
 
         # self.llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash",temperature=0,transport='rest') #有限额
+
+        # self.llm = ChatOpenAI(model="gemini-2.0-flash-lite",temperature=0.3)
+        # self.llm = ChatOpenAI(model="gemini-2.0-flash", temperature=0.3)
+        # self.llm = ChatOpenAI(model="gemini-2.0-flash-thinking-exp-01-21", temperature=0.3)
+        self.llm = ChatOpenAI(model="DeepSeek-V3", temperature=0.3)
 
     def get_role_guidelines(self,chosen_class):
 

@@ -147,13 +147,13 @@ class Game:
                 f"Floor: {self.floor}, Act: {self.act}\n"
                 f"Gold: {self.gold}, Seed: {self.seed}\n"
                 f"Character: {self.character.__str__()}, Ascension Level: {self.ascension_level}\n"
-                f"Relics: {self.relics.__str__()}\n"
-                f"Deck: {self.deck.__str__()}\n"
-                f"Potions: {self.potions}\n"
+                f"Relics: {self.get_lists_str(self.relics)}\n"
+                f"Deck: {self.get_lists_str(self.deck)}\n"
+                f"Potions: {self.get_lists_str(self.potions)}\n"
                 f"Map: {self.map}\n"
                 f"In Combat: {self.in_combat}\n"
                 f"Player: {self.player.__str__()}\n"
-                f"Monsters: {self.monsters.__str__()}\n"
+                f"Monsters: {self.get_lists_str(self.monsters)}\n"
                 f"Draw Pile: {self.draw_pile}\n"
                 f"Discard Pile: {self.discard_pile}\n"
                 f"Exhaust Pile: {self.exhaust_pile}\n"
@@ -167,3 +167,12 @@ class Game:
                 f"End Available: {self.end_available}, Potion Available: {self.potion_available}\n"
                 f"Play Available: {self.play_available}, Proceed Available: {self.proceed_available}\n"
                 f"Cancel Available: {self.cancel_available}\n")
+
+    def get_lists_str(self,lists):
+        str = "[ "
+        for item in lists:
+            str += (item.__str__())
+            if item != lists[-1]:
+                str += ", "
+        str = str + " ]"
+        return str

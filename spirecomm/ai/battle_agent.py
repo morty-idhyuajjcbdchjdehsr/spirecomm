@@ -484,8 +484,8 @@ things you should be aware of in the combat.
 
             if card.name == "Body Slam":
                 suggestion_content += ("\nYou have 'Body Slam' in your Hand Pile,"
-                                       "this card deals damage based on your current block,make sure you have enough block"
-                                       "before playing it.")
+                                       "this card deals damage based on your current block,now it can deal {} damage"
+                                       .format(block))
 
 
         if zero_cost_card_flag == 1:
