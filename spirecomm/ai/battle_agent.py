@@ -482,11 +482,19 @@ things you should be aware of in the combat.
             if card.cost == 0:
                 zero_cost_card_flag = 1
 
-            if card.name == "Body Slam":
+            if card.name == "Body Slam" or card.name == "Body Slam+":
                 suggestion_content += ("\nYou have 'Body Slam' in your Hand Pile,"
                                        "this card deals damage based on your current block,now it can deal {} damage"
                                        .format(block))
-
+            if card.name == "Feed":
+                suggestion_content += ("\nYou have 'Feed' in your Hand Pile,which deals 10 damage"
+                                       "You should leave it to eliminate the enemy to raise 3 max hp")
+            if card.name == "Feed+":
+                suggestion_content += ("\nYou have 'Feed' in your Hand Pile,which deals 12 damage"
+                                       "You should leave it to eliminate the enemy to raise 4 max hp")
+            if card.name == "Self Repair":
+                suggestion_content += ("\nYou have 'Self Repair' in your Hand Pile,don't forget to "
+                                       "play it to heal 7 HP after combat.")
 
         # if zero_cost_card_flag == 1:
         #     suggestion_content += "\nYou have 0 cost cards in your Hand Pile."
