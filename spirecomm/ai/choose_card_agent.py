@@ -133,11 +133,11 @@ class ChooseCardAgent:
                          cards on wikipedia.
 
                         ### Context:
-                        - **Floor**: [Current floor]
-                        - **Current Deck:** [List of cards currently in the deck]
-                        - **Player's Health:** [Current health points]
-                        - **Available Cards:** [List of cards available for selection]
-                        - **Relic Bowl:** [whether you have the relic 'Bowl']
+                        - **Floor**: 'floor'
+                        - **Current Deck:** [ Card ]
+                        - **Player's Health:** 'current_hp' / 'max_hp'
+                        - **Available Cards:** [ Card ] Card format: "card_name( card_rarity )"
+                        - **Relic Bowl:** "whether you have the relic 'Bowl'"
 
                         ### Considerations:
                         1.**Deck Size Management**: Maintain a streamlined deck. A larger deck can dilute card effectiveness and 
