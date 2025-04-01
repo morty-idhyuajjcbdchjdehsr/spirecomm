@@ -495,6 +495,9 @@ things you should be aware of in the combat.
             if card.name == "Self Repair":
                 suggestion_content += ("\nYou have 'Self Repair' in your Hand Pile,don't forget to "
                                        "play it to heal 7 HP after combat.")
+            if card.name == "Auto-Shields" or card.name == "Auto-Shields+":
+                suggestion_content += ("\nYou have 'Auto-Shields' in your Hand Pile,remember it build block "
+                                       "only when you have **no block** now.")
 
         # if zero_cost_card_flag == 1:
         #     suggestion_content += "\nYou have 0 cost cards in your Hand Pile."
