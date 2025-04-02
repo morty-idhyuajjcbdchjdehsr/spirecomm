@@ -104,7 +104,8 @@ class SimpleAgent:
                 if potion.can_use:
                     if potion.potion_id == "SmokeBomb":
                         return PotionAction(False, potion=potion)
-
+                    if potion.potion_id == "Fruit Juice":
+                        return PotionAction(True, potion=potion)
 
             if self.game.room_type == "MonsterRoomBoss" and len(self.game.get_real_potions()) > 0:
                 potion_action = self.use_next_potion()
