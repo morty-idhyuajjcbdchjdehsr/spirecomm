@@ -57,7 +57,7 @@ if __name__ == "__main__":
             seed = "16QXPYKRH7U5W" # 50层，毒贼
             seed = "2IEMKEY2CBQAZ" # 33层，鸡煲，鸟居钛合金棒
 
-            result = coordinator.play_one_game(chosen_class)
+            result = coordinator.play_one_game(chosen_class,seed = "2ZK5PHFXAGB3X")
             with open(r'C:\Users\32685\Desktop\spirecomm\results.txt', 'a') as file:
                 if result:
                     file.write(f"win as {chosen_class} at {datetime.now()}\n")

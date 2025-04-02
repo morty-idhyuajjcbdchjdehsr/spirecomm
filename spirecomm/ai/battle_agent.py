@@ -221,7 +221,7 @@ things you should be aware of in the combat.
                                                                  "to make full use of your energy.If there "
                                                                  "is really no need to play more cards or "
                                                                  "it is harmful to play more cards,insist on"
-                                                                 "your choice."
+                                                                 " your choice."
                                                                  "please regenerate the answer."}]
                     }
             return {
@@ -331,16 +331,18 @@ things you should be aware of in the combat.
         low_hp_flag = 0
         low_hp_m_list = []
         Sentry_flag = 0
+        Strength = 0
 
         for power in powers:
             if power.power_name == "Strength":
-                suggestion_content += (f"You have Strength {power.amount}, If you want to Attack,"
+                Strength = power.amount
+                suggestion_content += (f"\nYou have Strength {power.amount}, If you want to Attack,"
                                        f"prioritize cards with multiple hits (e.q. 'Twin Strike',"
                                        f"'Sword Boomerang')")
 
         for relic in relics:
             if relic.name == "Runic Dome":
-                suggestion_content += ("You have the Runic Dome relic, which provides energy each turn "
+                suggestion_content += ("\nYou have the Runic Dome relic, which provides energy each turn "
                                        "but prevents you from seeing enemy intents. This means you won't "
                                        "know whether enemies will attack, defend, or use debuffs.")
 
@@ -372,12 +374,12 @@ things you should be aware of in the combat.
                 Sentry_flag = 1
 
             if monster.monster_id == "Lagavulin":
-                suggestion_content += ("You are facing Elite enemy Lagavulin,The Lagavulin will awake at the "
+                suggestion_content += ("\nYou are facing Elite enemy Lagavulin,The Lagavulin will awake at the "
                                        "end of its 3rd turn or when any HP damage is taken through the  Block,"
                                        "Use the three turns before the Lagavulin wakes up to prepare for the "
                                        "fight by using Powers, or Bash as the Ironclad.")
             if monster.monster_id == "GremlinLeader":
-                suggestion_content += ("You are facing Elite enemy Gremlin Leader and their minions.Any minion from this "
+                suggestion_content += ("\nYou are facing Elite enemy Gremlin Leader and their minions.Any minion from this "
                                        "fight (i.e. spawned gremlins or gremlins that come in the fight) will retreat "
                                        "and be defeated if the Gremlin Leader is defeated.If you lack considerable damage"
                                        " to burst down the Gremlin Leader, killing the gremlins spawned will increase "
@@ -385,7 +387,7 @@ things you should be aware of in the combat.
                                        "hence giving you turns to continue chipping her health"
                                         )
             if monster.monster_id == "BookOfStabbing":
-                suggestion_content += ("You are facing Elite enemy Book of Stabbing,It is important to try and kill"
+                suggestion_content += ("\nYou are facing Elite enemy Book of Stabbing,It is important to try and kill"
                                        " the Book as quickly as possible, because its attacks will only get worse "
                                        "and can become overwhelming.The Book suffers greatly against  Weak,  Thorns, "
                                        "and  Strength reduction due to its scaling being solely said multi-hit attacks "
@@ -393,7 +395,7 @@ things you should be aware of in the combat.
                                        "their ability to  Block.")
 
             if monster.monster_id == "TheGuardian":
-                suggestion_content += ("You are facing Boss The Guardian.The Guardian is a defensive-oriented boss"
+                suggestion_content += ("\nYou are facing Boss The Guardian.The Guardian is a defensive-oriented boss"
                                        ", known for its Mode Shift ability. After taking 30 damage, it switches from "
                                        "Offensive Mode to Defensive Mode, changing its attack patterns. "
                                        "In Defensive Mode, it gains Block and thorns damage when attacked. "
@@ -411,7 +413,7 @@ things you should be aware of in the combat.
 
 
             if monster.monster_id == "SlimeBoss":
-                suggestion_content += ("You are facing Boss Slime Boss.The Slime Boss is an Act 1 boss"
+                suggestion_content += ("\nYou are facing Boss Slime Boss.The Slime Boss is an Act 1 boss"
                                        " with a unique Split mechanic. When its HP falls below 50%, it splits into two "
                                        "smaller slimes, each with half of its remaining HP. It uses Goop Spray to "
                                        "weaken the player and follows up with heavy attacks. The key strategy is to "
@@ -419,14 +421,14 @@ things you should be aware of in the combat.
                                        "has too much HP left, or you’ll face two strong slimes instead of weaker ones."
                                        " Use area-of-effect (AoE) attacks to handle the split slimes efficiently.")
             if monster.monster_id == "Hexaghost":
-                suggestion_content += ("You are facing Boss Hexaghost.Hexaghost is a boss with a unique Burning Hex "
+                suggestion_content += ("\nYou are facing Boss Hexaghost.Hexaghost is a boss with a unique Burning Hex "
                                        "attack pattern. On its first turn, it unleashes a devastating Inferno attack, "
                                        "dealing six hits based on the player's HP (lower HP means less damage). "
                                        "After that, its attacks follow a six-turn cycle, alternating between weak hits,"
                                        " burns, and another big attack.Prioritize damage output to shorten the fight "
                                        "and manage burn cards efficiently.")
             if monster.monster_id == "TheCollector":
-                suggestion_content += ("You are facing Boss The Collector.The Collector is an Act 2 boss that "
+                suggestion_content += ("\nYou are facing Boss The Collector.The Collector is an Act 2 boss that "
                                        "alternates between summoning Torch Heads, "
                                        "attacking, and buffing itself. The Torch Heads deal damage in every turn. "
                                        "The Collector also gains Strength as the battle progresses, making its attacks "
@@ -437,7 +439,7 @@ things you should be aware of in the combat.
                                        "this encounter.")
 
             if monster.monster_id == "TheChamp":
-                suggestion_content += ("You are facing Boss The Champ.The Champ is an Act 2 boss with two distinct "
+                suggestion_content += ("\nYou are facing Boss The Champ.The Champ is an Act 2 boss with two distinct "
                                        "phases. In the first phase, it alternates between attacking, blocking, and "
                                        "debuffing the player with Weak and Vulnerable. When its HP drops below 50%, "
                                        "it enters the second phase, immediately purging all debuffs and gaining "
@@ -447,7 +449,7 @@ things you should be aware of in the combat.
                                        "you need to very quickly kill the Champ once his HP drops below half.")
 
             if monster.monster_id == "BronzeAutomaton":
-                suggestion_content += ("You are facing Boss Bronze Automaton.Bronze Automaton is an Act 2 boss that "
+                suggestion_content += ("\nYou are facing Boss Bronze Automaton.Bronze Automaton is an Act 2 boss that "
                                        "starts the fight by summoning two Orbs, which can steal your card, attack you "
                                        "and provide blocks to The Automaton."
                                        "The Automaton cycles between strong attacks, a multi-hit attack, "
@@ -474,7 +476,7 @@ things you should be aware of in the combat.
 
         if total_damage - block >= 7:
             suggestion_content += (f"\nYou are facing huge incoming damage, which will make you lose {total_damage - block} hp."
-                                   f"you should consider mitigate the damage by"
+                                   f"you should consider mitigate the damage by:"
                                    f"1. build block, 2.weaken enemy 3.eliminate enemy")
 
         zero_cost_card_flag = 0
@@ -498,6 +500,12 @@ things you should be aware of in the combat.
             if card.name == "Auto-Shields" or card.name == "Auto-Shields+":
                 suggestion_content += ("\nYou have 'Auto-Shields' in your Hand Pile,remember it build block "
                                        "only when you have **no block** now.")
+
+            if card.name == "Limit Break" or card.name == "Limit Break+":
+                suggestion_content += ("\nYou have 'Limit Break' in your Hand Pile,remember it double your Strength.("
+                                       "so don't use it when Strength is 0 ) "
+                                       "You current Strength is "+str(Strength))
+
 
         # if zero_cost_card_flag == 1:
         #     suggestion_content += "\nYou have 0 cost cards in your Hand Pile."

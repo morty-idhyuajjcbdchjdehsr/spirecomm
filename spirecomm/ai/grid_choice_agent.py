@@ -136,6 +136,12 @@ class SimpleGridChoiceAgent:
 
     def suggestionAdder(self, state: State):
 
+        if state["intent"]!='upgrade': #只对升级添加建议
+            return {
+                **state,
+                "messages":[]
+            }
+
         context = """
 - **Relics**: [Relic],
 - **Current Deck:** [Card] 
