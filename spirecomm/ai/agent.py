@@ -13,6 +13,7 @@ from langchain_core.tools import tool
 
 from spirecomm.ai.battle_agent import BattleAgent
 from spirecomm.ai.choose_card_agent import ChooseCardAgent
+from spirecomm.ai.grid_choice_agent import SimpleGridChoiceAgent
 from spirecomm.spire.game import Game, RoomPhase
 from spirecomm.spire.character import Intent, PlayerClass
 import spirecomm.spire.card
@@ -37,6 +38,7 @@ from dotenv import load_dotenv
 class SimpleAgent:
 
     def __init__(self, chosen_class=PlayerClass.THE_SILENT):
+        self.simple_grid_chice_agent = None
         self.deck_analysis = ''
         self.search_llm = None
         self.choose_card_thread_id = None
@@ -375,22 +377,6 @@ class SimpleAgent:
 
     def make_grid_choice(self):
 
-        card_indexes_schema = ResponseSchema(
-            name="cardIndexes",
-            description="The indexes of chosen cards from Current Deck",
-            type ="List[int]"
-        )
-        explanation_schema = ResponseSchema(
-            name="explanation",
-            description="Explanation of why you choose the cards."
-        )
-        response_schemas = [
-            card_indexes_schema,
-            explanation_schema
-        ]
-        output_parser = StructuredOutputParser(response_schemas=response_schemas)
-        outputFormat = output_parser.get_format_instructions()
-
         intent = ''
         if self.game.screen.for_upgrade:
             intent = 'upgrade'
@@ -399,110 +385,43 @@ class SimpleAgent:
         if self.game.screen.for_transform:
             intent = 'transform'
         num_cards = self.game.screen.num_cards
-        s = 's'
-        if num_cards == 1:
-            s = ''
-        hp = f"{self.game.current_hp}/{self.game.max_hp}"
-        deck = self.get_card_list_str(self.game.deck)
-        relics = self.get_lists_str(self.game.relics)
         available_cards = self.game.screen.cards
 
-        template_string = """ 
-                You are an AI designed to choose cards from your deck for the purpose of {intent} in the game 
-        "Slay the Spire" as the role {role}.Here is the context:
-                **Relics**:{relics},
-                **Current Deck:** {available_cards}
-                **Player's Health:** {hp}
-                
-                ###Goals###:
-                now you need to choose {num_cards} card{s} from Current Deck for {intent}, you can search the content of 
-                card on wikipedia.
-                please make your choice based on the context, and provide the reason.
-                
-                ###Instructions###:
-                Upgrade: choose the best card to upgrade.
-                         1.Consider Card Rarity,Prioritize upgrading higher rarity cards, 
-                            as they often provide more powerful effects.
-                         2.Focus on Specific Archetypes,Consider cards that align with the current strategy 
-                         or archetype you are pursuing (e.g., aggressive, defensive, combo).
-                
-                purge: 1.purge curse card 
-                       2.purge low level card to improve your deck.("Strike","Defend"....)
-                transform: transform low level card to improve your deck.("Strike","Defend"....)
-                
-                ###Response format###:
-                {output_format}
-                
-                Attention:
-                Remember, the output should not contain annotation like "//xxxxxxx",
-                you should only choose {num_cards} card{s} for {intent},the output should
-                only contain {num_cards} index.
-                when giving index, you should take duplicate cards into counts.
-                """
-        template1 = ChatPromptTemplate.from_template(template_string)
-        messages = template1.format_messages(
-            intent = intent,
-            role= self.role,
-            relics = relics,
-            deck = deck,
-            hp = hp,
-            available_cards= self.get_card_list_str(available_cards),
-            num_cards = num_cards,
-            s = s,
-            output_format = outputFormat
-        )
+
         config = {"configurable": {"thread_id": self.thread_id}}
-        responses = self.common_agent.invoke(
-            {"messages": messages}, config
+        responses = self.simple_grid_chice_agent.invoke(
+            intent=intent,
+            relics=self.game.relics,
+            current_hp= self.game.current_hp,
+            max_hp= self.game.max_hp,
+            deck = self.game.deck,
+            available_cards= self.game.screen.cards,
+            config=config
         )
-        response_text = responses["messages"][-1].content
-        start = response_text.rfind('```json') + len('```json\n')
-        end = response_text.rfind('```')
-        json_text = response_text[start:end].strip()  # json文本
 
         ret = []
         error_ret = []
-
+        card_Index = self.simple_grid_chice_agent.cardIndex
+        explanation = self.simple_grid_chice_agent.explanation
 
         with open(r'C:\Users\32685\Desktop\spirecomm\output.txt', 'a',encoding="utf-8") as file:
+            # file.write('--------------executing get_play_card_action---------------\n')
+            # file.write(self.game.__str__())
             file.write('--------------human message--------------------------------\n')
-            file.write(messages[0].content + "\n")
+            file.write(self.simple_grid_chice_agent.humanM+"\n")
             file.write("--------------ai message-----------------------------------\n")
             file.write(responses["messages"][-1].content + "\n")
+            file.write("self.card_Index:" + str(card_Index) + "\n")
+            file.write("self.explanation:" + str(explanation) + "\n")
 
-        # 得到最终的 json格式文件
-        try:
-            jsonfile = json.loads(json_text)
-        except Exception as e:
-            with open(r'C:\Users\32685\Desktop\spirecomm\error_log.txt', 'a') as file:
-                file.write(f'unable to parse json_text:{json_text}\n')
-            return error_ret
+        chosen_card = available_cards[card_Index]
+        ret.append(chosen_card)
 
-        card_Indexes = jsonfile.get('cardIndexes')
-        explanation = jsonfile.get('explanation')
-
-
-        if isinstance(card_Indexes, list):
-            if len(card_Indexes) == num_cards:
-                for index in card_Indexes:
-                    if len(available_cards) > index >= 0:
-                        ret.append(available_cards[index])
-                    else:
-                        break
         if len(ret) != num_cards:
             # 出bug啦！
             with open(r'C:\Users\32685\Desktop\spirecomm\error_log.txt', 'a') as file:
                 file.write(f'wrong index list from "make_grid_choice"')
             return error_ret
-
-        with open(r'C:\Users\32685\Desktop\spirecomm\output.txt', 'a') as file:
-            # file.write('--------------executing get_play_card_action---------------\n')
-            # file.write(self.game.__str__())
-            file.write("--------------ai stream------------------------------------\n")
-            for response in responses["messages"]:
-                file.write(type(response).__name__ + " " + response.__str__())
-                file.write("\n\n")
-
         return ret
 
     def choose_rest_option(self):
@@ -814,6 +733,10 @@ class SimpleAgent:
         tools = []
         agent = create_react_agent(model=self.llm, tools=tools)
         self.common_agent = agent
+
+    def init_simple_grid_choice_llm(self):
+        agent = SimpleGridChoiceAgent(role=self.role,llm=self.llm,small_llm=self.llm)
+        self.simple_grid_chice_agent = agent
     
     @tool("search_card_tool")
     def search_card(card: str) -> str:
@@ -835,8 +758,8 @@ class SimpleAgent:
         # chatanywhere
         # free
         # os.environ["OPENAI_API_KEY"] = "sk-KCmRtnkbFhG5H17LiQSJ9Y76EjACuiSH0Bgjq83Ld7QiBKs4"
-        # os.environ["OPENAI_API_KEY"] = "sk-Nxr5VkCGRNruaDUzUZz3uCkKUtMvg0u3V7uiXJhJSbo0wAIp"
-        # os.environ["OPENAI_API_BASE"] = "https://api.chatanywhere.tech/v1"
+        os.environ["OPENAI_API_KEY"] = "sk-Nxr5VkCGRNruaDUzUZz3uCkKUtMvg0u3V7uiXJhJSbo0wAIp"
+        os.environ["OPENAI_API_BASE"] = "https://api.chatanywhere.tech/v1"
 
 
         #silicon
@@ -853,8 +776,8 @@ class SimpleAgent:
         # os.environ["OPENAI_API_BASE"] = "https://api.agicto.cn/v1"
 
         #aihubmix
-        os.environ["OPENAI_API_KEY"] = "sk-vJnE3cpi4m837up7B34971C0250b42C2818e02C517BeE44e"
-        os.environ["OPENAI_API_BASE"] = "https://aihubmix.com/v1"
+        # os.environ["OPENAI_API_KEY"] = "sk-vJnE3cpi4m837up7B34971C0250b42C2818e02C517BeE44e"
+        # os.environ["OPENAI_API_BASE"] = "https://aihubmix.com/v1"
 
         # self.search_llm = ChatOpenAI(model="THUDM/chatglm3-6b", temperature=0)
         self.battle_thread_id = ''.join(random.choices('abcdefghijklmnopqrstuvwxyz0123456789', k=10))
@@ -906,7 +829,9 @@ class SimpleAgent:
         # self.llm = ChatOpenAI(model="gemini-2.0-flash-lite",temperature=0.3)
         # self.llm = ChatOpenAI(model="gemini-2.0-flash", temperature=0.3)
         # self.llm = ChatOpenAI(model="gemini-2.0-flash-thinking-exp-01-21", temperature=0.3)
-        self.llm = ChatOpenAI(model="DeepSeek-V3", temperature=0.3)
+        # self.llm = ChatOpenAI(model="DeepSeek-V3", temperature=0.3)
+
+
 
     def get_role_guidelines(self,chosen_class):
 

@@ -255,7 +255,7 @@ Your response should be structured in JSON format as follows:
         human_msg = f""" Context:
                 - **Current Deck:** {get_lists_str(state["deck"])}
                 - **Floor**: {state["floor"]}
-                - **Player's Health:** {state["current_hp"]}
+                - **Player's Health:** {state["current_hp"]}/{state["max_hp"]}
                 - **Available Cards:** {get_lists_str_with_r(state["reward_cards"])}
                 now give your response. """
 

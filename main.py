@@ -31,6 +31,8 @@ if __name__ == "__main__":
             file.write('--------------tracking---------------\n')
         with open(r'C:\Users\32685\Desktop\spirecomm\action_list.txt', 'w') as file:
             file.write('--------------tracking---------------\n')
+        with open(r'C:\Users\32685\Desktop\spirecomm\simple_grid_choice_agent.txt', 'w') as file:
+            file.write('--------------tracking---------------\n')
 
         agent = SimpleAgent()
         coordinator = Coordinator()
@@ -45,6 +47,7 @@ if __name__ == "__main__":
             agent.change_class(chosen_class)
             agent.init_llm_env()
             agent.init_common_llm()
+            agent.init_simple_grid_choice_llm()
             agent.init_battle_llm()
             agent.init_choose_card_llm()
             agent.init_make_map_choice_llm()
@@ -65,6 +68,7 @@ if __name__ == "__main__":
         #
         #     agent.init_llm_env()
         #     agent.init_common_llm()
+        #     agent.init_simple_grid_choice_llm()
         #     agent.init_battle_llm()
         #     agent.init_choose_card_llm()
         #     agent.init_make_map_choice_llm()

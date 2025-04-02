@@ -366,7 +366,7 @@ things you should be aware of in the combat.
 
             if monster.monster_id == "Sentry" and len(monsters)==3 and Sentry_flag==0:
                 suggestion_content += ("\n You are facing Elite enemies Sentry*3.You should prioritize killing  "
-                                       "the first or third sentry(instead of the second one), to ensure that you never"
+                                       "*the first or third* sentry(instead of the second one), to ensure that you never"
                                        " need to block for more than one sentry's damage."
                                        )
                 Sentry_flag = 1
