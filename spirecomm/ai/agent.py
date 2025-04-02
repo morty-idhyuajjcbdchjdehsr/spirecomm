@@ -38,6 +38,7 @@ from dotenv import load_dotenv
 class SimpleAgent:
 
     def __init__(self, chosen_class=PlayerClass.THE_SILENT):
+        self.pro_llm = None
         self.simple_grid_chice_agent = None
         self.deck_analysis = ''
         self.search_llm = None
@@ -672,7 +673,7 @@ class SimpleAgent:
 
 
     def init_choose_card_llm(self):
-        self.choose_card_agent = ChooseCardAgent(role=self.role,llm=self.llm,small_llm=self.llm)
+        self.choose_card_agent = ChooseCardAgent(role=self.role,llm=self.pro_llm,small_llm=self.pro_llm)
 
     def init_make_map_choice_llm(self):
         choice_index_schema = ResponseSchema(
@@ -736,7 +737,7 @@ class SimpleAgent:
         self.common_agent = agent
 
     def init_simple_grid_choice_llm(self):
-        agent = SimpleGridChoiceAgent(role=self.role,llm=self.llm,small_llm=self.llm)
+        agent = SimpleGridChoiceAgent(role=self.role,llm=self.pro_llm,small_llm=self.pro_llm)
         self.simple_grid_chice_agent = agent
     
     @tool("search_card_tool")
@@ -828,11 +829,17 @@ class SimpleAgent:
         # self.llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash",temperature=0,transport='rest') #有限额
 
         # self.llm = ChatOpenAI(model="gemini-2.0-flash-lite",temperature=0.3)
-        self.llm = ChatOpenAI(model="gemini-2.0-flash", temperature=0.3)
+        # self.llm = ChatOpenAI(model="gemini-2.0-flash", temperature=0.3)
         # self.llm = ChatOpenAI(model="gemini-2.0-flash-thinking-exp-01-21", temperature=0.3)
         # self.llm = ChatOpenAI(model="DeepSeek-V3", temperature=0.3)
-
-
+        # self.llm = ChatOpenAI(model="deepseek-ai/deepseek-vl2", temperature=0.3) # man
+        # self.llm = ChatOpenAI(model="deepseek-chat", temperature=0.3) #man
+        self.llm = ChatOpenAI(model="Doubao-1.5-pro-32k", temperature=0.3) # haixing
+        # self.llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.3) #
+        # self.llm = ChatOpenAI(model="qwen-max-0125", temperature=0.3)  # shi
+        # self.llm = ChatOpenAI(model="grok-2-1212", temperature=0.3) #可以用这个选牌?
+        
+        self.pro_llm = ChatOpenAI(model="DeepSeek-V3", temperature=0.3) #
 
     def get_role_guidelines(self,chosen_class):
 

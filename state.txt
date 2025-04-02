@@ -1,27 +1,27 @@
 --------------current state---------------
 Game State:
 Current Action: None
-Current HP: 52/70
-Floor: 4, Act: 1
-Gold: 146, Seed: -8988054313221503748
-Character: PlayerClass.THE_SILENT, Ascension Level: 0
-Relics: [<spirecomm.spire.relic.Relic object at 0x0000017CCE69FAD0>, <spirecomm.spire.relic.Relic object at 0x0000017CCE69F590>]
-Deck: [<spirecomm.spire.card.Card object at 0x0000017CCE69D6A0>, <spirecomm.spire.card.Card object at 0x0000017CCE69E2A0>, <spirecomm.spire.card.Card object at 0x0000017CCE69F5F0>, <spirecomm.spire.card.Card object at 0x0000017CCE69D850>, <spirecomm.spire.card.Card object at 0x0000017CCE657A40>, <spirecomm.spire.card.Card object at 0x0000017CCE656630>, <spirecomm.spire.card.Card object at 0x0000017CCE654FE0>, <spirecomm.spire.card.Card object at 0x0000017CCE654920>, <spirecomm.spire.card.Card object at 0x0000017CCE6547A0>, <spirecomm.spire.card.Card object at 0x0000017CCE6550A0>, <spirecomm.spire.card.Card object at 0x0000017CCE654AA0>, <spirecomm.spire.card.Card object at 0x0000017CCE654D70>, <spirecomm.spire.card.Card object at 0x0000017CCE6546B0>, <spirecomm.spire.card.Card object at 0x0000017CCE654AD0>, <spirecomm.spire.card.Card object at 0x0000017CCE656570>]
-Potions: [<spirecomm.spire.potion.Potion object at 0x0000017CCE687380>, <spirecomm.spire.potion.Potion object at 0x0000017CCE684980>, <spirecomm.spire.potion.Potion object at 0x0000017CCE687F20>]
-Map: <spirecomm.spire.map.Map object at 0x0000017CCE69CAD0>
+Current HP: 30/80
+Floor: 12, Act: 1
+Gold: 248, Seed: -8350011513601192629
+Character: PlayerClass.IRONCLAD, Ascension Level: 0
+Relics: [ Burning Blood, Toxic Egg, Ancient Tea Set, Paper Phrog ]
+Deck: [ Strike(1,True,ATTACK), Strike(1,True,ATTACK), Strike(1,True,ATTACK), Strike(1,True,ATTACK), Strike(1,True,ATTACK), Defend(1,False,SKILL), Defend(1,False,SKILL), Defend(1,False,SKILL), Defend(1,False,SKILL), Bash(2,True,ATTACK), Bludgeon(3,True,ATTACK), Armaments(1,False,SKILL), Seeing Red(1,False,SKILL), Spot Weakness(1,True,SKILL), Limit Break+(1,False,SKILL), Flame Barrier(2,False,SKILL), Shockwave+(2,False,SKILL), Pommel Strike(1,True,ATTACK) ]
+Potions: [ {'potion_id': 'Potion Slot', 'name': 'Potion Slot', 'can_use': False, 'can_discard': False, 'requires_target': False, 'price': 0}{'potion_id': 'Potion Slot', 'name': 'Potion Slot', 'can_use': False, 'can_discard': False, 'requires_target': False, 'price': 0}{'potion_id': 'Potion Slot', 'name': 'Potion Slot', 'can_use': False, 'can_discard': False, 'requires_target': False, 'price': 0} ]
+Map: <spirecomm.spire.map.Map object at 0x000001D54F94A6F0>
 In Combat: True
-Player: Player(energy=0,block=3)
-Monsters: [<spirecomm.spire.character.Monster object at 0x0000017CCE687EF0>, <spirecomm.spire.character.Monster object at 0x0000017CCE687920>, <spirecomm.spire.character.Monster object at 0x0000017CCE685CD0>]
-Draw Pile: [<spirecomm.spire.card.Card object at 0x0000017CCE687D10>, <spirecomm.spire.card.Card object at 0x0000017CCE6871A0>, <spirecomm.spire.card.Card object at 0x0000017CCE685160>, <spirecomm.spire.card.Card object at 0x0000017CCE687DD0>, <spirecomm.spire.card.Card object at 0x0000017CCE684710>, <spirecomm.spire.card.Card object at 0x0000017CCE6854F0>, <spirecomm.spire.card.Card object at 0x0000017CCE686C30>, <spirecomm.spire.card.Card object at 0x0000017CCE687260>, <spirecomm.spire.card.Card object at 0x0000017CCE684620>, <spirecomm.spire.card.Card object at 0x0000017CCE6856D0>, <spirecomm.spire.card.Card object at 0x0000017CCE687F80>, <spirecomm.spire.card.Card object at 0x0000017CCE687410>, <spirecomm.spire.card.Card object at 0x0000017CCE684C50>, <spirecomm.spire.card.Card object at 0x0000017CCE684590>]
-Discard Pile: [<spirecomm.spire.card.Card object at 0x0000017CCE6862A0>, <spirecomm.spire.card.Card object at 0x0000017CCE687110>]
-Exhaust Pile: [<spirecomm.spire.card.Card object at 0x0000017CCE6870E0>, <spirecomm.spire.card.Card object at 0x0000017CCE685730>, <spirecomm.spire.card.Card object at 0x0000017CCE686BD0>, <spirecomm.spire.card.Card object at 0x0000017CCE687140>]
-Hand: [<spirecomm.spire.card.Card object at 0x0000017CCE686ED0>, <spirecomm.spire.card.Card object at 0x0000017CCE686D50>, <spirecomm.spire.card.Card object at 0x0000017CCE685820>, <spirecomm.spire.card.Card object at 0x0000017CCE6845C0>, <spirecomm.spire.card.Card object at 0x0000017CCE6855E0>]
+Player: Player(energy=3,block=0)
+Monsters: [ SpikeSlime_M( 21/30 ,Intent.ATTACK_DEBUFF 12*1,0,[  ]), SlaverRed( 11/50 ,Intent.ATTACK_DEBUFF 12*1,0,[  ]) ]
+Draw Pile: [<spirecomm.spire.card.Card object at 0x000001D54F91CDD0>, <spirecomm.spire.card.Card object at 0x000001D54F91CE00>]
+Discard Pile: [<spirecomm.spire.card.Card object at 0x000001D54F91CE30>, <spirecomm.spire.card.Card object at 0x000001D54F91CE60>, <spirecomm.spire.card.Card object at 0x000001D54F91CE90>, <spirecomm.spire.card.Card object at 0x000001D54F91CEC0>, <spirecomm.spire.card.Card object at 0x000001D54F91CEF0>, <spirecomm.spire.card.Card object at 0x000001D54F91CF20>, <spirecomm.spire.card.Card object at 0x000001D54F91CF50>, <spirecomm.spire.card.Card object at 0x000001D54F91CF80>, <spirecomm.spire.card.Card object at 0x000001D54F91CFB0>, <spirecomm.spire.card.Card object at 0x000001D54F91CFE0>]
+Exhaust Pile: [<spirecomm.spire.card.Card object at 0x000001D54F91D010>]
+Hand: [<spirecomm.spire.card.Card object at 0x000001D54F91D040>, <spirecomm.spire.card.Card object at 0x000001D54F91D070>, <spirecomm.spire.card.Card object at 0x000001D54F91D0A0>, <spirecomm.spire.card.Card object at 0x000001D54F91D0D0>, <spirecomm.spire.card.Card object at 0x000001D54F91D100>]
 Limbo: []
 Card in Play: None
-Turn: 8, Cards Discarded This Turn: 0
-Screen: <spirecomm.spire.screen.Screen object at 0x0000017CCE6577D0>, Screen Up: False
+Turn: 3, Cards Discarded This Turn: 0
+Screen: {'screen_type': <ScreenType.NONE: 14>}, Screen Up: False
 Screen Type: ScreenType.NONE, Room Phase: RoomPhase.COMBAT, Room Type: MonsterRoom
 Choices: [], Choices Available: False
-End Available: True, Potion Available: True
+End Available: True, Potion Available: False
 Play Available: True, Proceed Available: False
 Cancel Available: False

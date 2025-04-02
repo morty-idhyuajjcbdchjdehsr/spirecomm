@@ -486,7 +486,8 @@ things you should be aware of in the combat.
 
             if card.name == "Body Slam" or card.name == "Body Slam+":
                 suggestion_content += ("\nYou have 'Body Slam' in your Hand Pile,"
-                                       "this card deals damage based on your current block,now it can deal {} damage"
+                                       "this card deals damage based on your current block,DO build block first before"
+                                       "playing it. now it can deal {} damage"
                                        .format(block))
             if card.name == "Feed":
                 suggestion_content += ("\nYou have 'Feed' in your Hand Pile,which deals 10 damage"
@@ -505,6 +506,11 @@ things you should be aware of in the combat.
                 suggestion_content += ("\nYou have 'Limit Break' in your Hand Pile,remember it double your Strength.("
                                        "so don't use it when Strength is 0 ) "
                                        "You current Strength is "+str(Strength))
+            if card.name == "Bludgeon":
+                suggestion_content += "\nYou have 'Bludgeon' in your Hand Pile,which could deal 32 damage "
+            if card.name == "Bludgeon+":
+                suggestion_content += "\nYou have 'Bludgeon+' in your Hand Pile,which could deal 42 damage "
+
 
 
         # if zero_cost_card_flag == 1:
