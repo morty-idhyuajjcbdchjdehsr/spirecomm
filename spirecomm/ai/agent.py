@@ -754,6 +754,9 @@ class SimpleAgent:
 
         # load_dotenv()  # to do: 隐藏各个api key
 
+        self.deck_analysis = ''
+
+
         # tavity
         os.environ["TAVILY_API_KEY"] = "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"
 

@@ -251,7 +251,8 @@ things you should be aware of in the combat.
                                                          " please regenerate it!"}]
             }
         target1 = None
-        if self.target_index is not None and self.target_index != -1 and 0 <= self.target_index < len(available_monsters):
+        if self.target_index is not None and self.target_index != -1 and 0 <= self.target_index < len(
+                available_monsters):
             target1 = available_monsters[self.target_index]
 
         if card_to_play1 is not None:
@@ -332,6 +333,7 @@ things you should be aware of in the combat.
         low_hp_m_list = []
         Sentry_flag = 0
         Strength = 0
+        Artifact_flag = 0
 
         for power in powers:
             if power.power_name == "Strength":
@@ -339,6 +341,8 @@ things you should be aware of in the combat.
                 suggestion_content += (f"\nYou have Strength {power.amount}, If you want to Attack,"
                                        f"prioritize cards with multiple hits (e.q. 'Twin Strike',"
                                        f"'Sword Boomerang')")
+            if power.power_name == "Artifact":
+                Artifact_flag = 1
 
         for relic in relics:
             if relic.name == "Runic Dome":
@@ -352,7 +356,7 @@ things you should be aware of in the combat.
                     monster.intent == Intent.NONE):
                 no_attack_flag = 0
 
-            if (floor<=16 and monster.current_hp < 10) or (floor > 16 and monster.current_hp < 20) :
+            if (floor <= 16 and monster.current_hp < 10) or (floor > 16 and monster.current_hp < 20):
                 low_hp_flag = 1
                 low_hp_m_list.append(monster)
 
@@ -366,7 +370,7 @@ things you should be aware of in the combat.
                                        "Before using a Skill to mitigate damage, "
                                        "consider how much longer the fight might take.")
 
-            if monster.monster_id == "Sentry" and len(monsters)==3 and Sentry_flag==0:
+            if monster.monster_id == "Sentry" and len(monsters) == 3 and Sentry_flag == 0:
                 suggestion_content += ("\n You are facing Elite enemies Sentry*3.You should prioritize killing  "
                                        "*the first or third* sentry(instead of the second one), to ensure that you never"
                                        " need to block for more than one sentry's damage."
@@ -379,13 +383,14 @@ things you should be aware of in the combat.
                                        "Use the three turns before the Lagavulin wakes up to prepare for the "
                                        "fight by using Powers, or Bash as the Ironclad.")
             if monster.monster_id == "GremlinLeader":
-                suggestion_content += ("\nYou are facing Elite enemy Gremlin Leader and their minions.Any minion from this "
-                                       "fight (i.e. spawned gremlins or gremlins that come in the fight) will retreat "
-                                       "and be defeated if the Gremlin Leader is defeated.If you lack considerable damage"
-                                       " to burst down the Gremlin Leader, killing the gremlins spawned will increase "
-                                       "the likelyhood of her not attacking (Rallying and Encouraging instead), "
-                                       "hence giving you turns to continue chipping her health"
-                                        )
+                suggestion_content += (
+                    "\nYou are facing Elite enemy Gremlin Leader and their minions.Any minion from this "
+                    "fight (i.e. spawned gremlins or gremlins that come in the fight) will retreat "
+                    "and be defeated if the Gremlin Leader is defeated.If you lack considerable damage"
+                    " to burst down the Gremlin Leader, killing the gremlins spawned will increase "
+                    "the likelyhood of her not attacking (Rallying and Encouraging instead), "
+                    "hence giving you turns to continue chipping her health"
+                    )
             if monster.monster_id == "BookOfStabbing":
                 suggestion_content += ("\nYou are facing Elite enemy Book of Stabbing,It is important to try and kill"
                                        " the Book as quickly as possible, because its attacks will only get worse "
@@ -406,11 +411,11 @@ things you should be aware of in the combat.
                                        "minimize incoming damage.\n")
                 for power in monster.powers:
                     if power.power_name == "Mode Shift":
-                        suggestion_content += """The Guardian is in Offensive Mode now, after taking {} damage,it switches to Defensive Mode""".format(power.amount)
+                        suggestion_content += """The Guardian is in Offensive Mode now, after taking {} damage,it switches to Defensive Mode""".format(
+                            power.amount)
 
                     if power.power_name == "Sharp Hide":
                         suggestion_content += """The Guardian is in Defensive Mode now,it will thorns 3 damage when attacked."""
-
 
             if monster.monster_id == "SlimeBoss":
                 suggestion_content += ("\nYou are facing Boss Slime Boss.The Slime Boss is an Act 1 boss"
@@ -432,11 +437,9 @@ things you should be aware of in the combat.
                                        "alternates between summoning Torch Heads, "
                                        "attacking, and buffing itself. The Torch Heads deal damage in every turn. "
                                        "The Collector also gains Strength as the battle progresses, making its attacks "
-                                       "increasingly dangerous. Deciding whether to eliminate the minions or focus on "
-                                       "the boss is crucial, as leaving the Torch Heads alive can lead to overwhelming "
-                                       "damage, while targeting the boss directly may shorten the fight but "
-                                       "at a higher risk. Careful resource management is essential to survive "
-                                       "this encounter.")
+                                       "increasingly dangerous. it is crucial to eliminate the minions, "
+                                       "as leaving the Torch Heads alive can lead to overwhelming "
+                                       "damage.")
 
             if monster.monster_id == "TheChamp":
                 suggestion_content += ("\nYou are facing Boss The Champ.The Champ is an Act 2 boss with two distinct "
@@ -461,9 +464,6 @@ things you should be aware of in the combat.
                                        "preparing for Hyper Beam is key to survival. The fight demands balancing "
                                        "offense and defense to outlast its high-damage patterns.")
 
-
-
-
         if no_attack_flag == 1:
             suggestion_content += ("\nenemies are not in attacking intention this round,"
                                    "you should prioritize dealing damage or buffing yourself.")
@@ -475,9 +475,10 @@ things you should be aware of in the combat.
                                    "AOE card which can affect them all.")
 
         if total_damage - block >= 7:
-            suggestion_content += (f"\nYou are facing huge incoming damage, which will make you lose {total_damage - block} hp."
-                                   f"you should consider mitigate the damage by:"
-                                   f"1. build block, 2.weaken enemy 3.eliminate enemy")
+            suggestion_content += (
+                f"\nYou are facing huge incoming damage, which will make you lose {total_damage - block} hp."
+                f"you should consider mitigate the damage by:"
+                f"1. build block, 2.weaken enemy 3.eliminate enemy")
 
         zero_cost_card_flag = 0
         for card in hand:
@@ -505,17 +506,37 @@ things you should be aware of in the combat.
             if card.name == "Limit Break" or card.name == "Limit Break+":
                 suggestion_content += ("\nYou have 'Limit Break' in your Hand Pile,remember it double your Strength.("
                                        "so don't use it when Strength is 0 ) "
-                                       "You current Strength is "+str(Strength))
+                                       "You current Strength is " + str(Strength))
             if card.name == "Bludgeon":
                 suggestion_content += "\nYou have 'Bludgeon' in your Hand Pile,which could deal 32 damage "
             if card.name == "Bludgeon+":
                 suggestion_content += "\nYou have 'Bludgeon+' in your Hand Pile,which could deal 42 damage "
 
+            if card.name == "Biased Cognition":
+                if Artifact_flag == 0:
+                    suggestion_content += ("\nYou have 'Biased Cognition' in your Hand Pile,which gain 4 focus but also"
+                                           "cause continuous Focus loss. it is not favorable to use it in the early "
+                                           "turns "
+                                           "of long fights like bosses and some elites. ")
+                else:
+                    suggestion_content += ("\nYou have 'Biased Cognition' in your Hand Pile.Meanwhile, you have "
+                                           "'Artifact' buff which Negates its Debuff.So, prioritize playing the "
+                                           "'Biased Cognition'.")
 
+            if card.name == "Biased Cognition+":
+                if Artifact_flag == 0:
+                    suggestion_content += ("\nYou have 'Biased Cognition+' in your Hand Pile,which gain 5 focus but "
+                                           "also"
+                                           "cause continuous Focus loss. it is not favorable to use it in the early "
+                                           "turns "
+                                           "of long fights like bosses and some elites. ")
+                else:
+                    suggestion_content += ("\nYou have 'Biased Cognition+' in your Hand Pile.Meanwhile, you have "
+                                           "'Artifact' buff which Negates its Debuff.So, prioritize playing the "
+                                           "'Biased Cognition'.")
 
         # if zero_cost_card_flag == 1:
         #     suggestion_content += "\nYou have 0 cost cards in your Hand Pile."
-
 
         template_string = """       
 {deck_analysis}        
@@ -581,7 +602,8 @@ now give the response.
         if 0 <= self.card_Index < len(playable_cards):
             card_to_play = playable_cards[self.card_Index]
         target1 = None
-        if self.target_index is not None and self.target_index != -1 and 0 <= self.target_index < len(available_monsters):
+        if self.target_index is not None and self.target_index != -1 and 0 <= self.target_index < len(
+                available_monsters):
             target1 = available_monsters[self.target_index]
 
         operation = ""
@@ -594,9 +616,9 @@ now give the response.
 
         # round_info = f"{{ turn:{turn},operation:{operation} }}"
         round_info = {
-            'floor':floor,
-            'turn':turn,
-            'operation':operation
+            'floor': floor,
+            'turn': turn,
+            'operation': operation
         }
         self.previous_rounds_info.append(round_info)
 
