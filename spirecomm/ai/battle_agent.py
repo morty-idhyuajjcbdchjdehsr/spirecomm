@@ -17,7 +17,7 @@ from langgraph.graph.message import add_messages
 
 from langchain_core.messages import AIMessage, BaseMessage, HumanMessage
 
-from spirecomm.spire.card import Card
+from spirecomm.spire.card import Card, CardType
 from spirecomm.spire.character import Monster, Intent
 from spirecomm.spire.relic import Relic
 
@@ -362,6 +362,17 @@ things you should be aware of in the combat.
 
             total_damage += monster.move_hits * monster.move_adjusted_damage
 
+            if monster.monster_id == "Cultist":
+                suggestion_content += ("\nYou are facing enemy Cultist,who gains Strength after each turn,so it is"
+                                       "crucial to eliminating it quickly.")
+
+            if monster.monster_id == "AcidSlime_Lt":
+                suggestion_content += ("\nYou are facing enemy AcidSlime_L,When its HP falls below 50%, it splits into "
+                                       "two "
+                                       "smaller slimes, each with its remaining HP.It is crucial to lower as much "
+                                       "HP before it splits."
+                                       )
+
             if monster.monster_id == "GremlinNob":
                 suggestion_content += ("\nYou are facing Elite enemy GremlinNob,With the exception of the first turn, "
                                        "where it has yet to apply  Enrage, playing Skills will make the Gremlin Nob "
@@ -420,7 +431,7 @@ things you should be aware of in the combat.
             if monster.monster_id == "SlimeBoss":
                 suggestion_content += ("\nYou are facing Boss Slime Boss.The Slime Boss is an Act 1 boss"
                                        " with a unique Split mechanic. When its HP falls below 50%, it splits into two "
-                                       "smaller slimes, each with half of its remaining HP. It uses Goop Spray to "
+                                       "smaller slimes, each with its remaining HP. It uses Goop Spray to "
                                        "weaken the player and follows up with heavy attacks. The key strategy is to "
                                        "time your damage output carefully—avoid triggering the split when the boss "
                                        "has too much HP left, or you’ll face two strong slimes instead of weaker ones."
@@ -484,6 +495,10 @@ things you should be aware of in the combat.
         for card in hand:
             if card.cost == 0:
                 zero_cost_card_flag = 1
+
+            if card.type == CardType.STATUS:
+                suggestion_content += ("\nYou have STATUS card in your hand pile,consider exhausting it when"
+                                       "having low defence pressure.")
 
             if card.name == "Body Slam" or card.name == "Body Slam+":
                 suggestion_content += ("\nYou have 'Body Slam' in your Hand Pile,"
