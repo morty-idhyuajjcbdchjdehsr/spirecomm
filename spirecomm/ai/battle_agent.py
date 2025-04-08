@@ -492,13 +492,13 @@ things you should be aware of in the combat.
                 f"1. build block, 2.weaken enemy 3.eliminate enemy")
 
         zero_cost_card_flag = 0
+        status_flag = 0
         for card in hand:
             if card.cost == 0:
                 zero_cost_card_flag = 1
 
             if card.type == CardType.STATUS:
-                suggestion_content += ("\nYou have STATUS card in your hand pile,consider exhausting it when"
-                                       "having low defence pressure.")
+                status_flag = 1
 
             if card.name == "Body Slam" or card.name == "Body Slam+":
                 suggestion_content += ("\nYou have 'Body Slam' in your Hand Pile,"
@@ -552,6 +552,11 @@ things you should be aware of in the combat.
 
         # if zero_cost_card_flag == 1:
         #     suggestion_content += "\nYou have 0 cost cards in your Hand Pile."
+
+        if status_flag == 1:
+            suggestion_content += ("\nYou have STATUS card in your hand pile,consider exhausting it when"
+                                   "having low defence pressure.")
+
 
         template_string = """       
 {deck_analysis}        
