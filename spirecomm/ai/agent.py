@@ -727,7 +727,7 @@ class SimpleAgent:
         """
         # print(system_prompt)
         tools = []
-        agent = create_react_agent(self.llm, tools=tools, state_modifier=system_prompt, )
+        agent = create_react_agent(self.pro_llm, tools=tools, state_modifier=system_prompt, )
         self.make_map_choice_agent = agent
 
     def init_common_llm(self):
@@ -837,8 +837,8 @@ class SimpleAgent:
         # self.llm = ChatOpenAI(model="DeepSeek-V3", temperature=0.3)
         # self.llm = ChatOpenAI(model="deepseek-ai/deepseek-vl2", temperature=0.3) # man
         # self.llm = ChatOpenAI(model="deepseek-chat", temperature=0.3) #man
-        self.llm = ChatOpenAI(model="Doubao-1.5-pro-32k", temperature=0.3) # haixing
-        # self.llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.3) #
+        # self.llm = ChatOpenAI(model="Doubao-1.5-pro-32k", temperature=0.3) # haixing
+        self.llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.3) #
         # self.llm = ChatOpenAI(model="qwen-max-0125", temperature=0.3)  # shi
         # self.llm = ChatOpenAI(model="grok-2-1212", temperature=0.3) #可以用这个选牌?
         
