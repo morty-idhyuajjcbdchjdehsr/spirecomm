@@ -350,7 +350,17 @@ things you should be aware of in the combat.
                                        "but prevents you from seeing enemy intents. This means you won't "
                                        "know whether enemies will attack, defend, or use debuffs.")
 
-        for monster in monsters:
+        for index, monster in enumerate(monsters):
+
+            for power in monster.powers:
+                # poison
+                if power.power_name == "Poison":
+                    poison = power.amount
+                    if poison >= monster.current_hp:
+                        suggestion_content += ("\n{}'s poison is greater than its HP,you could focus on other"
+                                               "enemies.".format(
+                            monster.monster_id + '(target_index=' + str(index) + ')'))
+
             if (monster.intent == Intent.ATTACK or monster.intent == Intent.ATTACK_BUFF or
                     monster.intent == Intent.ATTACK_DEBUFF or monster.intent == Intent.ATTACK_DEFEND or
                     monster.intent == Intent.NONE):
@@ -366,7 +376,7 @@ things you should be aware of in the combat.
                 suggestion_content += ("\nYou are facing enemy Cultist,who gains Strength after each turn,so it is"
                                        "crucial to eliminating it quickly.")
 
-            if monster.monster_id == "AcidSlime_Lt":
+            if monster.monster_id == "AcidSlime_L":
                 suggestion_content += ("\nYou are facing enemy AcidSlime_L,When its HP falls below 50%, it splits into "
                                        "two "
                                        "smaller slimes, each with its remaining HP.It is crucial to lower as much "
@@ -401,7 +411,7 @@ things you should be aware of in the combat.
                     " to burst down the Gremlin Leader, killing the gremlins spawned will increase "
                     "the likelyhood of her not attacking (Rallying and Encouraging instead), "
                     "hence giving you turns to continue chipping her health"
-                    )
+                )
             if monster.monster_id == "BookOfStabbing":
                 suggestion_content += ("\nYou are facing Elite enemy Book of Stabbing,It is important to try and kill"
                                        " the Book as quickly as possible, because its attacks will only get worse "
@@ -422,7 +432,8 @@ things you should be aware of in the combat.
                                        "minimize incoming damage.\n")
                 for power in monster.powers:
                     if power.power_name == "Mode Shift":
-                        suggestion_content += """The Guardian is in Offensive Mode now, after taking {} damage,it switches to Defensive Mode""".format(
+                        suggestion_content += """The Guardian is in Offensive Mode now, after taking {} damage,
+                        it switches to Defensive Mode,consider dealing damage to trigger the switch""".format(
                             power.amount)
 
                     if power.power_name == "Sharp Hide":
@@ -556,7 +567,6 @@ things you should be aware of in the combat.
         if status_flag == 1:
             suggestion_content += ("\nYou have STATUS card in your hand pile,consider exhausting it when"
                                    "having low defence pressure.")
-
 
         template_string = """       
 {deck_analysis}        

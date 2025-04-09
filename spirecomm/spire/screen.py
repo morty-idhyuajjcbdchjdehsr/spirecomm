@@ -66,6 +66,9 @@ class EventOption:
         choice_index = json_object.get("choice_index", None)
         return cls(text, label, disabled, choice_index)
 
+    def __str__(self):
+        return vars(self).__str__()
+
 
 class Screen:
 

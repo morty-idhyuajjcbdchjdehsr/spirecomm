@@ -13,6 +13,7 @@ from langchain_core.tools import tool
 
 from spirecomm.ai.battle_agent import BattleAgent
 from spirecomm.ai.choose_card_agent import ChooseCardAgent
+from spirecomm.ai.event_choice_agent import EventChoiceAgent
 from spirecomm.ai.grid_choice_agent import SimpleGridChoiceAgent
 from spirecomm.spire.game import Game, RoomPhase
 from spirecomm.spire.character import Intent, PlayerClass
@@ -38,6 +39,7 @@ from dotenv import load_dotenv
 class SimpleAgent:
 
     def __init__(self, chosen_class=PlayerClass.THE_SILENT):
+        self.event_agent = None
         self.pro_llm = None
         self.simple_grid_chice_agent = None
         self.deck_analysis = ''
@@ -87,7 +89,7 @@ class SimpleAgent:
     def handle_error(self, error):
         # raise Exception(error)
         with open(r'C:\Users\32685\Desktop\spirecomm\error_log.txt', 'a') as file:
-            file.write("error occurs!!:\n"+error.__str__()+"\n\n")
+            file.write("error occurs!!:\n" + error.__str__() + "\n\n")
 
     def get_next_action_in_game(self, game_state):
         self.game = game_state
@@ -170,7 +172,6 @@ class SimpleAgent:
 
     def get_play_card_action(self):
 
-
         available_monsters = [monster for monster in self.game.monsters if
                               monster.current_hp > 0 and not monster.half_dead and not monster.is_gone]
         playable_cards = [card for card in self.game.hand if card.is_playable]
@@ -204,13 +205,13 @@ class SimpleAgent:
             # file.write('--------------executing get_play_card_action---------------\n')
             # file.write(self.game.__str__())
             file.write('--------------human message--------------------------------\n')
-            file.write(self.battle_agent.humanM+"\n")
+            file.write(self.battle_agent.humanM + "\n")
             file.write("--------------ai message-----------------------------------\n")
             file.write(responses["messages"][-1].content + "\n")
-            file.write("self.card_index:"+str(self.battle_agent.card_Index)+ "\n")
-            file.write("self.is_to_end_turn:"+str(self.battle_agent.is_to_end_turn)+ "\n")
-            file.write("self.target_index:"+str(self.battle_agent.target_index)+ "\n")
-            file.write("self.explanation:"+str(self.battle_agent.explanation)+ "\n")
+            file.write("self.card_index:" + str(self.battle_agent.card_Index) + "\n")
+            file.write("self.is_to_end_turn:" + str(self.battle_agent.is_to_end_turn) + "\n")
+            file.write("self.target_index:" + str(self.battle_agent.target_index) + "\n")
+            file.write("self.explanation:" + str(self.battle_agent.explanation) + "\n")
             # file.write("--------------ai stream------------------------------------\n")
             # for response in responses["messages"]:
             #     file.write(type(response).__name__+" "+response.__str__())
@@ -222,7 +223,6 @@ class SimpleAgent:
         with open(r'C:\Users\32685\Desktop\spirecomm\state.txt', 'w') as file:
             file.write('--------------current state---------------\n')
             file.write(self.game.__str__())
-
 
         card_to_play1 = None
         if 0 <= card_Index < len(hand_cards):
@@ -249,7 +249,8 @@ class SimpleAgent:
             playable_cards = [card for card in self.game.hand if card.is_playable]
             zero_cost_cards = [card for card in playable_cards if card.cost == 0]
             zero_cost_attacks = [card for card in zero_cost_cards if card.type == spirecomm.spire.card.CardType.ATTACK]
-            zero_cost_non_attacks = [card for card in zero_cost_cards if card.type != spirecomm.spire.card.CardType.ATTACK]
+            zero_cost_non_attacks = [card for card in zero_cost_cards if
+                                     card.type != spirecomm.spire.card.CardType.ATTACK]
             nonzero_cost_cards = [card for card in playable_cards if card.cost != 0]
             aoe_cards = [card for card in playable_cards if self.priorities.is_card_aoe(card)]
             if self.game.player.block > self.get_incoming_damage() - (self.game.act + 4):
@@ -294,11 +295,8 @@ class SimpleAgent:
 
     def handle_screen(self):
         if self.game.screen_type == ScreenType.EVENT:
-            if self.game.screen.event_id in ["Vampires", "Masked Bandits", "Knowing Skull", "Ghosts", "Liars Game",
-                                             "Golden Idol", "Drug Dealer", "The Library"]:
-                return ChooseAction(len(self.game.screen.options) - 1)
-            else:
-                return ChooseAction(0)
+            return self.make_event_choice()
+
         elif self.game.screen_type == ScreenType.CHEST:
             return OpenChestAction()
         elif self.game.screen_type == ScreenType.SHOP_ROOM:
@@ -341,8 +339,10 @@ class SimpleAgent:
         elif self.game.screen_type == ScreenType.GRID:
 
             with open(r'C:\Users\32685\Desktop\spirecomm\grid.txt', 'w') as file:
-                file.write('self.game.cards is:{},self.game.screen.num_cards is:{},self.game.screen.selected_cards is:{}\n\n'
-                           .format(self.get_card_list_str(self.game.screen.cards),self.game.screen.num_cards,self.game.screen.selected_cards))
+                file.write(
+                    'self.game.cards is:{},self.game.screen.num_cards is:{},self.game.screen.selected_cards is:{}\n\n'
+                    .format(self.get_card_list_str(self.game.screen.cards), self.game.screen.num_cards,
+                            self.game.screen.selected_cards))
 
             # self.screen.any_number :use for Watcher to foresee
             if self.game.screen.any_number:
@@ -356,9 +356,8 @@ class SimpleAgent:
             available_cards = self.game.screen.cards
             if self.game.screen.for_upgrade or self.game.screen.for_transform or self.game.screen.for_purge:
                 chosen_cards = self.make_grid_choice()
-                if len(chosen_cards)!=0:
+                if len(chosen_cards) != 0:
                     return CardSelectAction(chosen_cards)
-
 
             if self.game.screen.for_upgrade or self.choose_good_card:
                 available_cards = self.priorities.get_sorted_cards(self.game.screen.cards)
@@ -377,6 +376,52 @@ class SimpleAgent:
         else:
             return ProceedAction()
 
+    def make_event_choice(self):
+        # with open(r'C:\Users\32685\Desktop\spirecomm\event_agent.txt', 'a') as file:
+        #     file.write('--------------event start---------------\n')
+        #     file.write(vars(self.game.screen).__str__() + '\n\n')
+        #     file.write('options: ' + self.get_lists_str(self.game.screen.options) + '\n')
+        #     file.write('--------------event end---------------\n\n')
+
+        # if self.game.screen.event_id in ["Vampires", "Masked Bandits", "Knowing Skull", "Ghosts", "Liars Game",
+        #                                  "Golden Idol", "Drug Dealer", "The Library"]:
+        #     return ChooseAction(len(self.game.screen.options) - 1)
+        # else:
+        #     return ChooseAction(0)
+
+        if self.game.screen.event_name == "Neow" and len(self.game.screen.options) == 1:
+            return ChooseAction(0)
+
+
+        config = {"configurable": {"thread_id": self.thread_id}}
+        responses = self.event_agent.invoke(
+            relics=self.game.relics,
+            current_hp=self.game.current_hp,
+            max_hp=self.game.max_hp,
+            deck=self.game.deck,
+            floor=self.game.floor,
+            event_name=self.game.screen.event_name,
+            event_text=self.game.screen.body_text,
+            event_options=self.game.screen.options,
+            config=config
+        )
+
+
+        option_index = self.event_agent.option_index
+        explanation = self.event_agent.explanation
+
+        with open(r'C:\Users\32685\Desktop\spirecomm\output.txt', 'a', encoding="utf-8") as file:
+            # file.write('--------------executing get_play_card_action---------------\n')
+            # file.write(self.game.__str__())
+            file.write('--------------human message--------------------------------\n')
+            file.write(self.event_agent.humanM + "\n")
+            file.write("--------------ai message-----------------------------------\n")
+            file.write(responses["messages"][-1].content + "\n")
+            file.write("self.option_index:" + str(option_index) + "\n")
+            file.write("self.explanation:" + str(explanation) + "\n")
+
+        return ChooseAction(option_index)
+
     def make_grid_choice(self):
 
         intent = ''
@@ -389,15 +434,14 @@ class SimpleAgent:
         num_cards = self.game.screen.num_cards
         available_cards = self.game.screen.cards
 
-
         config = {"configurable": {"thread_id": self.thread_id}}
         responses = self.simple_grid_chice_agent.invoke(
             intent=intent,
             relics=self.game.relics,
-            current_hp= self.game.current_hp,
-            max_hp= self.game.max_hp,
-            deck = self.game.deck,
-            available_cards= self.game.screen.cards,
+            current_hp=self.game.current_hp,
+            max_hp=self.game.max_hp,
+            deck=self.game.deck,
+            available_cards=self.game.screen.cards,
             config=config
         )
 
@@ -406,11 +450,11 @@ class SimpleAgent:
         card_Index = self.simple_grid_chice_agent.cardIndex
         explanation = self.simple_grid_chice_agent.explanation
 
-        with open(r'C:\Users\32685\Desktop\spirecomm\output.txt', 'a',encoding="utf-8") as file:
+        with open(r'C:\Users\32685\Desktop\spirecomm\output.txt', 'a', encoding="utf-8") as file:
             # file.write('--------------executing get_play_card_action---------------\n')
             # file.write(self.game.__str__())
             file.write('--------------human message--------------------------------\n')
-            file.write(self.simple_grid_chice_agent.humanM+"\n")
+            file.write(self.simple_grid_chice_agent.humanM + "\n")
             file.write("--------------ai message-----------------------------------\n")
             file.write(responses["messages"][-1].content + "\n")
             file.write("self.card_Index:" + str(card_Index) + "\n")
@@ -475,11 +519,11 @@ class SimpleAgent:
         explanation = self.choose_card_agent.explanation
         self.deck_analysis = self.choose_card_agent.strategy
 
-        with open(r'C:\Users\32685\Desktop\spirecomm\output.txt', 'a',encoding="utf-8") as file:
+        with open(r'C:\Users\32685\Desktop\spirecomm\output.txt', 'a', encoding="utf-8") as file:
             # file.write('--------------executing get_play_card_action---------------\n')
             # file.write(self.game.__str__())
             file.write('--------------human message--------------------------------\n')
-            file.write(self.choose_card_agent.humanM+"\n")
+            file.write(self.choose_card_agent.humanM + "\n")
             file.write("--------------ai message-----------------------------------\n")
             file.write(responses["messages"][-1].content + "\n")
             file.write("self.card_name:" + str(card_name) + "\n")
@@ -489,12 +533,11 @@ class SimpleAgent:
             #     file.write(type(response).__name__+" "+response.__str__())
             #     file.write("\n\n")
 
-
         if card_name == '':
             if self.game.cancel_available:
                 self.skipped_cards = True
                 return CancelAction()
-        elif card_name=="Bowl":
+        elif card_name == "Bowl":
             return CardRewardAction(bowl=True)
         else:
             reward_cards = self.game.screen.cards
@@ -503,7 +546,6 @@ class SimpleAgent:
                 self.skipped_cards = True
                 return CancelAction()
             return CardRewardAction(card_to_choose)
-
 
         # algorithm
         reward_cards = self.game.screen.cards
@@ -574,7 +616,7 @@ class SimpleAgent:
         if len(self.game.screen.next_nodes) > 0 and self.game.screen.next_nodes[0].y == 0:
             children = []
             for node in self.game.screen.next_nodes:
-                (x,y) = (node.x,node.y)
+                (x, y) = (node.x, node.y)
                 tmp = self.game.map.get_node(x, y)
                 children.append(tmp)
             current_node = Node(x=x, y=y, symbol=self.game.screen.current_node.symbol)
@@ -602,7 +644,7 @@ class SimpleAgent:
             deck=self.get_card_list_str(self.game.deck),
             choice_list=self.get_lists_str(self.game.screen.next_nodes),
             relics=self.get_lists_str(self.game.relics),
-            tree= tree_dict.__str__(),
+            tree=tree_dict.__str__(),
             # output_format=outputFormat,
         )
         config = {"configurable": {"thread_id": self.map_thread_id}}
@@ -613,7 +655,7 @@ class SimpleAgent:
         start = response_text.rfind('```json') + len('```json\n')
         end = response_text.rfind('```')
         json_text = response_text[start:end].strip()  # json文本
-        index = 0 #默认为0
+        index = 0  # 默认为0
 
         try:
             # 得到最终的 json格式文件
@@ -631,19 +673,18 @@ class SimpleAgent:
             # file.write('--------------executing get_play_card_action---------------\n')
             # file.write(self.game.__str__())
             file.write('--------------human message--------------------------------\n')
-            file.write(messages[0].content+"\n")
+            file.write(messages[0].content + "\n")
             file.write("--------------ai message-----------------------------------\n")
             file.write(responses["messages"][-1].content + "\n")
             file.write("--------------ai stream------------------------------------\n")
             for response in responses["messages"]:
-                file.write(type(response).__name__+" "+response.__str__())
+                file.write(type(response).__name__ + " " + response.__str__())
                 file.write("\n\n")
 
         if len(self.game.screen.next_nodes) > index >= 0:
             return ChooseMapNodeAction(self.game.screen.next_nodes[index])
         else:
             return ChooseMapNodeAction(self.game.screen.next_nodes[0])
-
 
         # old version
         # if len(self.game.screen.next_nodes) > 0 and self.game.screen.next_nodes[0].y == 0:
@@ -658,6 +699,10 @@ class SimpleAgent:
         # # This should never happen
         # return ChooseAction(0)
 
+    def init_event_llm(self):
+        agent = EventChoiceAgent(role=self.role, llm=ChatOpenAI(model="DeepSeek-V3", temperature=0.3))
+        self.event_agent = agent
+
     def init_battle_llm(self):
         # small_llm = ChatOpenAI(model="gemini-1.5-flash", temperature=0) # 4s
         # small_llm = ChatOpenAI(model="gpt-4o-mini",temperature=0) #good
@@ -666,14 +711,11 @@ class SimpleAgent:
         # small_llm = ChatOpenAI(model="qwen-turbo-latest", temperature=0) # good 3~4s
         # small_llm = ChatOpenAI(model="qwen-plus-latest", temperature=0) # man
 
-        agent = BattleAgent(role=self.role,llm=self.llm,small_llm=self.llm)
+        agent = BattleAgent(role=self.role, llm=self.llm, small_llm=self.llm)
         self.battle_agent = agent
 
-
-
-
     def init_choose_card_llm(self):
-        self.choose_card_agent = ChooseCardAgent(role=self.role,llm=self.pro_llm,small_llm=self.pro_llm)
+        self.choose_card_agent = ChooseCardAgent(role=self.role, llm=self.pro_llm, small_llm=self.pro_llm)
 
     def init_make_map_choice_llm(self):
         choice_index_schema = ResponseSchema(
@@ -737,9 +779,9 @@ class SimpleAgent:
         self.common_agent = agent
 
     def init_simple_grid_choice_llm(self):
-        agent = SimpleGridChoiceAgent(role=self.role,llm=self.pro_llm,small_llm=self.pro_llm)
+        agent = SimpleGridChoiceAgent(role=self.role, llm=self.pro_llm, small_llm=self.pro_llm)
         self.simple_grid_chice_agent = agent
-    
+
     @tool("search_card_tool")
     def search_card(card: str) -> str:
         """to get the content of the card"""
@@ -748,7 +790,6 @@ class SimpleAgent:
         # print(response)
         # print(response[-1])
         return response[-1].get('content')
-
 
     def init_llm_env(self):
 
@@ -766,21 +807,19 @@ class SimpleAgent:
         # os.environ["OPENAI_API_KEY"] = "sk-Nxr5VkCGRNruaDUzUZz3uCkKUtMvg0u3V7uiXJhJSbo0wAIp"
         # os.environ["OPENAI_API_BASE"] = "https://api.chatanywhere.tech/v1"
 
-
-        #silicon
+        # silicon
         # os.environ["OPENAI_API_KEY"] = "sk-aqhgalcbwavbbbcjbiuikgznytxmmixcveggxfmxmrjkpxkt"
         # os.environ["OPENAI_API_BASE"] ="https://api.siliconflow.cn/v1"
 
-
-        #Google
+        # Google
         # os.environ["GEMINI_API_KEY"] = "AIzaSyDUhCQJYnjYpez1v_2BH03Kzw - sDLWYTyI"
         os.environ["GOOGLE_API_KEY"] = "AIzaSyDUhCQJYnjYpez1v_2BH03Kzw-sDLWYTyI"
 
-        #AGICTO
+        # AGICTO
         # os.environ["OPENAI_API_KEY"] = "sk-dXqzgPLzOmxdo24tl4lqL8Ioh9udaG4ctTQMuDq1fDfwS4mM"
         # os.environ["OPENAI_API_BASE"] = "https://api.agicto.cn/v1"
 
-        #aihubmix
+        # aihubmix
         os.environ["OPENAI_API_KEY"] = "sk-vJnE3cpi4m837up7B34971C0250b42C2818e02C517BeE44e"
         os.environ["OPENAI_API_BASE"] = "https://aihubmix.com/v1"
 
@@ -789,7 +828,6 @@ class SimpleAgent:
         self.map_thread_id = ''.join(random.choices('abcdefghijklmnopqrstuvwxyz0123456789', k=10))
         self.choose_card_thread_id = ''.join(random.choices('abcdefghijklmnopqrstuvwxyz0123456789', k=10))
         self.thread_id = ''.join(random.choices('abcdefghijklmnopqrstuvwxyz0123456789', k=10))
-
 
         # self.llm = ChatOpenAI(model="gemini-1.5-flash", temperature=0) #便宜
         # self.llm = ChatOpenAI(model="gemini-1.5-flash-latest", temperature=0)
@@ -837,14 +875,26 @@ class SimpleAgent:
         # self.llm = ChatOpenAI(model="DeepSeek-V3", temperature=0.3)
         # self.llm = ChatOpenAI(model="deepseek-ai/deepseek-vl2", temperature=0.3) # man
         # self.llm = ChatOpenAI(model="deepseek-chat", temperature=0.3) #man
-        # self.llm = ChatOpenAI(model="Doubao-1.5-pro-32k", temperature=0.3) # haixing
-        self.llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.3) #
+        self.llm = ChatOpenAI(model="Doubao-1.5-pro-32k", temperature=0.3)  # haixing
+        # self.llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.3) #
         # self.llm = ChatOpenAI(model="qwen-max-0125", temperature=0.3)  # shi
+        # self.llm = ChatOpenAI(model="claude-3-haiku-20240307", temperature=0.3)  # 贵
         # self.llm = ChatOpenAI(model="grok-2-1212", temperature=0.3) #可以用这个选牌?
-        
-        self.pro_llm = ChatOpenAI(model="DeepSeek-V3", temperature=0.3) #
+        # self.llm = ChatOpenAI(model="Baichuan4-Air", temperature=0.3) # man
 
-    def get_role_guidelines(self,chosen_class):
+        # self.pro_llm = ChatOpenAI(model="DeepSeek-V3", temperature=0.3)  #
+        # self.pro_llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.3)  #
+        self.pro_llm = ChatOpenAI(model="gemini-2.0-flash", temperature=0.3)
+
+
+        self.init_common_llm()
+        self.init_simple_grid_choice_llm()
+        self.init_battle_llm()
+        self.init_choose_card_llm()
+        self.init_make_map_choice_llm()
+        self.init_event_llm()
+
+    def get_role_guidelines(self, chosen_class):
 
         if chosen_class == PlayerClass.IRONCLAD:
             return """
@@ -885,7 +935,7 @@ class SimpleAgent:
         else:
             return ""
 
-    def get_lists_str(self,lists):
+    def get_lists_str(self, lists):
         str = "[ "
         for item in lists:
             str += (item.__str__())

@@ -33,6 +33,8 @@ if __name__ == "__main__":
             file.write('--------------tracking---------------\n')
         with open(r'C:\Users\32685\Desktop\spirecomm\simple_grid_choice_agent.txt', 'w') as file:
             file.write('--------------tracking---------------\n')
+        with open(r'C:\Users\32685\Desktop\spirecomm\event_agent.txt', 'w') as file:
+            file.write('--------------tracking---------------\n')
 
         agent = SimpleAgent()
         coordinator = Coordinator()
@@ -46,18 +48,15 @@ if __name__ == "__main__":
         for chosen_class in itertools.cycle(PlayerClass):
             agent.change_class(chosen_class)
             agent.init_llm_env()
-            agent.init_common_llm()
-            agent.init_simple_grid_choice_llm()
-            agent.init_battle_llm()
-            agent.init_choose_card_llm()
-            agent.init_make_map_choice_llm()
+
             seed = "2ZK5PHFXAGB3X" # 重锤开，二层圆顶
             seed = "3FR420LZN9M7H" # 35层，力量战
             seed = "16G2XGIZWIVPY" # 44层，鸡煲
             seed = "16QXPYKRH7U5W" # 50层，毒贼
             seed = "2IEMKEY2CBQAZ" # 33层，鸡煲，鸟居钛合金棒
             seed = "55DIXCQA169G8" # 33层，战士自残流, 有肉
-            seed = "1ASP5QUI90TT8"
+            seed = "1ASP5QUI90TT8" # 45层，毒贼，催化剂，双瓶中基米
+            seed = "IJGDFL933EQJ" # 肉
 
             result = coordinator.play_one_game(chosen_class)
             with open(r'C:\Users\32685\Desktop\spirecomm\results.txt', 'a') as file:
@@ -67,15 +66,10 @@ if __name__ == "__main__":
                     file.write(f"lose as {chosen_class} at {datetime.now()} at floor {agent.game.floor}\n")
 
         # while True:
-        #     p_class = PlayerClass.IRONCLAD
+        #     p_class = PlayerClass.THE_SILENT
         #     agent.change_class(p_class)
         #
         #     agent.init_llm_env()
-        #     agent.init_common_llm()
-        #     agent.init_simple_grid_choice_llm()
-        #     agent.init_battle_llm()
-        #     agent.init_choose_card_llm()
-        #     agent.init_make_map_choice_llm()
         #
         #     result = coordinator.play_one_game(p_class)
         #     with open(r'C:\Users\32685\Desktop\spirecomm\results.txt', 'a') as file:
