@@ -346,7 +346,8 @@ class SimpleAgent:
 
             # self.screen.any_number :use for Watcher to foresee
             if self.game.screen.any_number:
-                return CardSelectAction([])
+                # return CardSelectAction([])
+                return ConfirmAction()
 
             # 网格选择
             if not self.game.choice_available:
@@ -389,7 +390,8 @@ class SimpleAgent:
         # else:
         #     return ChooseAction(0)
 
-        if self.game.screen.event_name == "Neow" and len(self.game.screen.options) == 1:
+        if len(self.game.screen.options) == 1:
+            time.sleep(1)
             return ChooseAction(0)
 
 
@@ -870,12 +872,12 @@ class SimpleAgent:
         # self.llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash",temperature=0,transport='rest') #有限额
 
         # self.llm = ChatOpenAI(model="gemini-2.0-flash-lite",temperature=0.3)
-        # self.llm = ChatOpenAI(model="gemini-2.0-flash", temperature=0.3)
+        # self.llm = ChatOpenAI(model="gemini-2.0-flash", temperature=0.5)
         # self.llm = ChatOpenAI(model="gemini-2.0-flash-thinking-exp-01-21", temperature=0.3)
-        # self.llm = ChatOpenAI(model="DeepSeek-V3", temperature=0.3)
+        self.llm = ChatOpenAI(model="DeepSeek-V3", temperature=0.3)
         # self.llm = ChatOpenAI(model="deepseek-ai/deepseek-vl2", temperature=0.3) # man
         # self.llm = ChatOpenAI(model="deepseek-chat", temperature=0.3) #man
-        self.llm = ChatOpenAI(model="Doubao-1.5-pro-32k", temperature=0.3)  # haixing
+        # self.llm = ChatOpenAI(model="Doubao-1.5-pro-32k", temperature=0.3)  # haixing
         # self.llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.3) #
         # self.llm = ChatOpenAI(model="qwen-max-0125", temperature=0.3)  # shi
         # self.llm = ChatOpenAI(model="claude-3-haiku-20240307", temperature=0.3)  # 贵

@@ -91,6 +91,13 @@ class EndTurnAction(Action):
         super().__init__("end")
 
 
+class ConfirmAction(Action):
+    """An action to use the CommunicationMod 'Confirm' command"""
+
+    def __init__(self):
+        super().__init__("confirm")
+
+
 class ProceedAction(Action):
     """An action to use the CommunicationMod 'Proceed' command"""
 
