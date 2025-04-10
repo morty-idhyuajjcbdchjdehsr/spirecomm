@@ -98,9 +98,7 @@ class SimpleAgent:
             return self.handle_screen()
         if self.game.proceed_available:
             return ProceedAction()
-        if self.game.play_available:
-
-            potion_action = None
+        if self.game.play_available or (self.game.room_phase == RoomPhase.COMBAT and self.game.potion_available):
 
             # discard SmokeBomb! No surrender!
             for potion in self.game.get_real_potions():
@@ -110,19 +108,20 @@ class SimpleAgent:
                     if potion.potion_id == "Fruit Juice":
                         return PotionAction(True, potion=potion)
 
-            if self.game.room_type == "MonsterRoomBoss" and len(self.game.get_real_potions()) > 0:
-                potion_action = self.use_next_potion()
+            # potion_action = None
+            # if self.game.room_type == "MonsterRoomBoss" and len(self.game.get_real_potions()) > 0:
+            #     potion_action = self.use_next_potion()
+            #
+            # if (self.game.room_type == "MonsterRoom" and len(self.game.get_real_potions()) > 0
+            #         and self.game.current_hp <= 30):
+            #     potion_action = self.use_next_potion()
+            #
+            # if (self.game.room_type == "MonsterRoomElite" and len(self.game.get_real_potions()) > 0
+            #         and self.game.current_hp <= 50):
+            #     potion_action = self.use_next_potion()
 
-            if (self.game.room_type == "MonsterRoom" and len(self.game.get_real_potions()) > 0
-                    and self.game.current_hp <= 30):
-                potion_action = self.use_next_potion()
-
-            if (self.game.room_type == "MonsterRoomElite" and len(self.game.get_real_potions()) > 0
-                    and self.game.current_hp <= 50):
-                potion_action = self.use_next_potion()
-
-            if potion_action is not None and not isinstance(self.in_game_action_list[-1], PotionAction):
-                return potion_action
+            # if potion_action is not None and not isinstance(self.in_game_action_list[-1], PotionAction):
+            #     return potion_action
             return self.get_play_card_action()
         if self.game.end_available:
             return EndTurnAction()
@@ -193,11 +192,13 @@ class SimpleAgent:
             # output_format=outputFormat,
             orbs=self.game.player.orbs,
             deck_analysis=self.deck_analysis,
+            potion=self.game.get_real_potions(),
             config=config
         )
 
-        is_to_end_turn = self.battle_agent.is_to_end_turn
+        action = self.battle_agent.action
         card_Index = self.battle_agent.card_Index
+        potion_index = self.battle_agent.potion_index
         target_index = self.battle_agent.target_index
         explanation = self.battle_agent.explanation
 
@@ -208,10 +209,11 @@ class SimpleAgent:
             file.write(self.battle_agent.humanM + "\n")
             file.write("--------------ai message-----------------------------------\n")
             file.write(responses["messages"][-1].content + "\n")
-            file.write("self.card_index:" + str(self.battle_agent.card_Index) + "\n")
-            file.write("self.is_to_end_turn:" + str(self.battle_agent.is_to_end_turn) + "\n")
-            file.write("self.target_index:" + str(self.battle_agent.target_index) + "\n")
-            file.write("self.explanation:" + str(self.battle_agent.explanation) + "\n")
+            file.write("self.action:" + str(action) + "\n")
+            file.write("self.card_index:" + str(card_Index) + "\n")
+            file.write("self.potion_index:" + str(potion_index) + "\n")
+            file.write("self.target_index:" + str(target_index) + "\n")
+            file.write("self.explanation:" + str(explanation) + "\n")
             # file.write("--------------ai stream------------------------------------\n")
             # for response in responses["messages"]:
             #     file.write(type(response).__name__+" "+response.__str__())
@@ -225,16 +227,26 @@ class SimpleAgent:
             file.write(self.game.__str__())
 
         card_to_play1 = None
-        if 0 <= card_Index < len(hand_cards):
+        if isinstance(card_Index,int) and 0 <= card_Index < len(hand_cards):
             card_to_play1 = hand_cards[card_Index]
+
+        potion_to_use = None
+        potions = self.game.get_real_potions()
+        if isinstance(potion_index,int) and 0 <= potion_index < len(potions):
+            potion_to_use = potions[potion_index]
 
         target1 = None
         if target_index != -1 and 0 <= target_index < len(available_monsters):
             target1 = available_monsters[target_index]
 
-        if is_to_end_turn == 'Yes':
+        if action == 'end':
             return EndTurnAction()
-        if card_to_play1 is not None:
+        elif action == 'potion':
+            if target1 is None:
+                return PotionAction(True,potion=potion_to_use)
+            else:
+                return PotionAction(True,potion=potion_to_use,target_monster=target1)
+        elif action == 'card':
             if target1 is None:
                 if card_to_play1.has_target:
                     with open(r'C:\Users\32685\Desktop\spirecomm\error_log.txt', 'a') as file:
@@ -394,6 +406,10 @@ class SimpleAgent:
             time.sleep(1)
             return ChooseAction(0)
 
+        valid_options = []
+        for option in self.game.screen.options:
+            if not option.disabled:
+                valid_options.append(option)
 
         config = {"configurable": {"thread_id": self.thread_id}}
         responses = self.event_agent.invoke(
@@ -404,7 +420,7 @@ class SimpleAgent:
             floor=self.game.floor,
             event_name=self.game.screen.event_name,
             event_text=self.game.screen.body_text,
-            event_options=self.game.screen.options,
+            event_options=valid_options,
             config=config
         )
 
@@ -873,8 +889,9 @@ class SimpleAgent:
 
         # self.llm = ChatOpenAI(model="gemini-2.0-flash-lite",temperature=0.3)
         # self.llm = ChatOpenAI(model="gemini-2.0-flash", temperature=0.5)
-        # self.llm = ChatOpenAI(model="gemini-2.0-flash-thinking-exp-01-21", temperature=0.3)
-        self.llm = ChatOpenAI(model="DeepSeek-V3", temperature=0.3)
+        self.llm = ChatOpenAI(model="gemini-2.0-flash-thinking-exp-01-21", temperature=0.3) #good
+        # self.llm = ChatOpenAI(model="gemini-1.5-flash-002", temperature=0.5)
+        # self.llm = ChatOpenAI(model="DeepSeek-V3", temperature=0.3)
         # self.llm = ChatOpenAI(model="deepseek-ai/deepseek-vl2", temperature=0.3) # man
         # self.llm = ChatOpenAI(model="deepseek-chat", temperature=0.3) #man
         # self.llm = ChatOpenAI(model="Doubao-1.5-pro-32k", temperature=0.3)  # haixing

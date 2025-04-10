@@ -36,13 +36,13 @@ def get_lists_str_for_options(lists):
 
 
 def get_lists_str(lists):
-    str = "[ "
-    for item in lists:
-        str += item.name
-        if item != lists[-1]:
-            str += ", "
-    str = str + " ]"
-    return str
+    ret = "[ "
+    for index,item in enumerate(lists):
+        ret += (item.__str__())
+        if index != len(lists)-1:
+            ret += ", "
+    ret += " ]"
+    return ret
 
 
 class State(TypedDict):

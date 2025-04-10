@@ -23,4 +23,9 @@ class Potion:
         )
 
     def __str__(self):
-        return vars(self).__str__()
+
+        ret = ''
+        ret += self.potion_id
+        ret += '('+str(self.requires_target)+')'
+
+        return ret

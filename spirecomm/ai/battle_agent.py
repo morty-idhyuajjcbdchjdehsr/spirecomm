@@ -26,13 +26,13 @@ os.environ["OPENAI_API_BASE"] = "https://api.chatanywhere.tech/v1"
 
 
 def get_lists_str(lists):
-    str = "[ "
-    for item in lists:
-        str += (item.__str__())
-        if item != lists[-1]:
-            str += ", "
-    str = str + " ]"
-    return str
+    ret = "[ "
+    for index,item in enumerate(lists):
+        ret += (item.__str__())
+        if index != len(lists)-1:
+            ret += ", "
+    ret += " ]"
+    return ret
 
 
 class State(TypedDict):
@@ -50,11 +50,14 @@ class State(TypedDict):
     discardPile: list
     powers: list
     orbs: list
+    potion:list
 
 
 class BattleAgent:
     def __init__(self, role="DEFECT", llm=ChatOpenAI(model="gpt-3.5-turbo-0125", temperature=0),
                  small_llm=ChatOllama(model="mistral:7b", temperature=0)):
+        self.potion_index = None
+        self.action = None
         self.deck_analysis = ''
         self.ori_suggestion = None
         self.end_turn_cnt = None
@@ -64,23 +67,30 @@ class BattleAgent:
         self.explanation = None
         self.target_index = None
         self.card_Index = -1
-        self.is_to_end_turn = None
+
         self.role = role
         self.llm = llm
         self.small_llm = small_llm
 
-        is_to_end_turn_schema = ResponseSchema(
-            name="isToEndTurn",
-            description="return 'No' if you have chosen one card to play, return 'Yes' if you decide to end the turn"
+        action_schema = ResponseSchema(
+            name="action",
+            description="return 'card' if you choose one card to play, return 'end' if you decide to end the turn"
+                        "return 'potion' if you choose one potion to use."
         )
         card_index_schema = ResponseSchema(
             name="cardIndex",
             description="The index of the card you choose from Hand Pile(Start with 0); if you don't choose a card, just return -1",
             type="Int"
         )
+        potion_index_schema = ResponseSchema(
+            name="potionIndex",
+            description="The index of the potion you choose(Start with 0); if you don't choose a potion, just return -1",
+            type="Int"
+        )
         target_index_schema = ResponseSchema(
             name="targetIndex",
-            description="The index of your card's target in enemy list(Start with 0); if your card's attribute 'is_card_has_target' is False, just return -1.",
+            description="The index of your target in enemy list(Start with 0); if your card's attribute 'is_card_has_target' is False, just return -1."
+                        "If your potion's attribute 'is_potion_has_target' is False, just return -1.",
             type="Int"
         )
         explanation_schema = ResponseSchema(
@@ -89,8 +99,9 @@ class BattleAgent:
         )
         # 将所有 schema 添加到列表中
         response_schemas = [
-            is_to_end_turn_schema,
+            action_schema,
             card_index_schema,
+            potion_index_schema,
             target_index_schema,
             explanation_schema
         ]
@@ -121,7 +132,8 @@ class BattleAgent:
 At the beginning of a turn, you will be given MAX_ENERGY and draw cards from the Draw Pile. 
 You can only play cards from your Hand Pile, and each card costs a certain amount of energy. 
 A turn consists of multiple actions. 
-On each action, your job is to choose **one** card to play (if energy allows) or **end the turn**.
+On each action, your job is to choose **one** card to play (if energy allows) or **end the turn** or 
+ choose **one** potion to use (if have).
 
 ### deck Analysis:
 To improve decision-making, you are provided with Analysis of your current deck.
@@ -139,6 +151,7 @@ info of the current action
 - **Draw Pile**: [ Card ]
 - **Discard Pile**: [ Card ]
 - **Player Status**: [ player_status ]
+- **Potion**: [ Potion ] Potion format: "potion_name(is_potion_has_target)"
 
 ### Previous turn actions:
 To improve decision-making, you are provided with the previous actions in this turn:
@@ -180,80 +193,120 @@ things you should be aware of in the combat.
         # 得到最终的 json格式文件
         try:
             jsonfile = json.loads(json_text)
-            self.is_to_end_turn = jsonfile.get('isToEndTurn')
-            # card_name = jsonfile.get('cardName')
+            self.action = jsonfile.get('action')
             self.card_Index = jsonfile.get('cardIndex')
+            self.potion_index = jsonfile.get('potionIndex')
             self.target_index = jsonfile.get('targetIndex')
             self.explanation = jsonfile.get('explanation')
         except Exception as e:
             return {
                 **state,  # 保留原 state 的所有属性
                 "messages": [{"role": "user", "content": "Your output does not meet my required JSON format,"
-                                                         " please regenerate it!"}]
+                                                         " please regenerate your answer!"}]
             }
 
         available_monsters = [monster for monster in state["monsters"] if
                               monster.current_hp > 0 and not monster.half_dead and not monster.is_gone]
         playable_cards = [card for card in state["hand"] if card.is_playable]
         hand_cards = state["hand"]
+        potions = state["potion"]
         zero_cost_card = 0
+        card_to_play1 = None
+        potion_to_use = None
         for card in playable_cards:
             if card.cost == 0:
                 zero_cost_card = 1
 
-        if self.is_to_end_turn == 'Yes':
+        #------check action ----------
+        if self.action == 'end':
+            # end turn
             self.end_turn_cnt += 1
-            if self.end_turn_cnt == 1:
-                if state["energy"] == 0 and zero_cost_card:
-                    return {
-                        **state,  # 保留原 state 的所有属性
-                        "messages": [{"role": "user", "content": "There are 0 cost cards in your Hand Pile,"
-                                                                 "you can play them even if your energy is 0."
-                                                                 "are you sure to end the turn?"
-                                                                 "please regenerate the answer."}]
-                    }
-                # 相信ai的能力就注释掉这个
-                if state["energy"] > 0 and len(playable_cards) > 0:
-                    return {
-                        **state,  # 保留原 state 的所有属性
-                        "messages": [{"role": "user", "content": "you have unused energy and there are still"
-                                                                 "playable cards,are you sure to end the turn?You need "
-                                                                 "to make full use of your energy.If there "
-                                                                 "is really no need to play more cards or "
-                                                                 "it is harmful to play more cards,insist on"
-                                                                 " your choice."
-                                                                 "please regenerate the answer."}]
-                    }
+            # if self.end_turn_cnt == 1:
+            #     if state["energy"] == 0 and zero_cost_card:
+            #         return {
+            #             **state,  # 保留原 state 的所有属性
+            #             "messages": [{"role": "user", "content": "There are 0 cost cards in your Hand Pile,"
+            #                                                      "you can play them even if your energy is 0."
+            #                                                      "are you sure to end the turn?"
+            #                                                      "please regenerate the answer."}]
+            #         }
+            #     # 相信ai的能力就注释掉这个
+            #     if state["energy"] > 0 and len(playable_cards) > 0:
+            #         return {
+            #             **state,  # 保留原 state 的所有属性
+            #             "messages": [{"role": "user", "content": "you have unused energy and there are still"
+            #                                                      "playable cards,are you sure to end the turn?You need "
+            #                                                      "to make full use of your energy.If there "
+            #                                                      "is really no need to play more cards or "
+            #                                                      "it is harmful to play more cards,insist on"
+            #                                                      " your choice."
+            #                                                      "please regenerate the answer."}]
+            #         }
             return {
                 **state,
                 "messages": [AIMessage(content="output check pass!!")]
             }
 
-        if self.card_Index is not None and 0 <= self.card_Index < len(hand_cards):
-            card_to_play1 = hand_cards[self.card_Index]
-            if not card_to_play1.is_playable:
-                if card_to_play1.cost > state["energy"]:
+        elif self.action == 'card':
+            # play card
+            if isinstance(self.card_Index,int) and 0 <= self.card_Index < len(hand_cards):
+                card_to_play1 = hand_cards[self.card_Index]
+                if not card_to_play1.is_playable:
+                    if card_to_play1.cost > state["energy"]:
+                        return {
+                            **state,  # 保留原 state 的所有属性
+                            "messages": [
+                                {"role": "user", "content": "Your chosen card's cost is greater than your energy!,"
+                                                            " please regenerate your answer!"}]
+                        }
+
                     return {
                         **state,  # 保留原 state 的所有属性
-                        "messages": [{"role": "user", "content": "Your chosen card's cost is greater than your energy!,"
-                                                                 " please regenerate it!"}]
+                        "messages": [{"role": "user", "content": "Your chosen card is not playable,"
+                                                                 " please regenerate your answer!"}]
                     }
-
+            else:
                 return {
                     **state,  # 保留原 state 的所有属性
-                    "messages": [{"role": "user", "content": "Your chosen card is not playable,"
-                                                             " please regenerate it!"}]
+                    "messages": [{"role": "user", "content": "Your card_Index is out of range,"
+                                                             " please regenerate your answer!"}]
+                }
+        elif self.action == 'potion':
+            # use potion
+            if isinstance(self.potion_index,int) and 0 <= self.potion_index < len(potions):
+                potion_to_use = potions[self.potion_index]
+                if not potion_to_use.can_use:
+                    return {
+                        **state,  # 保留原 state 的所有属性
+                        "messages": [{"role": "user", "content": "Your chosen potion can not be used,"
+                                                                 " please regenerate your answer!"}]
+                    }
+            else:
+                return {
+                    **state,  # 保留原 state 的所有属性
+                    "messages": [{"role": "user", "content": "Your potion_index is out of range,"
+                                                             " please regenerate your answer!"}]
                 }
         else:
             return {
                 **state,  # 保留原 state 的所有属性
-                "messages": [{"role": "user", "content": "Your card_Index is out of range,"
-                                                         " please regenerate it!"}]
+                "messages": [{"role": "user", "content": "You should choose your action from ['card','potion','end'],"
+                                                         " please regenerate your answer!"}]
             }
+
+
         target1 = None
-        if self.target_index is not None and self.target_index != -1 and 0 <= self.target_index < len(
+        if isinstance(self.target_index,int) and 0 <= self.target_index < len(
                 available_monsters):
             target1 = available_monsters[self.target_index]
+        elif self.target_index == -1:
+            target1 = None
+        else:
+            return {
+                **state,  # 保留原 state 的所有属性
+                "messages": [{"role": "user", "content": "Your target_index is out of range,"
+                                                         " please regenerate your answer!"}]
+            }
 
         if card_to_play1 is not None:
             if target1 is None:
@@ -262,13 +315,18 @@ things you should be aware of in the combat.
                         return {
                             **state,  # 保留原 state 的所有属性
                             "messages": [{"role": "user", "content": "Your chosen card must have a target,"
-                                                                     " please regenerate it!"}]
+                                                                     " please regenerate your answer!"}]
                         }
+
+        if potion_to_use is not None:
+            if target1 is None:
+                if potion_to_use.requires_target:
                     return {
-                        **state,  # 保留原 state 的所有属性
-                        "messages": [{"role": "user", "content": "Your target_index is out of range,"
-                                                                 " please regenerate it!"}]
-                    }
+                            **state,  # 保留原 state 的所有属性
+                            "messages": [{"role": "user", "content": "Your chosen potion must have a target,"
+                                                                     " please regenerate your answer!"}]
+                        }
+
 
         # check pass!
         return {
@@ -286,8 +344,9 @@ things you should be aware of in the combat.
             with open(r'C:\Users\32685\Desktop\spirecomm\battle_agent.txt', 'a') as file:
                 file.write('cnt is:' + str(self.router2_cnt) + '\n')
             if self.router2_cnt >= 2:
-                self.is_to_end_turn = 'NO'
+                self.action = 'algorithm'
                 self.card_Index = -1
+                self.potion_index = -1
                 self.target_index = -1
                 self.explanation = 'router2 reach recursion limit! use algorithm to choose card!'
                 return END
@@ -306,6 +365,7 @@ things you should be aware of in the combat.
                powers: list,
                orbs: list,
                deck_analysis: str,
+               potion:list,
                config=None):
         start_time = time.time()  # 记录开始时间
 
@@ -334,6 +394,7 @@ things you should be aware of in the combat.
         Sentry_flag = 0
         Strength = 0
         Artifact_flag = 0
+
 
         for power in powers:
             if power.power_name == "Strength":
@@ -568,6 +629,10 @@ things you should be aware of in the combat.
             suggestion_content += ("\nYou have STATUS card in your hand pile,consider exhausting it when"
                                    "having low defence pressure.")
 
+        if len(potion)>0:
+            potion_list = get_lists_str(potion)
+            suggestion_content += f"\nNow you have these potions:{potion_list},use them when needed. "
+
         template_string = """       
 {deck_analysis}        
 
@@ -583,8 +648,9 @@ context:
         **Draw Pile**(the cards in draw pile): {drawPile},
         **Discard Pile**(the cards in discard pile):{discardPile},
         **Player Status**(list of player status):{pStatus}
+        **Potion**:{potion}
         **Orbs**(if you are DEFECT): {orbs}
-
+        
 Previous turn actions:
 {previous_rounds_info}
 
@@ -609,13 +675,14 @@ now give the response.
             orbs=get_lists_str(orbs),
             previous_rounds_info=previous_rounds_info,
             notice=suggestion_content,
-            deck_analysis=deck_analysis
+            deck_analysis=deck_analysis,
+            potion=get_lists_str(potion)
         )
         self.humanM = messages[0].content
         state = State(messages=messages, turn=turn, current_hp=current_hp, max_hp=max_hp,
                       block=block, energy=energy, relics=relics, hand=hand,
                       monsters=monsters, drawPile=drawPile, discardPile=discardPile,
-                      powers=powers, orbs=orbs)
+                      powers=powers, orbs=orbs,potion=potion,floor=floor)
         if config is not None:
             result = self.graph.invoke(state, config)
         else:
@@ -627,19 +694,28 @@ now give the response.
         # 添加round信息到队列
         available_monsters = [monster for monster in monsters if
                               monster.current_hp > 0 and not monster.half_dead and not monster.is_gone]
-        playable_cards = [card for card in hand if card.is_playable]
+
         card_to_play = None
-        if 0 <= self.card_Index < len(playable_cards):
-            card_to_play = playable_cards[self.card_Index]
+        if isinstance(self.card_Index,int) and 0 <= self.card_Index < len(hand):
+            card_to_play = hand[self.card_Index]
+        potion_to_use = None
+        if isinstance(self.potion_index,int) and 0 <= self.potion_index <len(potion):
+            potion_to_use = potion[self.potion_index]
+
+
         target1 = None
         if self.target_index is not None and self.target_index != -1 and 0 <= self.target_index < len(
                 available_monsters):
             target1 = available_monsters[self.target_index]
 
         operation = ""
-        if self.is_to_end_turn == 'Yes':
+        if self.action == 'end':
             operation += "END turn"
-        elif card_to_play is not None:
+        elif self.action == 'potion':
+            operation += f"use potion '{potion_to_use.potion_id}'"
+            if potion_to_use.requires_target and target1 is not None:
+                operation += f" towards '{target1.name}(target_index={self.target_index})'"
+        elif self.action == 'card':
             operation += f"choose card '{card_to_play.name}'"
             if card_to_play.has_target and target1 is not None:
                 operation += f" towards '{target1.name}(target_index={self.target_index})'"
