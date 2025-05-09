@@ -15,6 +15,7 @@ from spirecomm.ai.battle_agent import BattleAgent
 from spirecomm.ai.choose_card_agent import ChooseCardAgent
 from spirecomm.ai.event_choice_agent import EventChoiceAgent
 from spirecomm.ai.grid_choice_agent import SimpleGridChoiceAgent
+from spirecomm.ai.hand_select_agent import HandSelectAgent
 from spirecomm.spire.game import Game, RoomPhase
 from spirecomm.spire.character import Intent, PlayerClass
 import spirecomm.spire.card
@@ -39,6 +40,7 @@ from dotenv import load_dotenv
 class SimpleAgent:
 
     def __init__(self, chosen_class=PlayerClass.THE_SILENT):
+        self.hand_select_agent = None
         self.event_agent = None
         self.pro_llm = None
         self.simple_grid_chice_agent = None
@@ -365,10 +367,10 @@ class SimpleAgent:
                     file.write('self.game.current_action:' + str(self.game.current_action) + '\n')
                     file.write('self.game.screen.cards:' + self.get_lists_str(self.game.screen.cards) + '\n')
                     file.write('-----------------hand select end---------------\n\n')
-                # if ["DiscardAction","ArmamentsAction","RetainCardsAction","BetterDiscardPileToHandAction",
-                #     "PutOnDeckAction","GamblingChipAction","RecycleAction","BetterDrawPileToHandAction",
-                #     "DiscardPileToTopOfDeckAction","ExhaustAction"].__contains__(self.game.current_action):
-                #     self.make_hand_choice()
+                if ["DiscardAction","ArmamentsAction","RetainCardsAction","BetterDiscardPileToHandAction",
+                    "PutOnDeckAction","GamblingChipAction","RecycleAction","BetterDrawPileToHandAction",
+                    "DiscardPileToTopOfDeckAction","ExhaustAction","SetupAction","DualWieldAction"].__contains__(self.game.current_action):
+                    return self.make_hand_select_choice()
 
 
             with open(r'C:\Users\32685\Desktop\spirecomm\grid.txt', 'w') as file:
@@ -407,6 +409,12 @@ class SimpleAgent:
                 file.write('self.game.current_action:' + str(self.game.current_action)+'\n' )
                 file.write('self.game.screen.cards:'+self.get_lists_str(self.game.screen.cards)+'\n')
                 file.write('-----------------hand select end---------------\n\n')
+            if self.game.current_action is not None:
+                if ["DiscardAction", "ArmamentsAction", "RetainCardsAction", "BetterDiscardPileToHandAction",
+                    "PutOnDeckAction", "GamblingChipAction", "RecycleAction", "BetterDrawPileToHandAction",
+                    "DiscardPileToTopOfDeckAction", "ExhaustAction", "SetupAction", "DualWieldAction"].__contains__(
+                    self.game.current_action):
+                    return self.make_hand_select_choice()
 
             # 选择手牌
             if not self.game.choice_available:
@@ -468,6 +476,52 @@ class SimpleAgent:
             file.write("self.explanation:" + str(explanation) + "\n")
 
         return ChooseAction(option_index)
+
+
+    def make_hand_select_choice(self):
+        config = {"configurable": {"thread_id": self.thread_id}}
+
+        available_monsters = [monster for monster in self.game.monsters if
+                              monster.current_hp > 0 and not monster.half_dead and not monster.is_gone]
+        config = {"configurable": {"thread_id": self.battle_thread_id}}
+        responses = self.hand_select_agent.invoke(
+            floor=self.game.floor,
+            turn=self.game.turn,
+            current_hp=self.game.current_hp,
+            max_hp=self.game.max_hp,
+            block=self.game.player.block,
+            energy=self.game.player.energy,
+            relics=self.game.relics,
+            hand=self.game.hand,
+            monsters=available_monsters,
+            drawPile=self.game.draw_pile,
+            discardPile=self.game.discard_pile,
+            powers=self.game.player.powers,
+            orbs=self.game.player.orbs,
+            potion=self.game.get_real_potions(),
+
+            num_cards=self.game.screen.num_cards,
+            current_action = self.game.current_action,
+            available_cards = self.game.screen.cards,
+
+            config=config
+        )
+
+
+        chosen_cards = self.hand_select_agent.chosen_cards
+        explanation = self.hand_select_agent.explanation
+
+        with open(r'C:\Users\32685\Desktop\spirecomm\output.txt', 'a', encoding="utf-8") as file:
+            # file.write('--------------executing get_play_card_action---------------\n')
+            # file.write(self.game.__str__())
+            file.write('--------------human message--------------------------------\n')
+            file.write(self.hand_select_agent.humanM + "\n")
+            file.write("--------------ai message-----------------------------------\n")
+            file.write(responses["messages"][-1].content + "\n")
+            file.write("self.chosen_cards:" + self.get_card_list_str(chosen_cards) + "\n")
+            file.write("self.explanation:" + str(explanation) + "\n")
+
+        return CardSelectAction(chosen_cards)
 
     def make_grid_choice(self):
 
@@ -829,6 +883,10 @@ class SimpleAgent:
         agent = SimpleGridChoiceAgent(role=self.role, llm=self.pro_llm, small_llm=self.pro_llm)
         self.simple_grid_chice_agent = agent
 
+    def init_hand_select_llm(self):
+        agent = HandSelectAgent(role=self.role, llm=self.llm, small_llm=self.llm)
+        self.hand_select_agent = agent
+
     @tool("search_card_tool")
     def search_card(card: str) -> str:
         """to get the content of the card"""
@@ -917,10 +975,10 @@ class SimpleAgent:
         # self.llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash",temperature=0,transport='rest') #有限额
 
         # self.llm = ChatOpenAI(model="gemini-2.0-flash-lite",temperature=0.3)
-        # self.llm = ChatOpenAI(model="gemini-2.0-flash", temperature=0)
+        self.llm = ChatOpenAI(model="gemini-2.0-flash", temperature=0)
         # self.llm = ChatOpenAI(model="gemini-2.0-flash-thinking-exp-01-21", temperature=0.3) #good
         # self.llm = ChatOpenAI(model="gemini-1.5-flash-002", temperature=0.5)
-        self.llm = ChatOpenAI(model="DeepSeek-V3", temperature=0.3)
+        # self.llm = ChatOpenAI(model="DeepSeek-V3", temperature=0.3)
         # self.llm = ChatOpenAI(model="deepseek-ai/deepseek-vl2", temperature=0.3) # man
         # self.llm = ChatOpenAI(model="deepseek-chat", temperature=0.3) #man
         # self.llm = ChatOpenAI(model="Doubao-1.5-pro-32k", temperature=0.3)  # haixing
@@ -946,6 +1004,7 @@ class SimpleAgent:
         self.init_choose_card_llm()
         self.init_make_map_choice_llm()
         self.init_event_llm()
+        self.init_hand_select_llm()
 
     def get_role_guidelines(self, chosen_class):
 

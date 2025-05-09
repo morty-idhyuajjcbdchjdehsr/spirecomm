@@ -397,6 +397,7 @@ things you should be aware of in the combat.
         low_hp_flag = 0
         low_hp_m_list = []
         Sentry_flag = 0
+        Cultist_flag = 0
         Strength = 0
         Artifact_flag = 0
 
@@ -447,9 +448,10 @@ things you should be aware of in the combat.
 
             total_damage += monster.move_hits * monster.move_adjusted_damage
 
-            if monster.monster_id == "Cultist":
+            if monster.monster_id == "Cultist" and Cultist_flag == 0:
                 suggestion_content += ("\nYou are facing enemy Cultist,who gains Strength after each turn,so it is"
                                        "crucial to eliminating it quickly.")
+                Cultist_flag =1
 
             if monster.monster_id == "AcidSlime_L":
                 suggestion_content += ("\nYou are facing enemy AcidSlime_L,When its HP falls below 50%, it splits into "
