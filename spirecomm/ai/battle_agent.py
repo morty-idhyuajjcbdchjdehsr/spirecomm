@@ -56,6 +56,8 @@ class State(TypedDict):
 class BattleAgent:
     def __init__(self, role="DEFECT", llm=ChatOpenAI(model="gpt-3.5-turbo-0125", temperature=0),
                  small_llm=ChatOllama(model="mistral:7b", temperature=0)):
+        self.error_invoke_cnt = 0
+        self.total_invoke_cnt = 0
         self.potion_index = None
         self.action = None
         self.deck_analysis = ''
@@ -221,27 +223,27 @@ things you should be aware of in the combat.
         if self.action == 'end':
             # end turn
             self.end_turn_cnt += 1
-            # if self.end_turn_cnt == 1:
-            #     if state["energy"] == 0 and zero_cost_card:
-            #         return {
-            #             **state,  # 保留原 state 的所有属性
-            #             "messages": [{"role": "user", "content": "There are 0 cost cards in your Hand Pile,"
-            #                                                      "you can play them even if your energy is 0."
-            #                                                      "are you sure to end the turn?"
-            #                                                      "please regenerate the answer."}]
-            #         }
-            #     # 相信ai的能力就注释掉这个
-            #     if state["energy"] > 0 and len(playable_cards) > 0:
-            #         return {
-            #             **state,  # 保留原 state 的所有属性
-            #             "messages": [{"role": "user", "content": "you have unused energy and there are still"
-            #                                                      "playable cards,are you sure to end the turn?You need "
-            #                                                      "to make full use of your energy.If there "
-            #                                                      "is really no need to play more cards or "
-            #                                                      "it is harmful to play more cards,insist on"
-            #                                                      " your choice."
-            #                                                      "please regenerate the answer."}]
-            #         }
+            if self.end_turn_cnt == 1:
+                if state["energy"] == 0 and zero_cost_card:
+                    return {
+                        **state,  # 保留原 state 的所有属性
+                        "messages": [{"role": "user", "content": "There are 0 cost cards in your Hand Pile,"
+                                                                 "you can play them even if your energy is 0."
+                                                                 "are you sure to end the turn?"
+                                                                 "please regenerate the answer."}]
+                    }
+                # 相信ai的能力就注释掉这个
+                if state["energy"] > 0 and len(playable_cards) > 0:
+                    return {
+                        **state,  # 保留原 state 的所有属性
+                        "messages": [{"role": "user", "content": "you have unused energy and there are still"
+                                                                 "playable cards,are you sure to end the turn?You need "
+                                                                 "to make full use of your energy.If there "
+                                                                 "is really no need to play more cards or "
+                                                                 "it is harmful to play more cards,insist on"
+                                                                 " your choice."
+                                                                 "please regenerate the answer."}]
+                    }
             return {
                 **state,
                 "messages": [AIMessage(content="output check pass!!")]
@@ -337,9 +339,11 @@ things you should be aware of in the combat.
     def router2(self, state: State):
         messages = state["messages"]
         last_message = messages[-1]
+        self.total_invoke_cnt += 1
         if type(last_message) == AIMessage:
             return END
         else:
+            self.error_invoke_cnt += 1
             self.router2_cnt += 1
             with open(r'C:\Users\32685\Desktop\spirecomm\battle_agent.txt', 'a') as file:
                 file.write('cnt is:' + str(self.router2_cnt) + '\n')
@@ -366,6 +370,7 @@ things you should be aware of in the combat.
                orbs: list,
                deck_analysis: str,
                potion:list,
+               room:str,
                config=None):
         start_time = time.time()  # 记录开始时间
 
@@ -405,6 +410,10 @@ things you should be aware of in the combat.
             if power.power_name == "Artifact":
                 Artifact_flag = 1
 
+            if power.power_name == "Confusion":
+                suggestion_content += (f"\nYou have status 'Confusion', now the costs of your cards are "
+                                       f"randomized on draw, from 0 to 3.")
+
         for relic in relics:
             if relic.name == "Runic Dome":
                 suggestion_content += ("\nYou have the Runic Dome relic, which provides energy each turn "
@@ -421,6 +430,11 @@ things you should be aware of in the combat.
                         suggestion_content += ("\n{}'s poison is greater than its HP,you could focus on other"
                                                "enemies.".format(
                             monster.monster_id + '(target_index=' + str(index) + ')'))
+
+                if power.power_name == "Thorns":
+                    suggestion_content += ("\n{} has power 'Thorns'.when attacked, it will deal {} damage back.so "
+                                           "be careful using multiple hits attack towards it.".format(
+                        monster.monster_id + '(target_index=' + str(index) + ')', power.amount))
 
             if (monster.intent == Intent.ATTACK or monster.intent == Intent.ATTACK_BUFF or
                     monster.intent == Intent.ATTACK_DEBUFF or monster.intent == Intent.ATTACK_DEFEND or
@@ -516,11 +530,8 @@ things you should be aware of in the combat.
                                        " burns, and another big attack.Prioritize damage output to shorten the fight "
                                        "and manage burn cards efficiently.")
             if monster.monster_id == "TheCollector":
-                suggestion_content += ("\nYou are facing Boss The Collector.The Collector is an Act 2 boss that "
-                                       "alternates between summoning Torch Heads, "
-                                       "attacking, and buffing itself. The Torch Heads deal damage in every turn. "
-                                       "The Collector also gains Strength as the battle progresses, making its attacks "
-                                       "increasingly dangerous. it is crucial to eliminate the minions, "
+                suggestion_content += ("\nYou are facing Boss The Collector. Prioritize eliminating its minions---"
+                                       "TorchHead*2, "
                                        "as leaving the Torch Heads alive can lead to overwhelming "
                                        "damage.")
 
@@ -561,7 +572,11 @@ things you should be aware of in the combat.
             suggestion_content += (
                 f"\nYou are facing huge incoming damage, which will make you lose {total_damage - block} hp."
                 f"you should consider mitigate the damage by:"
-                f"1. build block, 2.weaken enemy 3.eliminate enemy")
+                f"1. build block, 2.weaken enemy 3.eliminate enemy 4.using potion")
+        if block >= total_damage:
+            # to do: 考虑壁垒等情况..
+            suggestion_content += (f"\nnow your block is greater than incoming damage,there is no need to "
+                                   f"build more blocks.")
 
         zero_cost_card_flag = 0
         status_flag = 0
@@ -621,6 +636,8 @@ things you should be aware of in the combat.
                     suggestion_content += ("\nYou have 'Biased Cognition+' in your Hand Pile.Meanwhile, you have "
                                            "'Artifact' buff which Negates its Debuff.So, prioritize playing the "
                                            "'Biased Cognition'.")
+            if card.name == "Flex" or card.name == "Flex+":
+                suggestion_content += "\n 'Flex' can give temporary Strength.Before you attack,consider using it."
 
         # if zero_cost_card_flag == 1:
         #     suggestion_content += "\nYou have 0 cost cards in your Hand Pile."
@@ -629,9 +646,17 @@ things you should be aware of in the combat.
             suggestion_content += ("\nYou have STATUS card in your hand pile,consider exhausting it when"
                                    "having low defence pressure.")
 
-        if len(potion)>0:
-            potion_list = get_lists_str(potion)
-            suggestion_content += f"\nNow you have these potions:{potion_list},use them when needed. "
+        # if len(potion)>0:
+        #     potion_list = get_lists_str(potion)
+        #     suggestion_content += (f"\nNow you have these potions:{potion_list},don't forget to use them"
+        #                            f"when: 1.facing Boss or Elite 2.facing great damage. ")
+
+        if room == "Boss":
+            suggestion_content += ("\nYou are facing Boss enemy,make good use of your **potion** to defeat the enemy"
+                                   "")
+        if room == "Elite":
+            suggestion_content += ("\nYou are facing Elite enemy,make good use of your **potion** to defeat the enemy"
+                                   "")
 
         template_string = """       
 {deck_analysis}        
@@ -735,6 +760,7 @@ now give the response.
             for response in result["messages"]:
                 file.write(type(response).__name__ + ":\n" + response.content.__str__() + '\n')
             file.write(f"invoke time: {elapsed_time:.6f} s\n")
+            file.write(f"error rate:{(float(self.error_invoke_cnt)/self.total_invoke_cnt)*100 :.3f}%\n")
             file.write('--------------round end-------------------------\n')
 
         return result

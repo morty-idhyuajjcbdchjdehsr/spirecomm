@@ -122,7 +122,14 @@ class SimpleAgent:
 
             # if potion_action is not None and not isinstance(self.in_game_action_list[-1], PotionAction):
             #     return potion_action
-            return self.get_play_card_action()
+
+            room = ""
+            if self.game.room_type == "MonsterRoomBoss":
+                room = "Boss"
+            elif self.game.room_type == "MonsterRoomElite":
+                room = "Elite"
+
+            return self.get_play_card_action(room=room)
         if self.game.end_available:
             return EndTurnAction()
         if self.game.cancel_available:
@@ -169,7 +176,7 @@ class SimpleAgent:
                               monster.current_hp > 0 and not monster.half_dead and not monster.is_gone]
         return len(available_monsters) > 1
 
-    def get_play_card_action(self):
+    def get_play_card_action(self,room):
 
         available_monsters = [monster for monster in self.game.monsters if
                               monster.current_hp > 0 and not monster.half_dead and not monster.is_gone]
@@ -193,6 +200,7 @@ class SimpleAgent:
             orbs=self.game.player.orbs,
             deck_analysis=self.deck_analysis,
             potion=self.game.get_real_potions(),
+            room = room,
             config=config
         )
 
@@ -350,11 +358,25 @@ class SimpleAgent:
             return CancelAction()
         elif self.game.screen_type == ScreenType.GRID:
 
+            if self.game.current_action is not None:
+                with open(r'C:\Users\32685\Desktop\spirecomm\hand_select_situation.txt', 'a') as file:
+                    file.write('-----------------hand select start---------------\n')
+                    file.write('self.game.screen.num_cards:' + str(self.game.screen.num_cards) + '\n')
+                    file.write('self.game.current_action:' + str(self.game.current_action) + '\n')
+                    file.write('self.game.screen.cards:' + self.get_lists_str(self.game.screen.cards) + '\n')
+                    file.write('-----------------hand select end---------------\n\n')
+                # if ["DiscardAction","ArmamentsAction","RetainCardsAction","BetterDiscardPileToHandAction",
+                #     "PutOnDeckAction","GamblingChipAction","RecycleAction","BetterDrawPileToHandAction",
+                #     "DiscardPileToTopOfDeckAction","ExhaustAction"].__contains__(self.game.current_action):
+                #     self.make_hand_choice()
+
+
             with open(r'C:\Users\32685\Desktop\spirecomm\grid.txt', 'w') as file:
                 file.write(
-                    'self.game.cards is:{},self.game.screen.num_cards is:{},self.game.screen.selected_cards is:{}\n\n'
-                    .format(self.get_card_list_str(self.game.screen.cards), self.game.screen.num_cards,
-                            self.game.screen.selected_cards))
+                        'self.game.cards is:{}\n,self.game.screen.num_cards is:{}\n'
+                        ',self.game.screen.selected_cards is:{},self.game.current_action is {}\n\n'
+                        .format(self.get_card_list_str(self.game.screen.cards), self.game.screen.num_cards,
+                                self.game.screen.selected_cards,self.game.current_action))
 
             # self.screen.any_number :use for Watcher to foresee
             if self.game.screen.any_number:
@@ -379,6 +401,13 @@ class SimpleAgent:
             num_cards = self.game.screen.num_cards
             return CardSelectAction(available_cards[:num_cards])
         elif self.game.screen_type == ScreenType.HAND_SELECT:
+            with open(r'C:\Users\32685\Desktop\spirecomm\hand_select_situation.txt', 'a') as file:
+                file.write('-----------------hand select start---------------\n')
+                file.write('self.game.screen.num_cards:'+str(self.game.screen.num_cards)+'\n')
+                file.write('self.game.current_action:' + str(self.game.current_action)+'\n' )
+                file.write('self.game.screen.cards:'+self.get_lists_str(self.game.screen.cards)+'\n')
+                file.write('-----------------hand select end---------------\n\n')
+
             # 选择手牌
             if not self.game.choice_available:
                 return ProceedAction()
@@ -718,7 +747,7 @@ class SimpleAgent:
         # return ChooseAction(0)
 
     def init_event_llm(self):
-        agent = EventChoiceAgent(role=self.role, llm=ChatOpenAI(model="DeepSeek-V3", temperature=0.3))
+        agent = EventChoiceAgent(role=self.role, llm=self.pro_llm)
         self.event_agent = agent
 
     def init_battle_llm(self):
@@ -888,22 +917,27 @@ class SimpleAgent:
         # self.llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash",temperature=0,transport='rest') #有限额
 
         # self.llm = ChatOpenAI(model="gemini-2.0-flash-lite",temperature=0.3)
-        # self.llm = ChatOpenAI(model="gemini-2.0-flash", temperature=0.5)
-        self.llm = ChatOpenAI(model="gemini-2.0-flash-thinking-exp-01-21", temperature=0.3) #good
+        # self.llm = ChatOpenAI(model="gemini-2.0-flash", temperature=0)
+        # self.llm = ChatOpenAI(model="gemini-2.0-flash-thinking-exp-01-21", temperature=0.3) #good
         # self.llm = ChatOpenAI(model="gemini-1.5-flash-002", temperature=0.5)
-        # self.llm = ChatOpenAI(model="DeepSeek-V3", temperature=0.3)
+        self.llm = ChatOpenAI(model="DeepSeek-V3", temperature=0.3)
         # self.llm = ChatOpenAI(model="deepseek-ai/deepseek-vl2", temperature=0.3) # man
         # self.llm = ChatOpenAI(model="deepseek-chat", temperature=0.3) #man
         # self.llm = ChatOpenAI(model="Doubao-1.5-pro-32k", temperature=0.3)  # haixing
+        # self.llm = ChatOpenAI(model="Doubao-lite-128k", temperature=0.3)
         # self.llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.3) #
+        # self.llm = ChatOpenAI(model="gpt-3.5-turbo-0125", temperature=0.3)
         # self.llm = ChatOpenAI(model="qwen-max-0125", temperature=0.3)  # shi
         # self.llm = ChatOpenAI(model="claude-3-haiku-20240307", temperature=0.3)  # 贵
         # self.llm = ChatOpenAI(model="grok-2-1212", temperature=0.3) #可以用这个选牌?
         # self.llm = ChatOpenAI(model="Baichuan4-Air", temperature=0.3) # man
+        # self.llm = ChatOpenAI(model="gpt-4.1-nano", temperature=0.3)  # shi
 
         # self.pro_llm = ChatOpenAI(model="DeepSeek-V3", temperature=0.3)  #
         # self.pro_llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.3)  #
         self.pro_llm = ChatOpenAI(model="gemini-2.0-flash", temperature=0.3)
+        # self.pro_llm = ChatOpenAI(model="gpt-4o-2024-11-20", temperature=0.3)
+        # self.pro_llm = ChatOpenAI(model="gemini-2.0-flash-thinking-exp-01-21", temperature=0.3)
 
 
         self.init_common_llm()
