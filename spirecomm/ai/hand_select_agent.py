@@ -183,6 +183,9 @@ provide situation of current battle to help you make card choice.
 list of cards to choose from
 [ Card ]
 
+### Notice:
+things you should be aware of
+
 ### Response Format:
 {outputFormat}
 """
@@ -313,6 +316,23 @@ list of cards to choose from
 
         self.router2_cnt = 0
 
+        notice = ""
+        if current_action=="DiscardAction":
+            for card in available_cards:
+                if card.name=="Tactician":
+                    notice += ("You have card 'Tactician' in Available Cards,"
+                               "If this card is discarded, you will gain 1 energy.\n")
+                if card.name=="Tactician+":
+                    notice += ("You have card 'Tactician+' in Available Cards,"
+                               "If this card is discarded, you will gain 2 energy.\n")
+                if card.name=="Reflex":
+                    notice += ("You have card 'Reflex' in Available Cards,"
+                               "If this card is discarded, you will draw 2 cards.\n")
+                if card.name=="Reflex+":
+                    notice += ("You have card 'Reflex+' in Available Cards,"
+                               "If this card is discarded, you will draw 3 cards.\n")
+
+
 
         template_string = """        
 Battle Situation:
@@ -333,6 +353,9 @@ Battle Situation:
 Available Cards:
         {available_cards}
 
+Notice:
+        {notice}
+
 now give the response.
 """
         template1 = ChatPromptTemplate.from_template(template_string)
@@ -351,7 +374,8 @@ now give the response.
             # output_format=outputFormat,
             orbs=get_lists_str(orbs),
             potion=get_lists_str(potion),
-            available_cards=get_card_lists_str(available_cards)
+            available_cards=get_card_lists_str(available_cards),
+            notice=notice,
         )
         self.humanM = messages[0].content
         state = State(messages=messages, turn=turn, current_hp=current_hp, max_hp=max_hp,

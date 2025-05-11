@@ -1005,7 +1005,7 @@ class SimpleAgent:
         # self.llm = ChatOpenAI(model="gpt-3.5-turbo-0125", temperature=0)
         # self.llm = ChatOpenAI(model="gpt-3.5-turbo-ca", temperature=0)  # 史
         # self.llm = ChatOpenAI(model="gpt-4o-mini-ca", temperature=0)  # good
-        # self.llm = ChatOpenAI(model="deepseek-v3", temperature=0.3)  # 神！！！！！！！！！
+        self.llm = ChatOpenAI(model="deepseek-v3", temperature=0.3)  # 神！！！！！！！！！
         # self.llm = ChatOpenAI(model="claude-3-5-haiku-20241022", temperature=0.5) #shi
         # self.llm = ChatOpenAI(model="gemini-2.0-flash", temperature=0)
 
@@ -1046,17 +1046,20 @@ class SimpleAgent:
         # self.llm = ChatOpenAI(model="deepseek-ai/deepseek-vl2", temperature=0.3) # man
         # self.llm = ChatOpenAI(model="deepseek-chat", temperature=0.3) #man
         # self.llm = ChatOpenAI(model="Doubao-1.5-pro-32k", temperature=0.3)  # haixing
-        # self.llm = ChatOpenAI(model="Doubao-lite-128k", temperature=0.3) #man
+        # self.llm = ChatOpenAI(model="Doubao-lite-128k", temperature=0.3) #haixing
+        # self.llm = ChatOpenAI(model="Doubao-1.5-lite-32k", temperature=0.3) #haixing
         # self.llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.3) #
         # self.llm = ChatOpenAI(model="gpt-3.5-turbo-0125", temperature=0.3)
         # self.llm = ChatOpenAI(model="qwen-max-0125", temperature=0.3)  # shi
         # self.llm = ChatOpenAI(model="Qwen/Qwen3-32B", temperature=0.3)  # man
         # self.llm = ChatOpenAI(model="claude-3-haiku-20240307", temperature=0.3)  # 贵
-        # self.llm = ChatOpenAI(model="grok-2-1212", temperature=0.3) #可以用这个选牌?
+        # self.llm = ChatOpenAI(model="grok-3-mini-beta", temperature=0.3) #goushi
         # self.llm = ChatOpenAI(model="Baichuan4-Air", temperature=0.3) # man
-        self.llm = ChatOpenAI(model="gpt-4.1-mini", temperature=0.3)  # shi
+        self.llm = ChatOpenAI(model="gpt-4.1-mini", temperature=0.3)  # haixing
+        # self.llm = ChatOpenAI(model="gpt-4.1-nano", temperature=0.3)  # shi
 
         # self.pro_llm = ChatOpenAI(model="DeepSeek-V3", temperature=0.3)  #
+        # self.pro_llm = ChatOpenAI(model="deepseek-v3", temperature=0.3)  #
         # self.pro_llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.3)  #
         # self.pro_llm = ChatOpenAI(model="gemini-2.0-flash", temperature=0.3)
         # self.pro_llm = ChatOpenAI(model="gpt-4o-2024-11-20", temperature=0.3)
