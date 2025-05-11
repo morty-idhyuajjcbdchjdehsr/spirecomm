@@ -266,7 +266,7 @@ Give **top 3** recommended cards!!
         else:
             return {
                 **state,  # 保留原 state 的所有属性
-                "messages": [{"role": "user", "content": "Your card_Index is out of range,"
+                "messages": [{"role": "user", "content": f"Your card_Index is out of range(index ranging from 0 to {len(available_cards)-1}),"
                                                          " please regenerate it!"}]
             }
 

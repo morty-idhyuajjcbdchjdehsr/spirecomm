@@ -238,7 +238,7 @@ things you should be aware of in the combat.
                         **state,  # 保留原 state 的所有属性
                         "messages": [{"role": "user", "content": "you have unused energy and there are still"
                                                                  "playable cards,are you sure to end the turn?You need "
-                                                                 "to make full use of your energy.If there "
+                                                                 "to make full use of your energy!!!If there "
                                                                  "is really no need to play more cards or "
                                                                  "it is harmful to play more cards,insist on"
                                                                  " your choice."
@@ -596,10 +596,10 @@ things you should be aware of in the combat.
                                        .format(block))
             if card.name == "Feed":
                 suggestion_content += ("\nYou have 'Feed' in your Hand Pile,which deals 10 damage and exhaust."
-                                       "so you should leave it to eliminate the enemy to raise 3 max hp")
+                                       "you should use it to eliminate the enemy to raise 3 max hp")
             if card.name == "Feed+":
                 suggestion_content += ("\nYou have 'Feed' in your Hand Pile,which deals 12 damage and exhaust."
-                                       "so you should leave it to eliminate the enemy to raise 4 max hp")
+                                       "you should use it to eliminate the enemy to raise 4 max hp")
             if card.name == "Self Repair":
                 suggestion_content += ("\nYou have 'Self Repair' in your Hand Pile,don't forget to "
                                        "play it to heal 7 HP after combat.")
