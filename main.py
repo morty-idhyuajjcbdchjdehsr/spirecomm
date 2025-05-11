@@ -35,6 +35,10 @@ if __name__ == "__main__":
             file.write('--------------tracking---------------\n')
         with open(r'C:\Users\32685\Desktop\spirecomm\event_agent.txt', 'w') as file:
             file.write('--------------tracking---------------\n')
+        with open(r'C:\Users\32685\Desktop\spirecomm\hand_select_agent.txt', 'w') as file:
+            file.write('--------------tracking---------------\n')
+        with open(r'C:\Users\32685\Desktop\spirecomm\shop_select_agent.txt', 'w') as file:
+            file.write('--------------tracking---------------\n')
 
         agent = SimpleAgent()
         coordinator = Coordinator()
@@ -60,7 +64,7 @@ if __name__ == "__main__":
             seed = "3UUE1ZMQ7E2T" # 45层，战士
             seed = "1B2WCU633TTY6" # 换4农合开
 
-            result = coordinator.play_one_game(chosen_class,seed = "1B2WCU633TTY6")
+            result = coordinator.play_one_game(chosen_class)
             with open(r'C:\Users\32685\Desktop\spirecomm\results.txt', 'a') as file:
                 if result:
                     file.write(f"win as {chosen_class} at {datetime.now()}\n")

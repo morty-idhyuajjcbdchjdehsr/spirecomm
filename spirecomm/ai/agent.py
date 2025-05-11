@@ -16,6 +16,7 @@ from spirecomm.ai.choose_card_agent import ChooseCardAgent
 from spirecomm.ai.event_choice_agent import EventChoiceAgent
 from spirecomm.ai.grid_choice_agent import SimpleGridChoiceAgent
 from spirecomm.ai.hand_select_agent import HandSelectAgent
+from spirecomm.ai.shop_select_agent import ShopSelectAgent
 from spirecomm.spire.game import Game, RoomPhase
 from spirecomm.spire.character import Intent, PlayerClass
 import spirecomm.spire.card
@@ -40,6 +41,7 @@ from dotenv import load_dotenv
 class SimpleAgent:
 
     def __init__(self, chosen_class=PlayerClass.THE_SILENT):
+        self.shop_select_agent = None
         self.hand_select_agent = None
         self.event_agent = None
         self.pro_llm = None
@@ -349,6 +351,29 @@ class SimpleAgent:
             best_boss_relic = self.priorities.get_best_boss_relic(relics)
             return BossRewardAction(best_boss_relic)
         elif self.game.screen_type == ScreenType.SHOP_SCREEN:
+
+            can_buy = 0
+            if self.game.screen.purge_available and self.game.gold >= self.game.screen.purge_cost:
+                can_buy = 1
+            for card in self.game.screen.cards:
+                if self.game.gold >= card.price:
+                    can_buy = 1
+                    break
+            for relic in self.game.screen.relics:
+                if self.game.gold >= relic.price:
+                    can_buy = 1
+                    break
+            for potion in self.game.screen.potions:
+                if self.game.gold >= potion.price:
+                    can_buy = 1
+                    break
+            if can_buy == 0:
+                return CancelAction()
+            ret =  self.make_shop_select_choice()
+            if ret is not None: # AI make correct choice
+                return ret
+
+            # Algorithm
             if self.game.screen.purge_available and self.game.gold >= self.game.screen.purge_cost:
                 return ChooseAction(name="purge")
             for card in self.game.screen.cards:
@@ -477,13 +502,48 @@ class SimpleAgent:
 
         return ChooseAction(option_index)
 
+    def make_shop_select_choice(self):
+        config = {"configurable": {"thread_id": self.thread_id}}
+
+        responses = self.shop_select_agent.invoke(
+            floor=self.game.floor,
+            current_hp=self.game.current_hp,
+            max_hp=self.game.max_hp,
+            deck=self.game.deck,
+            c_potions = self.game.get_real_potions(),
+            c_relics=self.game.relics,
+            gold=self.game.gold,
+            cards=self.game.screen.cards,
+            relics=self.game.screen.relics,
+            potions=self.game.screen.potions,
+            purge_cost=self.game.screen.purge_cost,
+            purge_available=self.game.screen.purge_available,
+            potion_full=self.game.are_potions_full(),
+
+            config=config
+        )
+
+        action = self.shop_select_agent.action
+        ret = self.shop_select_agent.ret
+        explanation = self.shop_select_agent.explanation
+
+        with open(r'C:\Users\32685\Desktop\spirecomm\output.txt', 'a', encoding="utf-8") as file:
+            # file.write('--------------executing get_play_card_action---------------\n')
+            # file.write(self.game.__str__())
+            file.write('--------------human message--------------------------------\n')
+            file.write(self.shop_select_agent.humanM + "\n")
+            file.write("--------------ai message-----------------------------------\n")
+            file.write(responses["messages"][-1].content + "\n")
+            file.write("self.action:" + str(action) + "\n")
+            file.write("self.explanation:" + str(explanation) + "\n")
+
+        return ret
 
     def make_hand_select_choice(self):
         config = {"configurable": {"thread_id": self.thread_id}}
 
         available_monsters = [monster for monster in self.game.monsters if
                               monster.current_hp > 0 and not monster.half_dead and not monster.is_gone]
-        config = {"configurable": {"thread_id": self.battle_thread_id}}
         responses = self.hand_select_agent.invoke(
             floor=self.game.floor,
             turn=self.game.turn,
@@ -887,6 +947,10 @@ class SimpleAgent:
         agent = HandSelectAgent(role=self.role, llm=self.llm, small_llm=self.llm)
         self.hand_select_agent = agent
 
+    def init_shop_select_llm(self):
+        agent = ShopSelectAgent(role=self.role, llm=self.pro_llm, small_llm=self.pro_llm)
+        self.shop_select_agent = agent
+
     @tool("search_card_tool")
     def search_card(card: str) -> str:
         """to get the content of the card"""
@@ -975,28 +1039,29 @@ class SimpleAgent:
         # self.llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash",temperature=0,transport='rest') #有限额
 
         # self.llm = ChatOpenAI(model="gemini-2.0-flash-lite",temperature=0.3)
-        self.llm = ChatOpenAI(model="gemini-2.0-flash", temperature=0)
+        # self.llm = ChatOpenAI(model="gemini-2.0-flash", temperature=0)
         # self.llm = ChatOpenAI(model="gemini-2.0-flash-thinking-exp-01-21", temperature=0.3) #good
         # self.llm = ChatOpenAI(model="gemini-1.5-flash-002", temperature=0.5)
         # self.llm = ChatOpenAI(model="DeepSeek-V3", temperature=0.3)
         # self.llm = ChatOpenAI(model="deepseek-ai/deepseek-vl2", temperature=0.3) # man
         # self.llm = ChatOpenAI(model="deepseek-chat", temperature=0.3) #man
         # self.llm = ChatOpenAI(model="Doubao-1.5-pro-32k", temperature=0.3)  # haixing
-        # self.llm = ChatOpenAI(model="Doubao-lite-128k", temperature=0.3)
+        # self.llm = ChatOpenAI(model="Doubao-lite-128k", temperature=0.3) #man
         # self.llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.3) #
         # self.llm = ChatOpenAI(model="gpt-3.5-turbo-0125", temperature=0.3)
         # self.llm = ChatOpenAI(model="qwen-max-0125", temperature=0.3)  # shi
+        # self.llm = ChatOpenAI(model="Qwen/Qwen3-32B", temperature=0.3)  # man
         # self.llm = ChatOpenAI(model="claude-3-haiku-20240307", temperature=0.3)  # 贵
         # self.llm = ChatOpenAI(model="grok-2-1212", temperature=0.3) #可以用这个选牌?
         # self.llm = ChatOpenAI(model="Baichuan4-Air", temperature=0.3) # man
-        # self.llm = ChatOpenAI(model="gpt-4.1-nano", temperature=0.3)  # shi
+        self.llm = ChatOpenAI(model="gpt-4.1-mini", temperature=0.3)  # shi
 
         # self.pro_llm = ChatOpenAI(model="DeepSeek-V3", temperature=0.3)  #
         # self.pro_llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.3)  #
-        self.pro_llm = ChatOpenAI(model="gemini-2.0-flash", temperature=0.3)
+        # self.pro_llm = ChatOpenAI(model="gemini-2.0-flash", temperature=0.3)
         # self.pro_llm = ChatOpenAI(model="gpt-4o-2024-11-20", temperature=0.3)
         # self.pro_llm = ChatOpenAI(model="gemini-2.0-flash-thinking-exp-01-21", temperature=0.3)
-
+        self.pro_llm = ChatOpenAI(model="gpt-4.1-mini", temperature=0.3)
 
         self.init_common_llm()
         self.init_simple_grid_choice_llm()
@@ -1005,6 +1070,7 @@ class SimpleAgent:
         self.init_make_map_choice_llm()
         self.init_event_llm()
         self.init_hand_select_llm()
+        self.init_shop_select_llm()
 
     def get_role_guidelines(self, chosen_class):
 

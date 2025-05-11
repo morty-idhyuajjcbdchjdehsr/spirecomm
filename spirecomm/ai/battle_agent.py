@@ -596,10 +596,10 @@ things you should be aware of in the combat.
                                        .format(block))
             if card.name == "Feed":
                 suggestion_content += ("\nYou have 'Feed' in your Hand Pile,which deals 10 damage and exhaust."
-                                       "you should use it to eliminate the enemy to raise 3 max hp")
+                                       "you should use it to **eliminate** the enemy to raise 3 max hp")
             if card.name == "Feed+":
                 suggestion_content += ("\nYou have 'Feed' in your Hand Pile,which deals 12 damage and exhaust."
-                                       "you should use it to eliminate the enemy to raise 4 max hp")
+                                       "you should use it to **eliminate** the enemy to raise 4 max hp")
             if card.name == "Self Repair":
                 suggestion_content += ("\nYou have 'Self Repair' in your Hand Pile,don't forget to "
                                        "play it to heal 7 HP after combat.")
