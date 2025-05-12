@@ -8932,3 +8932,374 @@ unable to parse json_text:
 
  the card must have a target!!!!!!!!!,targetIndex is -1
 
+2025-05-11 17:40:36,900 - ERROR - An error occurred: ShopSelectAgent.invoke() missing 1 required positional argument: 'deck'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 67, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 222, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 181, in receive_game_state_update
+    new_action = self.state_change_callback(self.last_game_state)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 143, in get_next_action_in_game_new
+    action = self.get_next_action_in_game(game_state)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 102, in get_next_action_in_game
+    return self.handle_screen()
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 372, in handle_screen
+    ret =  self.make_shop_select_choice()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 508, in make_shop_select_choice
+    responses = self.shop_select_agent.invoke(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: ShopSelectAgent.invoke() missing 1 required positional argument: 'deck'
+2025-05-11 17:43:56,320 - ERROR - An error occurred: 'Strategy'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 67, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 222, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 181, in receive_game_state_update
+    new_action = self.state_change_callback(self.last_game_state)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 143, in get_next_action_in_game_new
+    action = self.get_next_action_in_game(game_state)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 102, in get_next_action_in_game
+    return self.handle_screen()
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 372, in handle_screen
+    ret =  self.make_shop_select_choice()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 508, in make_shop_select_choice
+    responses = self.shop_select_agent.invoke(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\shop_select_agent.py", line 368, in invoke
+    result = self.graph.invoke(state, config)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\__init__.py", line 2124, in invoke
+    for chunk in self.stream(
+                 ^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\__init__.py", line 1779, in stream
+    for _ in runner.tick(
+             ^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\runner.py", line 230, in tick
+    run_with_retry(
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\retry.py", line 40, in run_with_retry
+    return task.proc.invoke(task.input, config)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\utils\runnable.py", line 548, in invoke
+    input = step.invoke(input, config)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\utils\runnable.py", line 310, in invoke
+    ret = context.run(self.func, *args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\graph\graph.py", line 95, in _route
+    return self._finish(writer, input, result, config)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\graph\graph.py", line 131, in _finish
+    r if isinstance(r, Send) else self.ends[r] for r in result
+                                  ~~~~~~~~~^^^
+KeyError: 'Strategy'
+During task with name 'Check' and id '0e2a4d19-4d5e-c014-5579-0501d86423e7'
+2025-05-11 17:50:22,201 - ERROR - An error occurred: 'NoneType' object has no attribute 'can_be_executed'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 67, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.execute_next_action_if_ready()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 114, in execute_next_action_if_ready
+    if len(self.action_queue) > 0 and self.action_queue[0].can_be_executed(self):
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'can_be_executed'
+2025-05-11 17:55:47,047 - ERROR - An error occurred: 'NoneType' object has no attribute 'can_be_executed'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 67, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.execute_next_action_if_ready()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 114, in execute_next_action_if_ready
+    if len(self.action_queue) > 0 and self.action_queue[0].can_be_executed(self):
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'can_be_executed'
+error occurs!!:
+Invalid argument brimstone in command "choose brimstone".
+
+2025-05-11 17:58:39,797 - ERROR - An error occurred: 'NoneType' object has no attribute 'can_be_executed'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 67, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.execute_next_action_if_ready()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 114, in execute_next_action_if_ready
+    if len(self.action_queue) > 0 and self.action_queue[0].can_be_executed(self):
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'can_be_executed'
+error occurs!!:
+Invalid command: play. Possible commands: [potion, key, click, wait, state]
+
+2025-05-11 18:10:15,559 - ERROR - An error occurred: 'NoneType' object has no attribute 'can_be_executed'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 67, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.execute_next_action_if_ready()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 114, in execute_next_action_if_ready
+    if len(self.action_queue) > 0 and self.action_queue[0].can_be_executed(self):
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'can_be_executed'
+2025-05-11 18:14:56,706 - ERROR - An error occurred: 'Coordinator' object has no attribute 'game'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 67, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.execute_next_action_if_ready()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 115, in execute_next_action_if_ready
+    self.execute_next_action()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 107, in execute_next_action
+    action.execute(self)
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\action.py", line 159, in execute
+    if coordinator.game.are_potions_full():
+       ^^^^^^^^^^^^^^^^
+AttributeError: 'Coordinator' object has no attribute 'game'
+error occurs!!:
+Invalid command: end. Possible commands: [potion, key, click, wait, state]
+
+2025-05-12 15:29:46,592 - ERROR - An error occurred: 'NoneType' object has no attribute 'can_be_executed'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 68, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.execute_next_action_if_ready()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 114, in execute_next_action_if_ready
+    if len(self.action_queue) > 0 and self.action_queue[0].can_be_executed(self):
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'can_be_executed'
+2025-05-12 16:00:28,118 - ERROR - An error occurred: 'NoneType' object has no attribute 'can_be_executed'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 68, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.execute_next_action_if_ready()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 114, in execute_next_action_if_ready
+    if len(self.action_queue) > 0 and self.action_queue[0].can_be_executed(self):
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'can_be_executed'
+error occurs!!:
+Invalid command: play. Possible commands: [start, state]
+
+error occurs!!:
+Invalid command: play. Possible commands: [start, state]
+
+error occurs!!:
+Invalid command: proceed. Possible commands: [start, state]
+
+error occurs!!:
+Invalid command: start. Possible commands: [choose, key, click, wait, state]
+
+2025-05-12 16:09:55,927 - ERROR - An error occurred: 'NoneType' object has no attribute 'can_be_executed'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 68, in <module>
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.execute_next_action_if_ready()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 114, in execute_next_action_if_ready
+    if len(self.action_queue) > 0 and self.action_queue[0].can_be_executed(self):
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'can_be_executed'
+2025-05-12 17:13:43,878 - ERROR - An error occurred: Ollama call failed with status code 404. Maybe your model is not found and you should pull the model with `ollama pull qwen3:8b`.
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 69, in <module>
+    result = coordinator.play_one_game(chosen_class,seed = "LSIYNLGZDQJU")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 222, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 181, in receive_game_state_update
+    new_action = self.state_change_callback(self.last_game_state)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 143, in get_next_action_in_game_new
+    action = self.get_next_action_in_game(game_state)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 136, in get_next_action_in_game
+    return self.get_play_card_action(room=room)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 190, in get_play_card_action
+    responses = self.battle_agent.invoke(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\battle_agent.py", line 721, in invoke
+    result = self.graph.invoke(state, config)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\__init__.py", line 2124, in invoke
+    for chunk in self.stream(
+                 ^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\__init__.py", line 1779, in stream
+    for _ in runner.tick(
+             ^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\runner.py", line 230, in tick
+    run_with_retry(
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\retry.py", line 40, in run_with_retry
+    return task.proc.invoke(task.input, config)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\utils\runnable.py", line 546, in invoke
+    input = step.invoke(input, config, **kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\utils\runnable.py", line 310, in invoke
+    ret = context.run(self.func, *args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\battle_agent.py", line 182, in llm_1
+    "messages": [self.llm.invoke(messages)]
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 307, in invoke
+    self.generate_prompt(
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 843, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 683, in generate
+    self._generate_with_cache(
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 908, in _generate_with_cache
+    result = self._generate(
+             ^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_community\chat_models\ollama.py", line 291, in _generate
+    final_chunk = self._chat_stream_with_aggregation(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_community\chat_models\ollama.py", line 222, in _chat_stream_with_aggregation
+    for stream_resp in self._create_chat_stream(messages, stop, **kwargs):
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_community\chat_models\ollama.py", line 194, in _create_chat_stream
+    yield from self._create_stream(
+               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_community\llms\ollama.py", line 266, in _create_stream
+    raise OllamaEndpointNotFoundError(
+langchain_community.llms.ollama.OllamaEndpointNotFoundError: Ollama call failed with status code 404. Maybe your model is not found and you should pull the model with `ollama pull qwen3:8b`.
+During task with name 'LLM' and id '26b888a5-9a18-b2f7-ed2e-2eb582d116e3'
+2025-05-12 17:33:43,301 - ERROR - An error occurred: 'NoneType' object has no attribute 'can_be_executed'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 69, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.execute_next_action_if_ready()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 114, in execute_next_action_if_ready
+    if len(self.action_queue) > 0 and self.action_queue[0].can_be_executed(self):
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'can_be_executed'
+2025-05-12 17:41:29,884 - ERROR - An error occurred: 'NoneType' object has no attribute 'can_be_executed'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 69, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.execute_next_action_if_ready()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 114, in execute_next_action_if_ready
+    if len(self.action_queue) > 0 and self.action_queue[0].can_be_executed(self):
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'can_be_executed'
+2025-05-12 17:44:00,571 - ERROR - An error occurred: 'NoneType' object has no attribute 'can_be_executed'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 69, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.execute_next_action_if_ready()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 114, in execute_next_action_if_ready
+    if len(self.action_queue) > 0 and self.action_queue[0].can_be_executed(self):
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'can_be_executed'
+error occurs!!:
+Invalid command: play. Possible commands: [potion, key, click, wait, state]
+
+2025-05-12 18:03:03,987 - ERROR - An error occurred: 'NoneType' object has no attribute 'can_be_executed'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 69, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.execute_next_action_if_ready()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 114, in execute_next_action_if_ready
+    if len(self.action_queue) > 0 and self.action_queue[0].can_be_executed(self):
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'can_be_executed'
+2025-05-12 21:37:17,615 - ERROR - An error occurred: 'NoneType' object has no attribute 'can_be_executed'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 69, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.execute_next_action_if_ready()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 114, in execute_next_action_if_ready
+    if len(self.action_queue) > 0 and self.action_queue[0].can_be_executed(self):
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'can_be_executed'
