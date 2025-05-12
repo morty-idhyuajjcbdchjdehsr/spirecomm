@@ -180,7 +180,7 @@ a high-level approach to playing the deck and detailed tactical instructions on 
 
 ### **1. Output Format**:
 Your response should be structured in the following format:
-**deck Analysis**: 
+deck Analysis: 
 "A high-level description of how this deck should be played, including its core strategy, strengths, weaknesses,
  and general approach to fights.",
  

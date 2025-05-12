@@ -63,6 +63,8 @@ if __name__ == "__main__":
             seed = "IJGDFL933EQJ" # 肉
             seed = "3UUE1ZMQ7E2T" # 45层，战士
             seed = "1B2WCU633TTY6" # 换4农合开
+            seed = "15U1RLGLSPKXT" # 战士农种
+            seed = "LSIYNLGZDQJU" # 肉
 
             result = coordinator.play_one_game(chosen_class)
             with open(r'C:\Users\32685\Desktop\spirecomm\results.txt', 'a') as file:

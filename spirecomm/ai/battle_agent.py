@@ -34,6 +34,24 @@ def get_lists_str(lists):
     ret += " ]"
     return ret
 
+def get_lists_str_for_m(lists):
+    ret = "[ \n\t"
+    for index,item in enumerate(lists):
+        ret += (item.__str__())
+        if index != len(lists)-1:
+            ret += ",\n\t"
+    ret += " \n\t]"
+    return ret
+
+def get_lists_str_with_only_name(lists):
+    ret = "[ "
+    for index,item in enumerate(lists):
+        ret += item.name
+        if index != len(lists)-1:
+            ret += ", "
+    ret += " ]"
+    return ret
+
 
 class State(TypedDict):
     messages: Annotated[list, add_messages]
@@ -56,6 +74,8 @@ class State(TypedDict):
 class BattleAgent:
     def __init__(self, role="DEFECT", llm=ChatOpenAI(model="gpt-3.5-turbo-0125", temperature=0),
                  small_llm=ChatOllama(model="mistral:7b", temperature=0)):
+        self.cnt = 0
+        self.total_invoke_time = 0
         self.error_invoke_cnt = 0
         self.total_invoke_cnt = 0
         self.potion_index = None
@@ -140,8 +160,8 @@ On each action, your job is to choose **one** card to play (if energy allows) or
 ### deck Analysis:
 To improve decision-making, you are provided with Analysis of your current deck.
 
-### Context:
-info of the current action
+### Combat situation:
+info of the current combat.
 - **Floor**: 'floor'
 - **Turn Number**: 'turn_number'
 - **Current HP**: 'current_hp' / 'max_hp'
@@ -149,13 +169,12 @@ info of the current action
 - **Energy Available**: 'energy'
 - **Relics**: [ Relic ]
 - **Enemy List**: [ Enemy ]  Enemy format: "enermy_name( enermy_hp,enemy_intent,enemy_block,[enemy_status])"
-- **Hand Pile**: [ Card ]  Card format: "card_name( card_cost,is_card_has_target,card_type )"
-- **Draw Pile**: [ Card ]
+- **Draw Pile**: [ Card ] 
 - **Discard Pile**: [ Card ]
 - **Player Status**: [ player_status ]
 - **Potion**: [ Potion ] Potion format: "potion_name(is_potion_has_target)"
 
-### Previous turn actions:
+### Previous actions in this turn:
 To improve decision-making, you are provided with the previous actions in this turn:
 [ 
   {{ turn: int, operation: str }}, //first action in this turn
@@ -165,6 +184,10 @@ To improve decision-making, you are provided with the previous actions in this t
 
 ### Notice:
 things you should be aware of in the combat.
+
+### Hand Pile:
+list of cards to choose from
+     [ Card ]  Card format: "card_name( card_cost,is_card_has_target,card_type )"
 
 ### Response Format:
 {outputFormat}
@@ -258,7 +281,7 @@ things you should be aware of in the combat.
                         return {
                             **state,  # 保留原 state 的所有属性
                             "messages": [
-                                {"role": "user", "content": "Your chosen card's cost is greater than your energy!,"
+                                {"role": "user", "content": f"Your chosen card's cost({card_to_play1.cost}) is greater than your energy({state["energy"]})!,"
                                                             " please regenerate your answer!"}]
                         }
 
@@ -270,7 +293,7 @@ things you should be aware of in the combat.
             else:
                 return {
                     **state,  # 保留原 state 的所有属性
-                    "messages": [{"role": "user", "content": "Your card_Index is out of range,"
+                    "messages": [{"role": "user", "content": f"Your card_Index is out of range(index ranging from 0 to {len(hand_cards)-1}),"
                                                              " please regenerate your answer!"}]
                 }
         elif self.action == 'potion':
@@ -286,7 +309,7 @@ things you should be aware of in the combat.
             else:
                 return {
                     **state,  # 保留原 state 的所有属性
-                    "messages": [{"role": "user", "content": "Your potion_index is out of range,"
+                    "messages": [{"role": "user", "content": f"Your potion_index is out of range(index ranging from 0 to {len(potions)}),"
                                                              " please regenerate your answer!"}]
                 }
         else:
@@ -306,7 +329,7 @@ things you should be aware of in the combat.
         else:
             return {
                 **state,  # 保留原 state 的所有属性
-                "messages": [{"role": "user", "content": "Your target_index is out of range,"
+                "messages": [{"role": "user", "content": f"Your target_index is out of range(index ranging from 0 to {len(available_monsters)-1}),"
                                                          " please regenerate your answer!"}]
             }
 
@@ -316,7 +339,7 @@ things you should be aware of in the combat.
                     if self.target_index == -1:
                         return {
                             **state,  # 保留原 state 的所有属性
-                            "messages": [{"role": "user", "content": "Your chosen card must have a target,"
+                            "messages": [{"role": "user", "content": "Your chosen card must have a target(targetIndex can't be -1),"
                                                                      " please regenerate your answer!"}]
                         }
 
@@ -325,7 +348,7 @@ things you should be aware of in the combat.
                 if potion_to_use.requires_target:
                     return {
                             **state,  # 保留原 state 的所有属性
-                            "messages": [{"role": "user", "content": "Your chosen potion must have a target,"
+                            "messages": [{"role": "user", "content": "Your chosen potion must have a target(targetIndex can't be -1),"
                                                                      " please regenerate your answer!"}]
                         }
 
@@ -391,7 +414,8 @@ things you should be aware of in the combat.
 
         # 人工添加建议：
         suggestion_content = ''
-        suggestion_content += '**Notice**:'
+        suggestion_content += 'Notice:'
+
         no_attack_flag = 1
         total_damage = 0
         low_hp_flag = 0
@@ -663,25 +687,27 @@ things you should be aware of in the combat.
         template_string = """       
 {deck_analysis}        
 
-context:
+combat situation:
         **Floor**: {floor}, 
         **Turn Number**: {turn}, 
         **Current HP**: {hp},
         **Block**: {block},
         **Energy Available**: {energy},
         **Relics**:{relics},
-        **Hand pile**(the cards in your hand): {hand},
         **Enemy Lists**:{monsters},
-        **Draw Pile**(the cards in draw pile): {drawPile},
-        **Discard Pile**(the cards in discard pile):{discardPile},
-        **Player Status**(list of player status):{pStatus}
+        **Draw Pile**: {drawPile},
+        **Discard Pile**:{discardPile},
+        **Player Status**:{pStatus}
         **Potion**:{potion}
         **Orbs**(if you are DEFECT): {orbs}
         
-Previous turn actions:
+Previous actions in this turn:
 {previous_rounds_info}
 
-{notice}        
+{notice}  
+
+Hand Pile:
+{hand}
 
 now give the response.
 """
@@ -694,9 +720,9 @@ now give the response.
             energy=energy,
             relics=get_lists_str(relics),
             hand=get_lists_str(hand),
-            monsters=get_lists_str(monsters),
-            drawPile=get_lists_str(drawPile),
-            discardPile=get_lists_str(discardPile),
+            monsters=get_lists_str_for_m(monsters),
+            drawPile=get_lists_str_with_only_name(drawPile),
+            discardPile=get_lists_str_with_only_name(discardPile),
             pStatus=get_lists_str(powers),
             # output_format=outputFormat,
             orbs=get_lists_str(orbs),
@@ -717,6 +743,8 @@ now give the response.
 
         end_time = time.time()  # 记录结束时间
         elapsed_time = end_time - start_time  # 计算耗时
+        self.total_invoke_time += elapsed_time
+        self.cnt +=1
 
         # 添加round信息到队列
         available_monsters = [monster for monster in monsters if
@@ -762,6 +790,7 @@ now give the response.
             for response in result["messages"]:
                 file.write(type(response).__name__ + ":\n" + response.content.__str__() + '\n')
             file.write(f"invoke time: {elapsed_time:.6f} s\n")
+            file.write(f"average invoke time: {float(self.total_invoke_time)/self.cnt:.6f} s\n")
             file.write(f"error rate:{(float(self.error_invoke_cnt)/self.total_invoke_cnt)*100 :.3f}%\n")
             file.write('--------------round end-------------------------\n')
 

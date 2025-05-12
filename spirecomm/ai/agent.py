@@ -1031,20 +1031,24 @@ class SimpleAgent:
         # self.llm = ChatOllama(model="deepseek-r1:7b", temperature=0) # 有<think>
         # self.llm = ChatOllama(model="mistral:7b", temperature=0) # 还行
         # self.llm = ChatOllama(model="hermes3:3b", temperature=0) # 还不赖
+        # self.llm = ChatOllama(model="hermes3:8b", temperature=0) # 还不赖
         # self.llm = ChatOllama(model="qwen2.5:3b", temperature=0)  #不赖 10s+
         # self.llm = ChatOllama(model="qwen2.5:1.5b", temperature=0) # shi
         # self.llm = ChatOllama(model="gemma2:2b", temperature=0) #man
-        # self.llm = ChatOllama(model="gemma3:1b-it-q4_K_M", temperature=0) #只会e键爬塔
+        # self.llm = ChatOllama(model="gemma3:4b", temperature=0) # haixing
+        # self.llm = ChatOllama(model="qwen3:latest", temperature=0)  #
+
 
         # self.llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash",temperature=0,transport='rest') #有限额
 
         # self.llm = ChatOpenAI(model="gemini-2.0-flash-lite",temperature=0.3)
-        # self.llm = ChatOpenAI(model="gemini-2.0-flash", temperature=0)
-        # self.llm = ChatOpenAI(model="gemini-2.0-flash-thinking-exp-01-21", temperature=0.3) #good
+        self.llm = ChatOpenAI(model="gemini-2.0-flash", temperature=0)
+        # self.llm = ChatOpenAI(model="gemini-2.0-flash-thinking-exp-01-21", temperature=0) #good
         # self.llm = ChatOpenAI(model="gemini-1.5-flash-002", temperature=0.5)
         # self.llm = ChatOpenAI(model="DeepSeek-V3", temperature=0.3)
         # self.llm = ChatOpenAI(model="deepseek-ai/deepseek-vl2", temperature=0.3) # man
-        # self.llm = ChatOpenAI(model="deepseek-chat", temperature=0.3) #man
+        # self.llm = ChatOpenAI(model="deepseek-ai/DeepSeek-V2.5", temperature=0.3) #man
+        # self.llm = ChatOpenAI(model="tngtech/DeepSeek-R1T-Chimera", temperature=0.3) # haixing man
         # self.llm = ChatOpenAI(model="Doubao-1.5-pro-32k", temperature=0.3)  # haixing
         # self.llm = ChatOpenAI(model="Doubao-lite-128k", temperature=0.3) #haixing
         # self.llm = ChatOpenAI(model="Doubao-1.5-lite-32k", temperature=0.3) #haixing
@@ -1055,16 +1059,16 @@ class SimpleAgent:
         # self.llm = ChatOpenAI(model="claude-3-haiku-20240307", temperature=0.3)  # 贵
         # self.llm = ChatOpenAI(model="grok-3-mini-beta", temperature=0.3) #goushi
         # self.llm = ChatOpenAI(model="Baichuan4-Air", temperature=0.3) # man
-        self.llm = ChatOpenAI(model="gpt-4.1-mini", temperature=0.3)  # haixing
+        # self.llm = ChatOpenAI(model="gpt-4.1-mini", temperature=0.3)  # haixing
         # self.llm = ChatOpenAI(model="gpt-4.1-nano", temperature=0.3)  # shi
 
         # self.pro_llm = ChatOpenAI(model="DeepSeek-V3", temperature=0.3)  #
         # self.pro_llm = ChatOpenAI(model="deepseek-v3", temperature=0.3)  #
         # self.pro_llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.3)  #
-        # self.pro_llm = ChatOpenAI(model="gemini-2.0-flash", temperature=0.3)
+        self.pro_llm = ChatOpenAI(model="gemini-2.0-flash", temperature=0.3)
         # self.pro_llm = ChatOpenAI(model="gpt-4o-2024-11-20", temperature=0.3)
         # self.pro_llm = ChatOpenAI(model="gemini-2.0-flash-thinking-exp-01-21", temperature=0.3)
-        self.pro_llm = ChatOpenAI(model="gpt-4.1-mini", temperature=0.3)
+        # self.pro_llm = ChatOpenAI(model="gpt-4.1-mini", temperature=0.3)
 
         self.init_common_llm()
         self.init_simple_grid_choice_llm()
