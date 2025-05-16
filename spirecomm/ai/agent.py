@@ -1005,7 +1005,7 @@ class SimpleAgent:
         # self.llm = ChatOpenAI(model="gpt-3.5-turbo-0125", temperature=0)
         # self.llm = ChatOpenAI(model="gpt-3.5-turbo-ca", temperature=0)  # 史
         # self.llm = ChatOpenAI(model="gpt-4o-mini-ca", temperature=0)  # good
-        self.llm = ChatOpenAI(model="deepseek-v3", temperature=0.3)  # 神！！！！！！！！！
+        # self.llm = ChatOpenAI(model="deepseek-v3", temperature=0.3)  # 神！！！！！！！！！
         # self.llm = ChatOpenAI(model="claude-3-5-haiku-20241022", temperature=0.5) #shi
         # self.llm = ChatOpenAI(model="gemini-2.0-flash", temperature=0)
 
@@ -1037,6 +1037,7 @@ class SimpleAgent:
         # self.llm = ChatOllama(model="gemma2:2b", temperature=0) #man
         # self.llm = ChatOllama(model="gemma3:4b", temperature=0) # haixing
         # self.llm = ChatOllama(model="qwen3:latest", temperature=0)  #
+        # self.llm = ChatOllama(model="deepseek-llm:7b", temperature=0) #没有格式化输出
 
 
         # self.llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash",temperature=0,transport='rest') #有限额
@@ -1065,10 +1066,11 @@ class SimpleAgent:
         # self.pro_llm = ChatOpenAI(model="DeepSeek-V3", temperature=0.3)  #
         # self.pro_llm = ChatOpenAI(model="deepseek-v3", temperature=0.3)  #
         # self.pro_llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.3)  #
-        self.pro_llm = ChatOpenAI(model="gemini-2.0-flash", temperature=0.3)
+        # self.pro_llm = ChatOpenAI(model="gemini-2.0-flash", temperature=0.3) #敲牌有点蠢
         # self.pro_llm = ChatOpenAI(model="gpt-4o-2024-11-20", temperature=0.3)
         # self.pro_llm = ChatOpenAI(model="gemini-2.0-flash-thinking-exp-01-21", temperature=0.3)
         # self.pro_llm = ChatOpenAI(model="gpt-4.1-mini", temperature=0.3)
+        self.pro_llm = ChatOpenAI(model="claude-3-haiku-20240307", temperature=0.3)  # 贵
 
         self.init_common_llm()
         self.init_simple_grid_choice_llm()

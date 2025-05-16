@@ -58,7 +58,14 @@ def get_lists_str(lists):
     ret += " ]"
     return ret
 
-
+def get_lists_str_with_name(lists):
+    ret = "[ "
+    for index,item in enumerate(lists):
+        ret += item.name
+        if index != len(lists)-1:
+            ret += ", "
+    ret += " ]"
+    return ret
 
 class State(TypedDict):
     messages: Annotated[list, add_messages]
@@ -189,7 +196,7 @@ deck Analysis:
 """
 
         human_msg = f""" Context:
-                        - **Current Deck:** {get_lists_str(self.current_deck)}
+                        - **Current Deck:** {get_lists_str_with_name(self.current_deck)}
 
                         now give your response. """
 
@@ -366,7 +373,7 @@ Your response should be structured in JSON format as follows:
         messages = template1.format_messages(
             floor=floor,
             hp=f"{current_hp}/{max_hp}",
-            deck = get_lists_str(deck),
+            deck = get_lists_str_with_name(deck),
             reward_cards=get_lists_str_with_r(reward_cards),
             relic_bowl=relic_bowl
         )

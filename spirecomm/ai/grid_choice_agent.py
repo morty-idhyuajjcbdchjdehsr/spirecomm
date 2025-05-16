@@ -18,7 +18,7 @@ from langgraph.graph.message import add_messages
 
 from langchain_core.messages import AIMessage, BaseMessage, HumanMessage
 
-from spirecomm.spire.card import Card, CardRarity
+from spirecomm.spire.card import Card, CardRarity, CardType
 from spirecomm.spire.character import Monster, Intent
 from spirecomm.spire.relic import Relic
 
@@ -33,6 +33,37 @@ def get_lists_str(lists):
             ret += ", "
     ret += " ]"
     return ret
+
+def get_lists_str_with_name(lists):
+    ret = "[ "
+    for index,item in enumerate(lists):
+        ret += item.name
+        if index != len(lists)-1:
+            ret += ", "
+    ret += " ]"
+    return ret
+
+def get_lists_str_for_card(lists):
+    ret = "[ "
+    for index,item in enumerate(lists):
+        type = ""
+        if item.type == CardType.ATTACK:
+            type = "ATTACK"
+        if item.type == CardType.SKILL:
+            type = "SKILL"
+        if item.type == CardType.POWER:
+            type = "POWER"
+        if item.type == CardType.STATUS:
+            type = "STATUS"
+        if item.type == CardType.CURSE:
+            type = "CURSE"
+
+        ret += f"{item.name}({type})"
+        if index != len(lists)-1:
+            ret += ", "
+    ret += " ]"
+    return ret
+
 
 
 class State(TypedDict):
@@ -63,7 +94,7 @@ class SimpleGridChoiceAgent:
 
         card_indexes_schema = ResponseSchema(
             name="cardIndex",
-            description="The index of chosen card from Current Deck(starts with 0)",
+            description="The index of chosen card from Available Cards(starts with 0)",
             type="Int"
         )
         explanation_schema = ResponseSchema(
@@ -112,19 +143,20 @@ class SimpleGridChoiceAgent:
                         now you need to assist in choosing one card from **Available Cards** for **{state["intent"]}**.
 
                         ### Context:
+                        Information provided for you to make better choice.
                         - **Relics**: [Relic],
                         - **Current Deck**: [Card] 
                         - **Player's Health**: 'current_hp' / 'max_hp'
-                        - **Available Cards**: [Card]
+                        
+                        ### Available Cards
+                        Cards to choose from
+                         [Card]
 
                         ### Instructions:
                         {Instruction[state["intent"]]}
 
                         ### output format:
                         {outputFormat}
-                        
-                        ### Attention:
-                        Remember, the output should not contain annotation like "//xxxxxxx",
                         """
         self.grid_choice_agent_sys_prompt = system_prompt
         messages = [{"role": "system", "content": system_prompt}] + state["messages"]
@@ -146,7 +178,7 @@ class SimpleGridChoiceAgent:
 - **Relics**: [Relic],
 - **Current Deck:** [Card] 
 - **Player's Health:** 'current_hp' / 'max_hp'
-- **Available Cards**: [Card] (choose a card from here)
+- **Available Cards**: [Card] (cards to choose from)
 """
         msg = {
             'purge':"""
@@ -215,9 +247,9 @@ Give **top 3** recommended cards!!
         self.small_llm_sys = system_msg
         human_msg = f""" Context:
                 - **Relics:** {get_lists_str(state["relics"])}
-                - **Current Deck:** {get_lists_str(state["deck"])}
+                - **Current Deck:** {get_lists_str_with_name(state["deck"])}
                 - **Player's Health:** {state["current_hp"]}/{state["max_hp"]}
-                - **Available Cards**: {get_lists_str(state["available_cards"])}
+                - **Available Cards**: {get_lists_str_with_name(state["available_cards"])}
                 now give your response. """
 
         messages = [{"role": "system", "content": system_msg}] + [
@@ -305,15 +337,18 @@ Give **top 3** recommended cards!!
                         - **Relics**:{relics}
                         - **Current Deck:** {deck}
                         - **Player's Health:** {hp}
-                        - **Available Cards:** {available_cards}
+                        
+                        Available Cards:
+                        {available_cards}
+                        
                         now give your response.
                         """
         template1 = ChatPromptTemplate.from_template(template_string)
         messages = template1.format_messages(
             relics=get_lists_str(relics),
             hp=f"{current_hp}/{max_hp}",
-            deck=get_lists_str(deck),
-            available_cards=get_lists_str(available_cards),
+            deck=get_lists_str_with_name(deck),
+            available_cards=get_lists_str_with_name(available_cards),
         )
 
         self.humanM = messages[0].content

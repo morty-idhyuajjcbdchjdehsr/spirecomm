@@ -44,6 +44,15 @@ def get_lists_str(lists):
     ret += " ]"
     return ret
 
+def get_lists_str_with_name(lists):
+    ret = "[ "
+    for index,item in enumerate(lists):
+        ret += item.name
+        if index != len(lists)-1:
+            ret += ", "
+    ret += " ]"
+    return ret
+
 
 class State(TypedDict):
     messages: Annotated[list, add_messages]
@@ -226,7 +235,7 @@ now give your response.
         messages = template1.format_messages(
             floor=floor,
             hp=f"{current_hp}/{max_hp}",
-            deck=get_lists_str(deck),
+            deck=get_lists_str_with_name(deck),
             relics=get_lists_str(relics),
             event_name = event_name,
             event_text = event_text,
