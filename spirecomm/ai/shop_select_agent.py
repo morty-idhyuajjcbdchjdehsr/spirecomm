@@ -217,6 +217,11 @@ You will be provided the following context.
         gold = state["gold"]
         self.ret = None
 
+        has_sozu = False
+        for relic in state["c_relics"]:
+            if relic.name == "Sozu":
+                has_sozu = True
+
         if self.action == 'leave':
             self.ret = CancelAction()
         elif self.action == 'card':
@@ -253,7 +258,15 @@ You will be provided the following context.
                     c_potion = shop_potions[self.potion_index]
                     if gold>= c_potion.price:
                         if not state["potion_full"]:
-                            self.ret = BuyPotionAction(c_potion)
+                            if not has_sozu:
+                                self.ret = BuyPotionAction(c_potion)
+                            else:
+                                return {
+                                    **state,  # 保留原 state 的所有属性
+                                    "messages": [
+                                        {"role": "user", "content": f"You have relic 'Sozu',now you can't buy any potions."
+                                                                    " please regenerate your answer!"}]
+                                }
                         else:
                             return {
                                 **state,  # 保留原 state 的所有属性

@@ -66,8 +66,10 @@ if __name__ == "__main__":
             seed = "15U1RLGLSPKXT" # 战士农种
             seed = "LSIYNLGZDQJU" # 肉
             seed = "2336LW8KMWIIT" #白嫖精英
+            seed = "576PMLJ8RWVQV" #金冠开
+            seed = "3I0F0ZCZD9KUC" #50层，肉
 
-            result = coordinator.play_one_game(chosen_class)
+            result = coordinator.play_one_game(chosen_class,seed = "3I0F0ZCZD9KUC")
             with open(r'C:\Users\32685\Desktop\spirecomm\results.txt', 'a') as file:
                 if result:
                     file.write(f"win as {chosen_class} at {datetime.now()}\n")
@@ -102,11 +104,11 @@ if __name__ == "__main__":
         #             file.write(f"lose as {chosen_class} at {datetime.now()} at floor {agent.game.floor}\n")
 
         while True:
-            p_class = PlayerClass.THE_SILENT
+            p_class = PlayerClass.DEFECT
             agent.change_class(p_class)
             agent.init_llm_env()
 
-            result = coordinator.play_one_game(p_class,seed = "1B2WCU633TTY6")
+            result = coordinator.play_one_game(p_class)
             with open(r'C:\Users\32685\Desktop\spirecomm\results.txt', 'a') as file:
                 if result:
                     file.write(f"win as {p_class} at {datetime.now()}\n")
