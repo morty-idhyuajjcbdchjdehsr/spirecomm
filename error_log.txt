@@ -9303,3 +9303,1546 @@ Traceback (most recent call last):
     if len(self.action_queue) > 0 and self.action_queue[0].can_be_executed(self):
                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 AttributeError: 'NoneType' object has no attribute 'can_be_executed'
+2025-05-16 14:40:57,015 - ERROR - An error occurred: 'NoneType' object has no attribute 'can_be_executed'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 69, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.execute_next_action_if_ready()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 114, in execute_next_action_if_ready
+    if len(self.action_queue) > 0 and self.action_queue[0].can_be_executed(self):
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'can_be_executed'
+error occurs!!:
+Invalid command: play. Possible commands: [start, state]
+
+error occurs!!:
+Invalid command: play. Possible commands: [start, state]
+
+error occurs!!:
+Invalid command: play. Possible commands: [start, state]
+
+error occurs!!:
+Invalid command: potion. Possible commands: [choose, key, click, wait, state]
+
+2025-05-16 14:47:15,953 - ERROR - An error occurred: 'NoneType' object has no attribute 'can_be_executed'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 69, in <module>
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.execute_next_action_if_ready()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 114, in execute_next_action_if_ready
+    if len(self.action_queue) > 0 and self.action_queue[0].can_be_executed(self):
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'can_be_executed'
+unable to parse json_text:{
+	"index": 0,  // The index of the chosen node from Choice List (0~9).
+	"explanation": "Both choices lead to Enemy nodes, but the path from Enemy(0,0) eventually leads to an Unknown node at (2,2), which could offer beneficial encounters like a Merchant or Treasure. Given the current HP is full and the deck is basic, taking a path that might lead to better rewards is preferable over a purely combat-heavy path."
+}
+error occurs!!:
+Invalid command: choose. Possible commands: [start, state]
+
+2025-05-16 18:16:57,746 - ERROR - An error occurred: 'NoneType' object has no attribute 'can_be_executed'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 70, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.execute_next_action_if_ready()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 114, in execute_next_action_if_ready
+    if len(self.action_queue) > 0 and self.action_queue[0].can_be_executed(self):
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'can_be_executed'
+unable to parse json_text:{
+	"index": 2,
+	"explanation": "Based on the current context, the best choice is to progress to the 'Enemy(5,0)' node. This decision is based on the following factors:
+
+1. The map tree shows that the 'Enemy(5,0)' node has a Merchant encounter as one of its children. Merchants offer valuable opportunities to purchase upgrades, remove cards, or obtain relics, which can significantly improve the Ironclad's overall strength and strategy.
+
+2. The current deck composition is relatively basic, consisting mainly of Strike and Defend cards. Progressing to a Merchant encounter could allow the Ironclad to optimize the deck by removing or upgrading cards, which would enhance its combat effectiveness.
+
+3. With the Ironclad's current HP at 88/88 and the Burning Blood relic, the player is in a strong position to handle enemy encounters. The Ironclad should be able to comfortably progress through the 'Enemy(5,0)' node without risking significant health loss.
+
+4. The other two options, 'Enemy(1,0)' and 'Enemy(2,0)', do not appear to offer any immediate benefits or strategic advantages. Avoiding these nodes and focusing on the Merchant encounter is the best course of action for the Ironclad's progression."
+}
+unable to parse json_text:{
+	"index": 0,
+	"explanation": "In this situation, I would choose the Elite (0,6) node as the next level to progress through. This decision is based on the following considerations:
+
+1. The Elite node offers a challenging encounter, which aligns with the Ironclad's playstyle of facing difficult battles head-on. As the Ironclad, we should seek out opportunities to test our strength against powerful enemies.
+
+2. The current HP of 53/88 is relatively high, and the Ironclad's deck seems to be focused on dealing damage and gaining strength. This suggests that the Ironclad is well-equipped to handle an Elite encounter.
+
+3. The Burning Blood relic provides a valuable healing effect after combat, which can help mitigate the risks of the Elite encounter.
+
+4. Progressing through the Elite node opens up the possibility of reaching the Treasure (0,8) node, which could provide valuable rewards to further strengthen the Ironclad's capabilities.
+
+Overall, the Elite node presents a good opportunity for the Ironclad to showcase its power and potentially gain valuable resources for the journey ahead. The current context suggests that the Ironclad is well-prepared to take on this challenge."
+}
+unable to parse json_text:{
+	"index": 0,
+	"explanation": "Based on the current context, I recommend choosing the 'Enemy' node at (0,9). This node represents a combat encounter, which aligns with the Ironclad's playstyle of engaging in battles to gain strength and progress.
+
+Given the Ironclad's current HP of 36/88 and the relatively straightforward deck composition, the 'Enemy' encounter should be manageable. Defeating this enemy will provide valuable resources, such as gold, cards, or relics, which can further enhance the Ironclad's capabilities.
+
+Additionally, the 'Unknown' node at (1,9) introduces more uncertainty, as the potential rewards or challenges are not clearly defined. By choosing the 'Enemy' node, the Ironclad can secure a more predictable outcome and continue its progression through the map.
+
+Overall, the 'Enemy' node at (0,9) represents the best choice in the current context, as it aligns with the Ironclad's strengths, offers potential rewards, and maintains a clear path forward in the game."
+}
+unable to parse json_text:{
+	"index": 0,
+	"explanation": "Based on the current context, the best choice is to proceed to the first node in the Choice List, which is 'Enemy(1,0)'. This node represents an enemy encounter, but it is the closest and most direct path forward in the map tree.
+
+Given that the player's current HP is at 70/70 and the deck contains a balanced mix of offensive (Strike) and defensive (Defend, Survivor+, Neutralize) cards, the player is well-equipped to handle a standard enemy encounter. Additionally, the player has the 'Ring of the Snake' relic, which provides a small but consistent HP recovery after each combat, further mitigating the risks of the upcoming battle.
+
+Choosing this node allows the player to progress deeper into the map tree and potentially encounter more beneficial nodes, such as Merchants or Treasure rooms, in the future. Avoiding the enemy nodes and attempting to find an easier path may lead to a longer and more circuitous route, which could be less efficient in the long run. Therefore, the 'Enemy(1,0)' node is the best choice to make at this stage of the game."
+}
+unable to parse json_text:{
+	"index": 0,
+	"explanation": "Based on the current map tree, the best next level to progress through is the 'Unknown' node at (0,2). This node offers an opportunity to explore and potentially encounter beneficial encounters, such as a Merchant or a Rest site, which could help improve my current resources and strategy.
+
+Given my current HP of 51/70 and a relatively basic deck, I should avoid the 'Enemy' node at (2,2) as it likely leads to a difficult battle that I may not be well-equipped to handle. The 'Unknown' node, on the other hand, provides a chance to gather more information and resources before potentially facing a stronger enemy.
+
+Additionally, the 'Elite' node at (0,5) is a potential long-term goal, but I should focus on strengthening my deck and resources before attempting to take on a challenging Elite encounter. By progressing through the 'Unknown' node first, I can better prepare myself for the upcoming challenges."
+}
+unable to parse json_text:{
+	"index": 1,
+	"explanation": "Given the current context, the best choice is to proceed to the Rest (1,5) node. This decision is based on the following factors:
+
+1. Current HP: With only 20/70 HP remaining, it is crucial to prioritize recovering health to prepare for the upcoming battles. The Rest node will allow me to fully heal, which is a significant advantage.
+
+2. Current Deck: The deck is focused on defensive and utility cards, with limited offensive power. Resting will allow me to recharge and optimize my deck for the challenges ahead.
+
+3. Relics: The Ring of the Snake relic provides a useful defensive boost, but does not significantly impact the offensive capabilities of the current deck. Prioritizing survival and deck optimization is more important at this stage.
+
+4. Avoiding Elites: While the Elite (0,5) node could provide valuable rewards, engaging an Elite encounter with the current low HP and deck composition would be risky. It is better to recover and strengthen my position before tackling the Elite.
+
+5. Merchant Opportunity: The Merchant (2,5) node is also a viable option, but the immediate need for health recovery outweighs the potential benefits of visiting the Merchant at this point. I can always return to the Merchant later if necessary.
+
+In summary, the Rest (1,5) node is the best choice to ensure my survival and set me up for success in the subsequent encounters."
+}
+unable to parse json_text:{
+	"index": 0,
+	"explanation": "Based on the current map tree and context, the best next level to progress through is the first node in the Choice List, which is 'Enemy(1,0)'. This choice is based on the following considerations:
+
+1. The current map tree shows a linear progression of enemy encounters, with no immediate beneficial encounters like Merchants or Treasures. Therefore, it is best to proceed cautiously and take on the easiest enemy encounter first.
+
+2. The current HP is at 75/75, which is a comfortable level to take on the first enemy encounter. The deck also contains a good mix of offensive and defensive cards, suggesting the Defect is well-equipped to handle the upcoming battle.
+
+3. Avoiding the more difficult enemy encounters, such as 'Enemy(2,0)', 'Enemy(3,0)', and 'Enemy(5,0)', is a prudent strategy at this stage, as the Defect's resources may not be sufficient to handle them without risk of taking significant damage.
+
+4. Progressing through the 'Enemy(1,0)' node will allow the Defect to potentially gain additional resources, such as cards or relics, which can be used to strengthen the deck and improve the chances of success in future encounters.
+"
+}
+error occurs!!:
+Invalid command: end. Possible commands: [start, state]
+
+error occurs!!:
+Invalid command: end. Possible commands: [start, state]
+
+error occurs!!:
+Invalid command: start. Possible commands: [choose, key, click, wait, state]
+
+2025-05-16 18:35:05,857 - ERROR - An error occurred: 'NoneType' object has no attribute 'can_be_executed'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 70, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.execute_next_action_if_ready()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 114, in execute_next_action_if_ready
+    if len(self.action_queue) > 0 and self.action_queue[0].can_be_executed(self):
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'can_be_executed'
+unable to parse json_text:{
+	"index": 2,
+	"explanation": "Based on the current map tree and context, the best choice is to progress to the 'Enemy(5,0)' node. This decision is based on the following considerations:
+
+1. The 'Enemy(5,0)' node is the closest to the current node, which minimizes the risk of encountering more difficult encounters along the way.
+
+2. The 'Enemy(5,0)' node has a 'Merchant' node as one of its children, which could provide valuable opportunities to upgrade the deck or purchase healing items, given the current full HP status.
+
+3. The other two options, 'Enemy(0,0)' and 'Enemy(1,0)', do not have any immediately apparent beneficial nodes in their paths, such as a Merchant or Treasure room.
+
+4. With a full HP and a relatively basic deck, the Ironclad should be able to handle the upcoming enemy encounters without too much difficulty. The Burning Blood relic also provides additional sustain during battles.
+
+Therefore, the 'Enemy(5,0)' node is the best choice to progress to the next level and potentially gain valuable resources or upgrades for the deck."
+}
+unable to parse json_text:{
+	"index": 1,
+	"explanation": "Based on the current context, the best choice is to progress to the 'Unknown' node at (2,3). This node offers a potential path to an Elite encounter, which could provide valuable rewards and upgrades to strengthen the Ironclad's deck and survivability. 
+
+While the 'Enemy' node at (1,3) is a more straightforward encounter, it does not offer the same potential for progression and growth. The 'Unknown' node, on the other hand, presents an opportunity to encounter an Elite, which could lead to obtaining powerful relics or cards that could significantly improve the Ironclad's overall strategy.
+
+Given the Ironclad's current HP of 78/88 and the relatively basic deck composition, taking on an Elite encounter at this stage could be a calculated risk worth taking. The Burning Blood relic also provides a valuable source of healing, which can help mitigate the risks associated with an Elite fight.
+
+Therefore, the 'Unknown' node at (2,3) is the best choice to progress and potentially gain a significant advantage in the run."
+}
+unable to parse json_text:{
+	"index": 1,
+	"explanation": "Given the current context, the best choice is to proceed to the 'Unknown' node at (1,9). This node offers a potential opportunity to encounter a Merchant, which could be beneficial for acquiring new cards or relics to strengthen the Ironclad's deck and survivability. 
+
+The current HP of 20/88 is relatively low, and the Ironclad's deck is focused on basic attacks and defenses. Encountering a Merchant could provide the opportunity to purchase healing potions, upgrade existing cards, or obtain new, more powerful cards to improve the deck's overall effectiveness.
+
+Additionally, the 'Unknown' node at (1,9) has a path leading to a potential 'Enemy' encounter, which could be a manageable challenge given the current resources. Facing an enemy encounter at this point may be necessary for progression, and the Ironclad's deck and relics should be sufficient to handle it.
+
+Compared to the 'Enemy' node at (0,9), the 'Unknown' node at (1,9) offers a more favorable risk-reward balance, with the potential to acquire valuable resources from a Merchant while still being able to handle any enemy encounters along the way."
+}
+unable to parse json_text:{
+	"index": 0,
+	"explanation": "Based on the current context, the best choice is to proceed to the first node in the Choice List, which is 'Enemy(0,0)'. This node represents a standard enemy encounter, which is a relatively safe option compared to the other unknown nodes.
+
+Given that the current HP is 77/77 and the deck contains a balanced set of attack and defense cards, the player should be able to handle a standard enemy encounter without much difficulty. Additionally, defeating this enemy will allow the player to progress further in the map and potentially encounter more beneficial nodes, such as a Merchant or Treasure room.
+
+Avoiding the unknown nodes at this stage is the prudent choice, as they may lead to more challenging encounters that the player may not be equipped to handle with the current resources. Therefore, 'Enemy(0,0)' is the best next level to progress through."
+}
+2025-05-16 18:45:56,528 - ERROR - An error occurred: 'NoneType' object has no attribute 'can_be_executed'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 70, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.execute_next_action_if_ready()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 114, in execute_next_action_if_ready
+    if len(self.action_queue) > 0 and self.action_queue[0].can_be_executed(self):
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'can_be_executed'
+unable to parse json_text:{
+	"index": 1,
+	"explanation": "Based on the current context, the best next level to progress through is the 'Enemy' node at (4,0). This choice is based on the following considerations:
+
+1. The map tree shows that the 'Enemy' node at (4,0) has a 'Merchant' node as one of its children, which could provide valuable opportunities to upgrade the deck or purchase healing items.
+
+2. The current HP is at full capacity (88/88), so the player can afford to take on an 'Enemy' encounter without significant risk.
+
+3. The current deck is relatively basic, consisting of Strike and Defend cards. Encountering an 'Enemy' node could provide opportunities to obtain new and potentially more powerful cards to strengthen the deck.
+
+4. The 'Burning Blood' relic provides a consistent source of HP recovery after combat, which can help mitigate the risks of an 'Enemy' encounter.
+
+Overall, the 'Enemy' node at (4,0) offers the best balance of potential rewards and manageable risk given the current resources and strategy. Progressing through this node could lead to valuable upgrades or new card acquisitions, which would better prepare the Ironclad for the challenges ahead."
+}
+unable to parse json_text:{
+	"index": 0,
+	"explanation": "Given the current context, I would choose to proceed to the 'Enemy' node at (1,9). This choice is based on the following considerations:
+
+1. The 'Treasure' node at the current location (1,8) has been cleared, so the next best option is to progress forward.
+2. The 'Enemy' node at (1,9) represents a combat encounter, which is a necessary step to advance through the map and gain potential rewards or upgrades.
+3. With a current HP of 67/88 and a decent deck containing some powerful cards like Bash, Power Through, and Heavy Blade, the Ironclad should be able to handle the enemy encounter without too much risk.
+4. Clearing the enemy node will open up the path to potentially more valuable nodes, such as the 'Elite' and 'Unknown' nodes further down the map.
+5. The relics, including Burning Blood, Paper Phrog, and Ancient Tea Set, provide additional benefits that can help the Ironclad during combat encounters.
+
+Overall, the 'Enemy' node at (1,9) represents the best next step to progress through the map while managing the current resources and risks effectively."
+}
+unable to parse json_text:{
+	"index": 0,
+	"explanation": "Based on the current context, the best choice is to proceed to the Elite node at (0,10). This decision is based on the following factors:
+
+1. Current HP: With 63/88 HP, the Ironclad is in a relatively healthy state, which increases the chances of successfully defeating an Elite encounter.
+
+2. Current Deck: The Ironclad's deck contains a good mix of offensive and defensive cards, including powerful abilities like Spot Weakness+, Heavy Blade, and Seeing Red. This suggests the Ironclad is well-equipped to handle the challenges of an Elite encounter.
+
+3. Relics: The Ironclad has acquired several useful relics, such as Burning Blood, Paper Phrog, and Ancient Tea Set, which can provide additional benefits and support during the Elite fight.
+
+4. Progression: Choosing the Elite node at (0,10) represents a more challenging but potentially more rewarding path forward. Defeating the Elite will grant more experience, better rewards, and potentially unlock new paths on the map, which aligns with the Ironclad's goal of progressing through the Spire.
+
+Overall, the Ironclad's current resources and capabilities suggest they are well-prepared to take on the Elite encounter, and this choice offers the best opportunity for meaningful progression in the game."
+}
+unable to parse json_text:{
+	"index": 1,
+	"explanation": "Based on the current map tree, the best next level to progress through is the 'Enemy(1,0)' node. This choice is based on the following considerations:
+
+1. The 'Enemy(1,0)' node is the closest to the current node, which minimizes the risk of encountering difficult battles along the way.
+2. The 'Enemy(1,0)' node has a 'Merchant' node as one of its children, which could provide valuable opportunities to upgrade the deck or purchase healing items.
+3. The current HP is at 77/77, which is a relatively high level, and the deck contains a good mix of offensive and defensive cards, suggesting the player is well-equipped to handle the upcoming enemy encounter.
+4. The 'Ring of the Snake' relic provides a beneficial effect, further increasing the chances of successfully navigating the next level.
+
+Overall, the 'Enemy(1,0)' node offers the best balance of risk and potential reward, making it the optimal choice for the next level progression."
+}
+unable to parse json_text:{
+	"index": 0,
+	"explanation": "Based on the current context, the best choice is to proceed to the 'Unknown' node at (0,3). This node offers an opportunity to explore and potentially encounter a beneficial encounter, such as a Merchant or Treasure room, which could provide valuable resources to aid in the progression through the Spire.
+
+Given the current HP of 61/77 and the relatively basic deck composition, it is prudent to avoid potentially challenging Elite encounters at this stage. The 'Unknown' node presents a lower-risk option that could lead to more favorable outcomes. Additionally, the presence of the 'Rest' node at (0,5) provides a safety net in case the player needs to recover HP before proceeding further.
+
+Overall, the 'Unknown' node at (0,3) offers the best balance of potential rewards and risk management, aligning with the current strategic considerations for The Silent."
+}
+unable to parse json_text:{
+	"index": 0,
+	"explanation": "Given the current context, the best choice is to proceed to the Treasure node at (0,8). This node offers a potential reward that could provide valuable resources, such as new cards, potions, or relics, which could be beneficial for the current run.
+
+The current deck is focused on a Poison-based strategy, with cards like Bouncing Flask and Catalyst. Obtaining new cards or relics from the Treasure node could further strengthen this strategy and improve the chances of success against upcoming encounters.
+
+Additionally, the current HP is relatively low at 23/77, so avoiding a potentially difficult Elite encounter is prudent. The Treasure node offers a lower-risk option that could provide a much-needed boost to the character's resources.
+
+Overall, the Treasure node at (0,8) is the safest and most promising choice in the current context, as it aligns with the current deck strategy and provides an opportunity to improve the character's resources without risking a challenging Elite encounter."
+}
+2025-05-16 19:02:26,065 - ERROR - An error occurred: 'NoneType' object has no attribute 'can_be_executed'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 70, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.execute_next_action_if_ready()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 114, in execute_next_action_if_ready
+    if len(self.action_queue) > 0 and self.action_queue[0].can_be_executed(self):
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'can_be_executed'
+unable to parse json_text:{
+	"index": 1,
+	"explanation": "Based on the current context, the best choice is to progress to the Merchant node at (6,1). This decision is based on the following considerations:
+
+1. The Merchant node offers a beneficial encounter that can provide valuable opportunities, such as purchasing new cards, upgrading existing cards, or obtaining relics. This can help strengthen the Ironclad's deck and improve its overall performance.
+
+2. The current HP is at full capacity (88/88), indicating that the Ironclad is in a strong position to take on a Merchant encounter without significant risk of taking damage.
+
+3. The current deck consists of a basic set of cards, including Strikes, Defends, and Bash. While this is a solid foundation, the Merchant can provide opportunities to diversify the deck and acquire more powerful cards that can enhance the Ironclad's capabilities.
+
+4. The Burning Blood relic provides a beneficial effect, which can further support the Ironclad's strategy. Visiting the Merchant may allow the acquisition of additional relics or card upgrades that synergize well with this relic.
+
+Overall, the Merchant node presents the best opportunity for the Ironclad to improve its deck, acquire new resources, and progress through the map without unnecessary risk. Therefore, this is the recommended choice for the next level."
+}
+unable to parse json_text:{
+	"index": 1,
+	"explanation": "Given the current context, the best choice is to proceed to the Merchant node at (5,3). This decision is based on the following reasons:
+
+1. The Merchant node offers a valuable opportunity to potentially upgrade or remove cards from the current deck, which is currently composed primarily of basic Strike and Defend cards. Improving the deck's efficiency and synergy will be crucial for progressing through the more challenging encounters ahead.
+
+2. The Ironclad's current HP is at full capacity (88/88), so there is no immediate need to prioritize a path that avoids combat. The Merchant node provides a safer option to optimize the deck before facing the upcoming Elite encounter.
+
+3. The Relics currently held, such as Burning Blood, can provide additional benefits when combined with a well-crafted deck. Visiting the Merchant can help leverage these relics more effectively.
+
+Overall, the Merchant node presents the best opportunity to strengthen the Ironclad's deck and prepare for the upcoming challenges, making it the optimal choice in the current context."
+}
+unable to parse json_text:{
+	"index": 3,
+	"explanation": "Based on the current context, the best choice is to progress to the Merchant node at (6,1). This is because the Merchant node offers a beneficial encounter where I can potentially purchase new cards, relics, or healing to improve my overall strategy and survivability. 
+
+My current deck is fairly basic, consisting mostly of Strike and Defend cards, so visiting a Merchant would allow me to diversify my options and strengthen my deck. Additionally, with my current health at 77/77, I'm in a good position to take on a Merchant encounter without significant risk.
+
+While the other nodes are all Enemy encounters, which could provide rewards, they also carry higher risks of taking damage. Given my current resources, it's prudent to prioritize the Merchant node to optimize my deck and prepare for the challenges ahead."
+}
+wrong index list from "make_grid_choice"2025-06-11 16:30:05,753 - ERROR - An error occurred: 'NoneType' object has no attribute 'can_be_executed'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 70, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.execute_next_action_if_ready()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 114, in execute_next_action_if_ready
+    if len(self.action_queue) > 0 and self.action_queue[0].can_be_executed(self):
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'can_be_executed'
+2025-06-11 17:09:26,961 - ERROR - An error occurred: Error code: 400 - {'error': {'message': 'An internal error has occurred. Please retry or report in https://developers.generativeai.google/guide/troubleshooting (request id: 2025061109092050105121093979135)', 'type': '', 'param': '', 'code': 400}}
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 70, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 222, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 181, in receive_game_state_update
+    new_action = self.state_change_callback(self.last_game_state)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 143, in get_next_action_in_game_new
+    action = self.get_next_action_in_game(game_state)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 102, in get_next_action_in_game
+    return self.handle_screen()
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 336, in handle_screen
+    return self.choose_card_reward()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 670, in choose_card_reward
+    responses = self.choose_card_agent.invoke(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\choose_card_agent.py", line 384, in invoke
+    result = self.graph.invoke(state, config)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\__init__.py", line 2124, in invoke
+    for chunk in self.stream(
+                 ^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\__init__.py", line 1779, in stream
+    for _ in runner.tick(
+             ^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\runner.py", line 230, in tick
+    run_with_retry(
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\retry.py", line 40, in run_with_retry
+    return task.proc.invoke(task.input, config)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\utils\runnable.py", line 546, in invoke
+    input = step.invoke(input, config, **kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\utils\runnable.py", line 310, in invoke
+    ret = context.run(self.func, *args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\choose_card_agent.py", line 179, in llm_1
+    "messages": [self.llm.invoke(messages)]
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 307, in invoke
+    self.generate_prompt(
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 843, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 683, in generate
+    self._generate_with_cache(
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 908, in _generate_with_cache
+    result = self._generate(
+             ^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_openai\chat_models\base.py", line 800, in _generate
+    response = self.client.create(**payload)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_utils\_utils.py", line 279, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\resources\chat\completions\completions.py", line 879, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_base_client.py", line 1290, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_base_client.py", line 967, in request
+    return self._request(
+           ^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_base_client.py", line 1071, in _request
+    raise self._make_status_error_from_response(err.response) from None
+openai.BadRequestError: Error code: 400 - {'error': {'message': 'An internal error has occurred. Please retry or report in https://developers.generativeai.google/guide/troubleshooting (request id: 2025061109092050105121093979135)', 'type': '', 'param': '', 'code': 400}}
+During task with name 'LLM' and id '5ff99c12-c25f-5b24-57f1-453ff8650c2e'
+2025-06-11 17:12:51,783 - ERROR - An error occurred: Error code: 429 - {'error': {'message': '该模型遇到官方限速，联系客服增加并发或请稍后重试 (request id: 2025061109124962178398064478717)', 'type': '', 'param': '', 'code': 429}}
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 71, in <module>
+    result = coordinator.play_one_game(chosen_class,seed = "576PMLJ8RWVQV")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 222, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 181, in receive_game_state_update
+    new_action = self.state_change_callback(self.last_game_state)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 143, in get_next_action_in_game_new
+    action = self.get_next_action_in_game(game_state)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 102, in get_next_action_in_game
+    return self.handle_screen()
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 336, in handle_screen
+    return self.choose_card_reward()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 670, in choose_card_reward
+    responses = self.choose_card_agent.invoke(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\choose_card_agent.py", line 384, in invoke
+    result = self.graph.invoke(state, config)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\__init__.py", line 2124, in invoke
+    for chunk in self.stream(
+                 ^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\__init__.py", line 1779, in stream
+    for _ in runner.tick(
+             ^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\runner.py", line 230, in tick
+    run_with_retry(
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\retry.py", line 40, in run_with_retry
+    return task.proc.invoke(task.input, config)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\utils\runnable.py", line 546, in invoke
+    input = step.invoke(input, config, **kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\utils\runnable.py", line 310, in invoke
+    ret = context.run(self.func, *args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\choose_card_agent.py", line 179, in llm_1
+    "messages": [self.llm.invoke(messages)]
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 307, in invoke
+    self.generate_prompt(
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 843, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 683, in generate
+    self._generate_with_cache(
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 908, in _generate_with_cache
+    result = self._generate(
+             ^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_openai\chat_models\base.py", line 800, in _generate
+    response = self.client.create(**payload)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_utils\_utils.py", line 279, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\resources\chat\completions\completions.py", line 879, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_base_client.py", line 1290, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_base_client.py", line 967, in request
+    return self._request(
+           ^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_base_client.py", line 1056, in _request
+    return self._retry_request(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_base_client.py", line 1105, in _retry_request
+    return self._request(
+           ^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_base_client.py", line 1056, in _request
+    return self._retry_request(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_base_client.py", line 1105, in _retry_request
+    return self._request(
+           ^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_base_client.py", line 1071, in _request
+    raise self._make_status_error_from_response(err.response) from None
+openai.RateLimitError: Error code: 429 - {'error': {'message': '该模型遇到官方限速，联系客服增加并发或请稍后重试 (request id: 2025061109124962178398064478717)', 'type': '', 'param': '', 'code': 429}}
+During task with name 'LLM' and id '497f2306-d70a-5756-f91d-f11c0e1c5f01'
+2025-06-11 17:15:36,344 - ERROR - An error occurred: Connection error.
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_transports\default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_transports\default.py", line 250, in handle_request
+    resp = self._pool.handle_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpcore\_sync\connection_pool.py", line 256, in handle_request
+    raise exc from None
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpcore\_sync\connection_pool.py", line 236, in handle_request
+    response = connection.handle_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpcore\_sync\http_proxy.py", line 316, in handle_request
+    stream = stream.start_tls(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpcore\_sync\http11.py", line 376, in start_tls
+    return self._stream.start_tls(ssl_context, server_hostname, timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpcore\_backends\sync.py", line 154, in start_tls
+    with map_exceptions(exc_map):
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpcore\_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectError: [WinError 10054] 远程主机强迫关闭了一个现有的连接。
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_base_client.py", line 1003, in _request
+    response = self._client.send(
+               ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_client.py", line 914, in send
+    response = self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_client.py", line 942, in _send_handling_auth
+    response = self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_client.py", line 979, in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_client.py", line 1014, in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_transports\default.py", line 249, in handle_request
+    with map_httpcore_exceptions():
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_transports\default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectError: [WinError 10054] 远程主机强迫关闭了一个现有的连接。
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 71, in <module>
+    result = coordinator.play_one_game(chosen_class,seed = "576PMLJ8RWVQV")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 222, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 181, in receive_game_state_update
+    new_action = self.state_change_callback(self.last_game_state)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 143, in get_next_action_in_game_new
+    action = self.get_next_action_in_game(game_state)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 102, in get_next_action_in_game
+    return self.handle_screen()
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 322, in handle_screen
+    return self.make_event_choice()
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 477, in make_event_choice
+    responses = self.event_agent.invoke(
+                ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\event_choice_agent.py", line 248, in invoke
+    result = self.graph.invoke(state, config)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\__init__.py", line 2124, in invoke
+    for chunk in self.stream(
+                 ^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\__init__.py", line 1779, in stream
+    for _ in runner.tick(
+             ^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\runner.py", line 230, in tick
+    run_with_retry(
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\retry.py", line 40, in run_with_retry
+    return task.proc.invoke(task.input, config)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\utils\runnable.py", line 546, in invoke
+    input = step.invoke(input, config, **kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\utils\runnable.py", line 310, in invoke
+    ret = context.run(self.func, *args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\event_choice_agent.py", line 139, in llm_1
+    "messages": [self.llm.invoke(messages)]
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 307, in invoke
+    self.generate_prompt(
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 843, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 683, in generate
+    self._generate_with_cache(
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 908, in _generate_with_cache
+    result = self._generate(
+             ^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_openai\chat_models\base.py", line 800, in _generate
+    response = self.client.create(**payload)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_utils\_utils.py", line 279, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\resources\chat\completions\completions.py", line 879, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_base_client.py", line 1290, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_base_client.py", line 967, in request
+    return self._request(
+           ^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_base_client.py", line 1027, in _request
+    return self._retry_request(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_base_client.py", line 1105, in _retry_request
+    return self._request(
+           ^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_base_client.py", line 1027, in _request
+    return self._retry_request(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_base_client.py", line 1105, in _retry_request
+    return self._request(
+           ^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_base_client.py", line 1037, in _request
+    raise APIConnectionError(request=request) from err
+openai.APIConnectionError: Connection error.
+During task with name 'LLM' and id '3bc41432-e609-7c69-325d-081914dc3613'
+2025-06-11 17:17:03,328 - ERROR - An error occurred: Error code: 400 - {'error': {'message': '模型名字错误请求进入模型广场查看或当前分组 default 下对于模型 gpt-4.1-mini 无使用权限 (request id: 20250611091704793289746812669)', 'type': 'Aihubmix_api_error'}}
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 71, in <module>
+    result = coordinator.play_one_game(chosen_class,seed = "576PMLJ8RWVQV")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 222, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 181, in receive_game_state_update
+    new_action = self.state_change_callback(self.last_game_state)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 143, in get_next_action_in_game_new
+    action = self.get_next_action_in_game(game_state)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 102, in get_next_action_in_game
+    return self.handle_screen()
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 322, in handle_screen
+    return self.make_event_choice()
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 477, in make_event_choice
+    responses = self.event_agent.invoke(
+                ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\event_choice_agent.py", line 248, in invoke
+    result = self.graph.invoke(state, config)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\__init__.py", line 2124, in invoke
+    for chunk in self.stream(
+                 ^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\__init__.py", line 1779, in stream
+    for _ in runner.tick(
+             ^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\runner.py", line 230, in tick
+    run_with_retry(
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\retry.py", line 40, in run_with_retry
+    return task.proc.invoke(task.input, config)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\utils\runnable.py", line 546, in invoke
+    input = step.invoke(input, config, **kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\utils\runnable.py", line 310, in invoke
+    ret = context.run(self.func, *args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\event_choice_agent.py", line 139, in llm_1
+    "messages": [self.llm.invoke(messages)]
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 307, in invoke
+    self.generate_prompt(
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 843, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 683, in generate
+    self._generate_with_cache(
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 908, in _generate_with_cache
+    result = self._generate(
+             ^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_openai\chat_models\base.py", line 800, in _generate
+    response = self.client.create(**payload)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_utils\_utils.py", line 279, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\resources\chat\completions\completions.py", line 879, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_base_client.py", line 1290, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_base_client.py", line 967, in request
+    return self._request(
+           ^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_base_client.py", line 1071, in _request
+    raise self._make_status_error_from_response(err.response) from None
+openai.BadRequestError: Error code: 400 - {'error': {'message': '模型名字错误请求进入模型广场查看或当前分组 default 下对于模型 gpt-4.1-mini 无使用权限 (request id: 20250611091704793289746812669)', 'type': 'Aihubmix_api_error'}}
+During task with name 'LLM' and id '0b80e0cd-62cd-a592-4019-bb407706f914'
+error occurs!!:
+Invalid command: play. Possible commands: [potion, key, click, wait, state]
+
+2025-06-11 17:26:53,650 - ERROR - An error occurred: 'NoneType' object has no attribute 'can_be_executed'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 71, in <module>
+    result = coordinator.play_one_game(chosen_class,seed = "576PMLJ8RWVQV")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.execute_next_action_if_ready()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 114, in execute_next_action_if_ready
+    if len(self.action_queue) > 0 and self.action_queue[0].can_be_executed(self):
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'can_be_executed'
+2025-06-11 18:12:17,888 - ERROR - An error occurred: 'NoneType' object has no attribute 'can_be_executed'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 71, in <module>
+    result = coordinator.play_one_game(chosen_class,seed = "576PMLJ8RWVQV")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.execute_next_action_if_ready()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 114, in execute_next_action_if_ready
+    if len(self.action_queue) > 0 and self.action_queue[0].can_be_executed(self):
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'can_be_executed'
+2025-06-11 19:37:30,881 - ERROR - An error occurred: HTTPConnectionPool(host='localhost', port=11434): Max retries exceeded with url: /api/chat (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002291F58E4B0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connection.py", line 198, in _new_conn
+    sock = connection.create_connection(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\util\connection.py", line 85, in create_connection
+    raise err
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\util\connection.py", line 73, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [WinError 10061] 由于目标计算机积极拒绝，无法连接。
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+               ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connectionpool.py", line 493, in _make_request
+    conn.request(
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connection.py", line 445, in request
+    self.endheaders()
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\http\client.py", line 1333, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\http\client.py", line 1093, in _send_output
+    self.send(msg)
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\http\client.py", line 1037, in send
+    self.connect()
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connection.py", line 276, in connect
+    self.sock = self._new_conn()
+                ^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connection.py", line 213, in _new_conn
+    raise NewConnectionError(
+urllib3.exceptions.NewConnectionError: <urllib3.connection.HTTPConnection object at 0x000002291F58E4B0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\adapters.py", line 667, in send
+    resp = conn.urlopen(
+           ^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+              ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\util\retry.py", line 519, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPConnectionPool(host='localhost', port=11434): Max retries exceeded with url: /api/chat (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002291F58E4B0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 110, in <module>
+    result = coordinator.play_one_game(p_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 222, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 181, in receive_game_state_update
+    new_action = self.state_change_callback(self.last_game_state)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 143, in get_next_action_in_game_new
+    action = self.get_next_action_in_game(game_state)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 136, in get_next_action_in_game
+    return self.get_play_card_action(room=room)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 190, in get_play_card_action
+    responses = self.battle_agent.invoke(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\battle_agent.py", line 740, in invoke
+    result = self.graph.invoke(state, config)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\__init__.py", line 2124, in invoke
+    for chunk in self.stream(
+                 ^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\__init__.py", line 1779, in stream
+    for _ in runner.tick(
+             ^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\runner.py", line 230, in tick
+    run_with_retry(
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\retry.py", line 40, in run_with_retry
+    return task.proc.invoke(task.input, config)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\utils\runnable.py", line 546, in invoke
+    input = step.invoke(input, config, **kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\utils\runnable.py", line 310, in invoke
+    ret = context.run(self.func, *args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\battle_agent.py", line 200, in llm_1
+    "messages": [self.llm.invoke(messages)]
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 307, in invoke
+    self.generate_prompt(
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 843, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 683, in generate
+    self._generate_with_cache(
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 908, in _generate_with_cache
+    result = self._generate(
+             ^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_community\chat_models\ollama.py", line 291, in _generate
+    final_chunk = self._chat_stream_with_aggregation(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_community\chat_models\ollama.py", line 222, in _chat_stream_with_aggregation
+    for stream_resp in self._create_chat_stream(messages, stop, **kwargs):
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_community\chat_models\ollama.py", line 194, in _create_chat_stream
+    yield from self._create_stream(
+               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_community\llms\ollama.py", line 252, in _create_stream
+    response = requests.post(
+               ^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\api.py", line 115, in post
+    return request("post", url, data=data, json=json, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\requests\adapters.py", line 700, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPConnectionPool(host='localhost', port=11434): Max retries exceeded with url: /api/chat (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002291F58E4B0>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))
+During task with name 'LLM' and id '9438124c-fe95-3500-e171-d4fdb500f6fd'
+2025-06-11 21:15:38,087 - ERROR - An error occurred: 'NoneType' object has no attribute 'can_be_executed'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 71, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.execute_next_action_if_ready()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 114, in execute_next_action_if_ready
+    if len(self.action_queue) > 0 and self.action_queue[0].can_be_executed(self):
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'can_be_executed'
+2025-06-11 23:43:44,916 - ERROR - An error occurred: 'NoneType' object has no attribute 'can_be_executed'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 72, in <module>
+    result = coordinator.play_one_game(chosen_class,seed = "3I0F0ZCZD9KUC")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.execute_next_action_if_ready()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 114, in execute_next_action_if_ready
+    if len(self.action_queue) > 0 and self.action_queue[0].can_be_executed(self):
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'can_be_executed'
+2025-06-11 23:46:40,080 - ERROR - An error occurred: '<=' not supported between instances of 'int' and 'NoneType'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 72, in <module>
+    result = coordinator.play_one_game(chosen_class,seed = "3I0F0ZCZD9KUC")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 222, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 181, in receive_game_state_update
+    new_action = self.state_change_callback(self.last_game_state)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 143, in get_next_action_in_game_new
+    action = self.get_next_action_in_game(game_state)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 136, in get_next_action_in_game
+    return self.get_play_card_action(room=room)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 251, in get_play_card_action
+    if target_index != -1 and 0 <= target_index < len(available_monsters):
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: '<=' not supported between instances of 'int' and 'NoneType'
+error occurs!!:
+Invalid command: play. Possible commands: [potion, key, click, wait, state]
+
+2025-06-12 00:13:23,357 - ERROR - An error occurred: 'NoneType' object has no attribute 'can_be_executed'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 72, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.execute_next_action_if_ready()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 114, in execute_next_action_if_ready
+    if len(self.action_queue) > 0 and self.action_queue[0].can_be_executed(self):
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'can_be_executed'
+error occurs!!:
+Invalid command: play. Possible commands: [start, state]
+
+error occurs!!:
+Invalid command: play. Possible commands: [start, state]
+
+error occurs!!:
+Invalid command: play. Possible commands: [start, state]
+
+error occurs!!:
+Invalid command: start. Possible commands: [key, click, wait, state]
+
+error occurs!!:
+Invalid command: start. Possible commands: [choose, key, click, wait, state]
+
+2025-06-12 00:20:19,734 - ERROR - An error occurred: 'NoneType' object has no attribute 'can_be_executed'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 72, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.execute_next_action_if_ready()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 114, in execute_next_action_if_ready
+    if len(self.action_queue) > 0 and self.action_queue[0].can_be_executed(self):
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'can_be_executed'
+2025-06-12 00:21:04,127 - ERROR - An error occurred: Ollama call failed with status code 404. Maybe your model is not found and you should pull the model with `ollama pull hermes3:3b`.
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 72, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 222, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 181, in receive_game_state_update
+    new_action = self.state_change_callback(self.last_game_state)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 143, in get_next_action_in_game_new
+    action = self.get_next_action_in_game(game_state)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 136, in get_next_action_in_game
+    return self.get_play_card_action(room=room)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 190, in get_play_card_action
+    responses = self.battle_agent.invoke(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\battle_agent.py", line 740, in invoke
+    result = self.graph.invoke(state, config)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\__init__.py", line 2124, in invoke
+    for chunk in self.stream(
+                 ^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\__init__.py", line 1779, in stream
+    for _ in runner.tick(
+             ^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\runner.py", line 230, in tick
+    run_with_retry(
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\retry.py", line 40, in run_with_retry
+    return task.proc.invoke(task.input, config)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\utils\runnable.py", line 546, in invoke
+    input = step.invoke(input, config, **kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\utils\runnable.py", line 310, in invoke
+    ret = context.run(self.func, *args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\battle_agent.py", line 200, in llm_1
+    "messages": [self.llm.invoke(messages)]
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 307, in invoke
+    self.generate_prompt(
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 843, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 683, in generate
+    self._generate_with_cache(
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 908, in _generate_with_cache
+    result = self._generate(
+             ^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_community\chat_models\ollama.py", line 291, in _generate
+    final_chunk = self._chat_stream_with_aggregation(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_community\chat_models\ollama.py", line 222, in _chat_stream_with_aggregation
+    for stream_resp in self._create_chat_stream(messages, stop, **kwargs):
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_community\chat_models\ollama.py", line 194, in _create_chat_stream
+    yield from self._create_stream(
+               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_community\llms\ollama.py", line 266, in _create_stream
+    raise OllamaEndpointNotFoundError(
+langchain_community.llms.ollama.OllamaEndpointNotFoundError: Ollama call failed with status code 404. Maybe your model is not found and you should pull the model with `ollama pull hermes3:3b`.
+During task with name 'LLM' and id '97c58458-6f09-3a08-9bcd-88b97f187bff'
+error occurs!!:
+Invalid command: end. Possible commands: [potion, key, click, wait, state]
+
+2025-06-12 00:33:01,406 - ERROR - An error occurred: 'NoneType' object has no attribute 'can_be_executed'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 72, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.execute_next_action_if_ready()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 114, in execute_next_action_if_ready
+    if len(self.action_queue) > 0 and self.action_queue[0].can_be_executed(self):
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'can_be_executed'
+error occurs!!:
+Invalid command: play. Possible commands: [potion, key, click, wait, state]
+
+2025-06-12 01:17:03,650 - ERROR - An error occurred: 'NoneType' object has no attribute 'can_be_executed'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 72, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.execute_next_action_if_ready()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 114, in execute_next_action_if_ready
+    if len(self.action_queue) > 0 and self.action_queue[0].can_be_executed(self):
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'can_be_executed'
+error occurs!!:
+Invalid command: play. Possible commands: [potion, key, click, wait, state]
+
+2025-06-12 18:19:18,495 - ERROR - An error occurred: 'NoneType' object has no attribute 'can_be_executed'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 72, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.execute_next_action_if_ready()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 114, in execute_next_action_if_ready
+    if len(self.action_queue) > 0 and self.action_queue[0].can_be_executed(self):
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'can_be_executed'
+2025-06-13 01:41:43,480 - ERROR - An error occurred: 'NoneType' object has no attribute 'can_be_executed'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 72, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.execute_next_action_if_ready()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 114, in execute_next_action_if_ready
+    if len(self.action_queue) > 0 and self.action_queue[0].can_be_executed(self):
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'can_be_executed'
+2025-06-13 02:08:18,856 - ERROR - An error occurred: 'ChatOpenAI' object has no attribute 'model'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 72, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 222, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 181, in receive_game_state_update
+    new_action = self.state_change_callback(self.last_game_state)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 143, in get_next_action_in_game_new
+    action = self.get_next_action_in_game(game_state)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 136, in get_next_action_in_game
+    return self.get_play_card_action(room=room)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 190, in get_play_card_action
+    responses = self.battle_agent.invoke(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\battle_agent.py", line 797, in invoke
+    if self.action != 'algorithm' and self.llm.model!="lora_gemma3":
+                                      ^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\pydantic\main.py", line 891, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'ChatOpenAI' object has no attribute 'model'
+2025-06-13 02:33:45,435 - ERROR - An error occurred: Error code: 400 - {'error': {'message': 'Visibility check was unavailable. Please retry the request and contact support if the problem persists (request id: 2025061218321578159718419604051)', 'type': '', 'param': '', 'code': 503}}
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 72, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 222, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 181, in receive_game_state_update
+    new_action = self.state_change_callback(self.last_game_state)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 143, in get_next_action_in_game_new
+    action = self.get_next_action_in_game(game_state)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 102, in get_next_action_in_game
+    return self.handle_screen()
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 336, in handle_screen
+    return self.choose_card_reward()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 670, in choose_card_reward
+    responses = self.choose_card_agent.invoke(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\choose_card_agent.py", line 384, in invoke
+    result = self.graph.invoke(state, config)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\__init__.py", line 2124, in invoke
+    for chunk in self.stream(
+                 ^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\__init__.py", line 1779, in stream
+    for _ in runner.tick(
+             ^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\runner.py", line 230, in tick
+    run_with_retry(
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\retry.py", line 40, in run_with_retry
+    return task.proc.invoke(task.input, config)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\utils\runnable.py", line 546, in invoke
+    input = step.invoke(input, config, **kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\utils\runnable.py", line 310, in invoke
+    ret = context.run(self.func, *args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\choose_card_agent.py", line 179, in llm_1
+    "messages": [self.llm.invoke(messages)]
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 307, in invoke
+    self.generate_prompt(
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 843, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 683, in generate
+    self._generate_with_cache(
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 908, in _generate_with_cache
+    result = self._generate(
+             ^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_openai\chat_models\base.py", line 800, in _generate
+    response = self.client.create(**payload)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_utils\_utils.py", line 279, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\resources\chat\completions\completions.py", line 879, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_base_client.py", line 1290, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_base_client.py", line 967, in request
+    return self._request(
+           ^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_base_client.py", line 1071, in _request
+    raise self._make_status_error_from_response(err.response) from None
+openai.BadRequestError: Error code: 400 - {'error': {'message': 'Visibility check was unavailable. Please retry the request and contact support if the problem persists (request id: 2025061218321578159718419604051)', 'type': '', 'param': '', 'code': 503}}
+During task with name 'LLM' and id '14433ac4-3c43-daf2-e56b-eae25f22bac9'
+2025-06-13 15:48:20,452 - ERROR - An error occurred: 'ChatOllama' object has no attribute 'model_name'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 72, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 222, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 181, in receive_game_state_update
+    new_action = self.state_change_callback(self.last_game_state)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 143, in get_next_action_in_game_new
+    action = self.get_next_action_in_game(game_state)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 136, in get_next_action_in_game
+    return self.get_play_card_action(room=room)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 190, in get_play_card_action
+    responses = self.battle_agent.invoke(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\battle_agent.py", line 797, in invoke
+    if self.action != 'algorithm' and self.llm.model_name!="lora_gemma3:latest":
+                                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\pydantic\main.py", line 891, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'ChatOllama' object has no attribute 'model_name'. Did you mean: 'model_dump'?
+error occurs!!:
+Invalid command: proceed. Possible commands: [choose, key, click, wait, state]
+
+2025-06-13 16:00:18,628 - ERROR - An error occurred: 'NoneType' object has no attribute 'can_be_executed'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 72, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.execute_next_action_if_ready()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 114, in execute_next_action_if_ready
+    if len(self.action_queue) > 0 and self.action_queue[0].can_be_executed(self):
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'can_be_executed'
+2025-06-15 15:12:22,311 - ERROR - An error occurred: 'NoneType' object has no attribute 'can_be_executed'
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 72, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 221, in play_one_game
+    self.execute_next_action_if_ready()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 114, in execute_next_action_if_ready
+    if len(self.action_queue) > 0 and self.action_queue[0].can_be_executed(self):
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'can_be_executed'
+2025-06-17 13:26:28,730 - ERROR - An error occurred: Error code: 403 - {'error': {'message': 'user quota is not enough (request id: 2025061705262884070865699225277)', 'type': 'Aihubmix_api_error', 'param': '', 'code': 'insufficient_user_quota'}}
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 72, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 222, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 181, in receive_game_state_update
+    new_action = self.state_change_callback(self.last_game_state)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 143, in get_next_action_in_game_new
+    action = self.get_next_action_in_game(game_state)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 102, in get_next_action_in_game
+    return self.handle_screen()
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 322, in handle_screen
+    return self.make_event_choice()
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 477, in make_event_choice
+    responses = self.event_agent.invoke(
+                ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\event_choice_agent.py", line 248, in invoke
+    result = self.graph.invoke(state, config)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\__init__.py", line 2124, in invoke
+    for chunk in self.stream(
+                 ^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\__init__.py", line 1779, in stream
+    for _ in runner.tick(
+             ^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\runner.py", line 230, in tick
+    run_with_retry(
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\retry.py", line 40, in run_with_retry
+    return task.proc.invoke(task.input, config)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\utils\runnable.py", line 546, in invoke
+    input = step.invoke(input, config, **kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\utils\runnable.py", line 310, in invoke
+    ret = context.run(self.func, *args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\event_choice_agent.py", line 139, in llm_1
+    "messages": [self.llm.invoke(messages)]
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 307, in invoke
+    self.generate_prompt(
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 843, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 683, in generate
+    self._generate_with_cache(
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 908, in _generate_with_cache
+    result = self._generate(
+             ^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_openai\chat_models\base.py", line 800, in _generate
+    response = self.client.create(**payload)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_utils\_utils.py", line 279, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\resources\chat\completions\completions.py", line 879, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_base_client.py", line 1290, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_base_client.py", line 967, in request
+    return self._request(
+           ^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_base_client.py", line 1071, in _request
+    raise self._make_status_error_from_response(err.response) from None
+openai.PermissionDeniedError: Error code: 403 - {'error': {'message': 'user quota is not enough (request id: 2025061705262884070865699225277)', 'type': 'Aihubmix_api_error', 'param': '', 'code': 'insufficient_user_quota'}}
+During task with name 'LLM' and id 'b4b13654-de82-6847-f527-7a8a5bd7222a'
+2025-06-17 18:03:43,952 - ERROR - An error occurred: Connection error.
+
+
+
+
+Traceback (most recent call last):
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_transports\default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_transports\default.py", line 250, in handle_request
+    resp = self._pool.handle_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpcore\_sync\connection_pool.py", line 256, in handle_request
+    raise exc from None
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpcore\_sync\connection_pool.py", line 236, in handle_request
+    response = connection.handle_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpcore\_sync\http_proxy.py", line 316, in handle_request
+    stream = stream.start_tls(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpcore\_sync\http11.py", line 376, in start_tls
+    return self._stream.start_tls(ssl_context, server_hostname, timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpcore\_backends\sync.py", line 154, in start_tls
+    with map_exceptions(exc_map):
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpcore\_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectError: [WinError 10054] 远程主机强迫关闭了一个现有的连接。
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_base_client.py", line 1003, in _request
+    response = self._client.send(
+               ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_client.py", line 914, in send
+    response = self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_client.py", line 942, in _send_handling_auth
+    response = self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_client.py", line 979, in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_client.py", line 1014, in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_transports\default.py", line 249, in handle_request
+    with map_httpcore_exceptions():
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_transports\default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectError: [WinError 10054] 远程主机强迫关闭了一个现有的连接。
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\32685\Desktop\spirecomm\main.py", line 72, in <module>
+    result = coordinator.play_one_game(chosen_class)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 222, in play_one_game
+    self.receive_game_state_update()
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\communication\coordinator.py", line 181, in receive_game_state_update
+    new_action = self.state_change_callback(self.last_game_state)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 143, in get_next_action_in_game_new
+    action = self.get_next_action_in_game(game_state)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 136, in get_next_action_in_game
+    return self.get_play_card_action(room=room)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\agent.py", line 190, in get_play_card_action
+    responses = self.battle_agent.invoke(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\battle_agent.py", line 757, in invoke
+    result = self.graph.invoke(state, config)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\__init__.py", line 2124, in invoke
+    for chunk in self.stream(
+                 ^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\__init__.py", line 1779, in stream
+    for _ in runner.tick(
+             ^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\runner.py", line 230, in tick
+    run_with_retry(
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\pregel\retry.py", line 40, in run_with_retry
+    return task.proc.invoke(task.input, config)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\utils\runnable.py", line 546, in invoke
+    input = step.invoke(input, config, **kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langgraph\utils\runnable.py", line 310, in invoke
+    ret = context.run(self.func, *args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\Desktop\spirecomm\spirecomm\ai\battle_agent.py", line 217, in llm_1
+    "messages": [self.llm.invoke(messages)]
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 307, in invoke
+    self.generate_prompt(
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 843, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 683, in generate
+    self._generate_with_cache(
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_core\language_models\chat_models.py", line 908, in _generate_with_cache
+    result = self._generate(
+             ^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\langchain_openai\chat_models\base.py", line 800, in _generate
+    response = self.client.create(**payload)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_utils\_utils.py", line 279, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\resources\chat\completions\completions.py", line 879, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_base_client.py", line 1290, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_base_client.py", line 967, in request
+    return self._request(
+           ^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_base_client.py", line 1027, in _request
+    return self._retry_request(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_base_client.py", line 1105, in _retry_request
+    return self._request(
+           ^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_base_client.py", line 1027, in _request
+    return self._retry_request(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_base_client.py", line 1105, in _retry_request
+    return self._request(
+           ^^^^^^^^^^^^^^
+  File "C:\Users\32685\AppData\Local\Programs\Python\Python312\Lib\site-packages\openai\_base_client.py", line 1037, in _request
+    raise APIConnectionError(request=request) from err
+openai.APIConnectionError: Connection error.
+During task with name 'LLM' and id '991e2bc6-9fa8-decb-227e-0aabf74bde61'

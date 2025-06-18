@@ -150,47 +150,64 @@ class BattleAgent:
 
         outputFormat = self.battle_output_parser.get_format_instructions()
         system_msg_2 = f"""You are an AI designed to play *Slay the Spire* as {self.role} and make optimal card choices during combat. 
-### Basic Game Rules:
-At the beginning of a turn, you will be given MAX_ENERGY and draw cards from the Draw Pile. 
-You can only play cards from your Hand Pile, and each card costs a certain amount of energy. 
-A turn consists of multiple actions. 
-On each action, your job is to choose **one** card to play (if energy allows) or **end the turn** or 
- choose **one** potion to use (if have).
+### Basic Combat Rules:
+- Each turn begins with **MAX_ENERGY** and a hand drawn from the Draw Pile.
+- You can only play cards in your **Hand Pile**. Each card has an energy cost.
+- Each call to this AI corresponds to **one action only**:  
+  - Play **one card** (if affordable),  
+  - Use **one potion**, or  
+  - **End the turn**.
+- Potions can be used at any time but are one-time use.
+- You cannot play multiple cards or use multiple potions in one call.
 
-### deck Analysis:
-To improve decision-making, you are provided with Analysis of your current deck.
+### Deck Analysis:
+An overview of your current deck is provided to inform synergy-aware decisions.
 
 ### Combat situation:
-info of the current combat.
+You are given real-time combat info:
 - **Floor**: 'floor'
 - **Turn Number**: 'turn_number'
 - **Current HP**: 'current_hp' / 'max_hp'
 - **Block**: 'block'
 - **Energy Available**: 'energy'
-- **Relics**: [ Relic ]
-- **Enemy List**: [ Enemy ]  Enemy format: "enermy_name( enermy_hp,enemy_intent,enemy_block,[enemy_status])"
-- **Draw Pile**: [ Card ] 
-- **Discard Pile**: [ Card ]
-- **Player Status**: [ player_status ]
-- **Potion**: [ Potion ] Potion format: "potion_name(is_potion_has_target)"
+- **Relics**: [ "Relic Name" ]
+- **Enemy List**:  
+  Each enemy: `"enemy_name(current_hp, intent, block, [status_effects])"`  
+  - `intent`: e.g. `"attack(9*2)"`, `"buff"`, `"debuff"`
+- **Draw Pile**: [ "Card Name" ]
+- **Discard Pile**: [ "Card Name" ]
+- **Player Status**: [ "status_name" ]  
+- **Potions**: [ "potion_name(is_target_required)" ]
 
-### Previous actions in this turn:
-To improve decision-making, you are provided with the previous actions in this turn:
+### Previous Actions (This Turn):
+A list of prior actions during this turn:  
 [ 
   {{ turn: int, operation: str }}, //first action in this turn
+  {{ turn: int, operation: str }} // Example: {{ turn: 3, operation: choose card 'Defend'  }}
   .......
   {{ turn: int, operation: str }}, // last action in this turn
 ]
 
 ### Notice:
-things you should be aware of in the combat.
+Extra information or special effects you should be aware of (e.g., upcoming massive attacks, special relic interactions).
 
-### Hand Pile:
-list of cards to choose from
-     [ Card ]  Card format: "card_name( card_cost,is_card_has_target,card_type )"
+### Hand Pile (Cards to Choose From):
+List of playable cards this turn:  
+[ "card_name(card_cost, is_target_required, card_type)" ]  
+Where:
+- `card_cost`: int
+- `is_target_required`: true/false
+- `card_type`: "ATTACK", "SKILL", "POWER", "CURSE", "STATUS"
 
 ### Response Format:
 {outputFormat}
+
+### Explanation Guidelines:
+Your explanation should briefly justify your decision using the following structure:
+-- State current threat or opportunity
+-- Explain card/potion effect and why it's chosen
+-- Mention why other options were suboptimal (if relevant)
+
 """
 
         self.battle_agent_sys_prompt = system_msg_2
@@ -599,7 +616,7 @@ list of cards to choose from
                 f"\nYou are facing huge incoming damage, which will make you lose {total_damage - block} hp."
                 f"you should consider mitigate the damage by:"
                 f"1. build block, 2.weaken enemy 3.eliminate enemy 4.using potion")
-        if block >= total_damage:
+        if 0 < total_damage <= block:
             # to do: 考虑壁垒等情况..
             suggestion_content += (f"\nnow your block is greater than incoming damage,there is no need to "
                                    f"build more blocks.")
@@ -793,6 +810,28 @@ now give the response.
             file.write(f"average invoke time: {float(self.total_invoke_time)/self.cnt:.6f} s\n")
             file.write(f"error rate:{(float(self.error_invoke_cnt)/self.total_invoke_cnt)*100 :.3f}%\n")
             file.write('--------------round end-------------------------\n')
+
+        if self.action != 'algorithm' and isinstance(self.llm,ChatOpenAI):
+            with open(fr'C:\Users\32685\Desktop\spirecomm\dataset\dataset_{self.llm.model_name}.jsonl', 'a', encoding="utf-8") as f:
+                item = {
+                    "conversations": []
+                }
+                sys ={
+                    "role":"system",
+                    "content":self.battle_agent_sys_prompt,
+                }
+                human = {
+                    "role":"user",
+                    "content":self.humanM,
+                }
+                ai = {
+                    "role":"assistant",
+                    "content":result["messages"][-2].content
+                }
+                item["conversations"].append(sys)
+                item["conversations"].append(human)
+                item["conversations"].append(ai)
+                f.write(json.dumps(item, ensure_ascii=False) + "\n")
 
         return result
 

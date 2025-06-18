@@ -1,27 +1,27 @@
 --------------current state---------------
 Game State:
 Current Action: None
-Current HP: 30/80
-Floor: 12, Act: 1
-Gold: 248, Seed: -8350011513601192629
-Character: PlayerClass.IRONCLAD, Ascension Level: 0
-Relics: [ Burning Blood, Toxic Egg, Ancient Tea Set, Paper Phrog ]
-Deck: [ Strike(1,True,ATTACK), Strike(1,True,ATTACK), Strike(1,True,ATTACK), Strike(1,True,ATTACK), Strike(1,True,ATTACK), Defend(1,False,SKILL), Defend(1,False,SKILL), Defend(1,False,SKILL), Defend(1,False,SKILL), Bash(2,True,ATTACK), Bludgeon(3,True,ATTACK), Armaments(1,False,SKILL), Seeing Red(1,False,SKILL), Spot Weakness(1,True,SKILL), Limit Break+(1,False,SKILL), Flame Barrier(2,False,SKILL), Shockwave+(2,False,SKILL), Pommel Strike(1,True,ATTACK) ]
-Potions: [ {'potion_id': 'Potion Slot', 'name': 'Potion Slot', 'can_use': False, 'can_discard': False, 'requires_target': False, 'price': 0}{'potion_id': 'Potion Slot', 'name': 'Potion Slot', 'can_use': False, 'can_discard': False, 'requires_target': False, 'price': 0}{'potion_id': 'Potion Slot', 'name': 'Potion Slot', 'can_use': False, 'can_discard': False, 'requires_target': False, 'price': 0} ]
-Map: <spirecomm.spire.map.Map object at 0x000001D54F94A6F0>
+Current HP: 61/80
+Floor: 22, Act: 2
+Gold: 163, Seed: 3582867769492426679
+Character: PlayerClass.DEFECT, Ascension Level: 0
+Relics: [ Cracked Core, Bronze Scales, Tungsten Rod, Philosopher's Stone ]
+Deck: [ Defend(1,False,SKILL), Defend(1,False,SKILL), Defend(1,False,SKILL), Defend(1,False,SKILL), Zap(1,False,SKILL), Dualcast+(0,False,SKILL), Charge Battery(1,False,SKILL), Biased Cognition+(1,False,POWER), Glacier+(2,False,SKILL), Barrage+(1,True,ATTACK), Scrape(1,True,ATTACK), Coolheaded+(1,False,SKILL), Buffer(2,False,POWER), Go for the Eyes(0,True,ATTACK), Equilibrium+(2,False,SKILL) ]
+Potions: [ SpeedPotion(False), LiquidBronze(False), Potion Slot(False) ]
+Map: <spirecomm.spire.map.Map object at 0x000001E6A06E2C90>
 In Combat: True
-Player: Player(energy=3,block=0)
-Monsters: [ SpikeSlime_M( 21/30 ,Intent.ATTACK_DEBUFF 12*1,0,[  ]), SlaverRed( 11/50 ,Intent.ATTACK_DEBUFF 12*1,0,[  ]) ]
-Draw Pile: [<spirecomm.spire.card.Card object at 0x000001D54F91CDD0>, <spirecomm.spire.card.Card object at 0x000001D54F91CE00>]
-Discard Pile: [<spirecomm.spire.card.Card object at 0x000001D54F91CE30>, <spirecomm.spire.card.Card object at 0x000001D54F91CE60>, <spirecomm.spire.card.Card object at 0x000001D54F91CE90>, <spirecomm.spire.card.Card object at 0x000001D54F91CEC0>, <spirecomm.spire.card.Card object at 0x000001D54F91CEF0>, <spirecomm.spire.card.Card object at 0x000001D54F91CF20>, <spirecomm.spire.card.Card object at 0x000001D54F91CF50>, <spirecomm.spire.card.Card object at 0x000001D54F91CF80>, <spirecomm.spire.card.Card object at 0x000001D54F91CFB0>, <spirecomm.spire.card.Card object at 0x000001D54F91CFE0>]
-Exhaust Pile: [<spirecomm.spire.card.Card object at 0x000001D54F91D010>]
-Hand: [<spirecomm.spire.card.Card object at 0x000001D54F91D040>, <spirecomm.spire.card.Card object at 0x000001D54F91D070>, <spirecomm.spire.card.Card object at 0x000001D54F91D0A0>, <spirecomm.spire.card.Card object at 0x000001D54F91D0D0>, <spirecomm.spire.card.Card object at 0x000001D54F91D100>]
+Player: Player(energy=2,block=10)
+Monsters: [ Cultist( 0/49 ,Intent.ATTACK 6*1,0,[  ]), Cultist( 2/51 ,Intent.ATTACK 14*1,0,[ Strength(13), Ritual(3), Weakened(1),  ]), Cultist( 25/53 ,Intent.ATTACK 19*1,0,[ Strength(13), Ritual(3),  ]) ]
+Draw Pile: [<spirecomm.spire.card.Card object at 0x000001E69F599010>]
+Discard Pile: [<spirecomm.spire.card.Card object at 0x000001E69F59A000>, <spirecomm.spire.card.Card object at 0x000001E69F599880>, <spirecomm.spire.card.Card object at 0x000001E69F59B6B0>, <spirecomm.spire.card.Card object at 0x000001E69F599070>, <spirecomm.spire.card.Card object at 0x000001E69F59B4A0>, <spirecomm.spire.card.Card object at 0x000001E69F59B7D0>, <spirecomm.spire.card.Card object at 0x000001E69F59B5C0>, <spirecomm.spire.card.Card object at 0x000001E69F59B3B0>, <spirecomm.spire.card.Card object at 0x000001E69F59BF20>]
+Exhaust Pile: []
+Hand: [<spirecomm.spire.card.Card object at 0x000001E69F599F10>, <spirecomm.spire.card.Card object at 0x000001E69F59A0F0>, <spirecomm.spire.card.Card object at 0x000001E69F59B770>, <spirecomm.spire.card.Card object at 0x000001E69F59B7A0>]
 Limbo: []
 Card in Play: None
-Turn: 3, Cards Discarded This Turn: 0
+Turn: 6, Cards Discarded This Turn: 0
 Screen: {'screen_type': <ScreenType.NONE: 14>}, Screen Up: False
 Screen Type: ScreenType.NONE, Room Phase: RoomPhase.COMBAT, Room Type: MonsterRoom
 Choices: [], Choices Available: False
-End Available: True, Potion Available: False
+End Available: True, Potion Available: True
 Play Available: True, Proceed Available: False
 Cancel Available: False

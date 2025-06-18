@@ -989,7 +989,7 @@ class SimpleAgent:
         # os.environ["OPENAI_API_BASE"] = "https://api.agicto.cn/v1"
 
         # aihubmix
-        os.environ["OPENAI_API_KEY"] = "sk-vJnE3cpi4m837up7B34971C0250b42C2818e02C517BeE44e"
+        os.environ["OPENAI_API_KEY"] = "sk-SkAVr59gLtLH8EOPA2AaE82bAb6c4a0e81Cd3a59C628B47e"
         os.environ["OPENAI_API_BASE"] = "https://aihubmix.com/v1"
 
         # self.search_llm = ChatOpenAI(model="THUDM/chatglm3-6b", temperature=0)
@@ -1018,6 +1018,7 @@ class SimpleAgent:
         # self.llm = ChatOpenAI(model="gemma2-9b-it", temperature=0) # 快且免费！但是会爆
         # self.llm = ChatOpenAI(model="gemma2-7b-it", temperature=0)
 
+
         # self.llm = ChatOpenAI(model="internlm/internlm2_5-7b-chat", temperature =0) #good grid选择有问题 支持工具 shi
         # self.llm = ChatOpenAI(model="THUDM/chatglm3-6b", temperature =0) # 有点烂
         # self.llm = ChatOpenAI(model="THUDM/glm-4-9b-chat", temperature=0) # 还行，支持工具 还行 10s+
@@ -1029,7 +1030,7 @@ class SimpleAgent:
         # self.llm = ChatOpenAI(model="Pro/Qwen/Qwen2.5-7B-Instruct", temperature=0)  # 20b shi
 
         # self.llm = ChatOllama(model="deepseek-r1:7b", temperature=0) # 有<think>
-        # self.llm = ChatOllama(model="mistral:7b", temperature=0) # 还行
+        # self.llm = ChatOllama(model="mistral:7b", temperature=0) # shi
         # self.llm = ChatOllama(model="hermes3:3b", temperature=0) # 还不赖
         # self.llm = ChatOllama(model="hermes3:8b", temperature=0) # 还不赖
         # self.llm = ChatOllama(model="gemma3:12b", temperature=0)  #
@@ -1039,14 +1040,16 @@ class SimpleAgent:
         # self.llm = ChatOllama(model="gemma3:4b", temperature=0) # haixing
         # self.llm = ChatOllama(model="qwen3:latest", temperature=0)  #
         # self.llm = ChatOllama(model="deepseek-llm:7b", temperature=0) #没有格式化输出
-
+        self.llm = ChatOllama(model="lora_gemma3:latest",temperature = 1.0, top_p = 0.95, top_k = 64)
+        # self.llm = ChatOllama(model="gemma3:1b",temperature = 1.0, top_p = 0.95, top_k = 64)
+        # self.llm = ChatOllama(model="llama3.2:3b")
 
         # self.llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash",temperature=0,transport='rest') #有限额
 
         # self.llm = ChatOpenAI(model="gemini-2.0-flash-lite",temperature=0.3)
-        # self.llm = ChatOpenAI(model="gemini-2.0-flash", temperature=0)
+        # self.llm = ChatOpenAI(model="gemini-2.0-flash", temperature=0.3)
         # self.llm = ChatOpenAI(model="gemini-2.0-flash-thinking-exp-01-21", temperature=0) #good
-        self.llm = ChatOpenAI(model="gemini-2.5-flash-preview-05-20-nothink", temperature=0)
+        # self.llm = ChatOpenAI(model="gemini-2.5-flash-preview-05-20-nothink", temperature=0) #喜欢跳过
         # self.llm = ChatOpenAI(model="DeepSeek-V3", temperature=0.3)
         # self.llm = ChatOpenAI(model="deepseek-ai/deepseek-vl2", temperature=0.3) # man
         # self.llm = ChatOpenAI(model="deepseek-ai/DeepSeek-V2.5", temperature=0.3) #man
@@ -1075,6 +1078,7 @@ class SimpleAgent:
         # self.pro_llm = ChatOpenAI(model="gemini-2.0-flash-thinking-exp-01-21", temperature=0)
         # self.pro_llm = ChatOpenAI(model="gpt-4.1-mini", temperature=0.3)
         # self.pro_llm = ChatOpenAI(model="claude-3-haiku-20240307", temperature=0.3)  # 贵
+
 
         self.init_common_llm()
         self.init_simple_grid_choice_llm()

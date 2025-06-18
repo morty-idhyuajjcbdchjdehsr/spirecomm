@@ -1,52 +1,18 @@
-import itertools
-import datetime
-import logging
-import sys
-import threading
+import json
 
-from langchain.output_parsers import StructuredOutputParser, ResponseSchema
-from langchain_core.messages import HumanMessage
+input_path = r'C:\Users\32685\Desktop\spirecomm\dataset\dataset_DeepSeek-V3.jsonl'  # 修改为你的模型名文件
+output_path = r'C:\Users\32685\Desktop\spirecomm\dataset\dataset_DeepSeek-V3.jsonl'  # 输出文件路径
 
-from spirecomm.communication.coordinator import Coordinator
-from spirecomm.ai.agent import SimpleAgent
-from spirecomm.spire.character import PlayerClass
+with open(input_path, 'r', encoding='utf-8') as fin, open(output_path, 'w', encoding='utf-8') as fout:
+    for line in fin:
+        data = json.loads(line)
 
+        # 删除第一条 system 消息中的 🔁
+        if "conversations" in data and len(data["conversations"]) > 0:
+            first_msg = data["conversations"][0]
+            if first_msg.get("role") == "system":
+                first_msg["content"] = first_msg["content"].replace("🔁", "")
 
-import matplotlib.pyplot as plt
-import matplotlib.animation as animation
-import numpy as np
+        fout.write(json.dumps(data, ensure_ascii=False) + "\n")
 
-
-import tkinter as tk
-import time
-
-
-def read_file():
-    with open('output.txt', 'r') as file:
-        while True:
-            line = file.readline()
-            if not line:
-                time.sleep(0.1)  # 如果文件没有新内容，等待
-                continue
-            text_widget.insert(tk.END, line)  # 插入文本
-            text_widget.yview(tk.END)  # 滚动到最新文本
-
-
-
-
-
-if __name__ == "__main__":
-    # 创建 Tkinter 窗口
-    root = tk.Tk()
-    root.title("实时文本显示")
-
-    # 创建 Text 组件来显示输出
-    text_widget = tk.Text(root, wrap=tk.WORD, height=50, width=80)
-    text_widget.pack()
-
-    # 启动读取文件的线程
-    thread = threading.Thread(target=read_file, daemon=True)
-    thread.start()
-
-    # 启动 Tkinter 主循环
-    root.mainloop()
+print("处理完成，结果保存在:", output_path)
