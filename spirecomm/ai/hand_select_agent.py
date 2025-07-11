@@ -4,7 +4,7 @@ import time
 from collections import deque
 
 from langchain.output_parsers import ResponseSchema, StructuredOutputParser
-from langchain_ollama import ChatOllama
+from langchain_community.chat_models import ChatOllama
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_openai import ChatOpenAI
 from langgraph.prebuilt import ToolNode
@@ -79,7 +79,7 @@ class State(TypedDict):
 
 class HandSelectAgent:
     def __init__(self, role="DEFECT", llm=ChatOpenAI(model="gpt-3.5-turbo-0125", temperature=0),
-                 small_llm=ChatOpenAI(model="gpt-3.5-turbo-0125", temperature=0)):
+                 small_llm=ChatOllama(model="mistral:7b", temperature=0)):
 
         self.error_invoke_cnt = 0
         self.total_invoke_cnt = 0

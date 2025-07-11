@@ -7,7 +7,7 @@ from collections import deque
 from langchain.memory import ConversationBufferWindowMemory, ConversationSummaryBufferMemory
 from langchain.output_parsers import ResponseSchema, StructuredOutputParser
 from langchain_community.agent_toolkits.load_tools import load_tools
-from langchain_ollama import ChatOllama
+from langchain_community.chat_models import ChatOllama
 from langchain_community.tools import TavilySearchResults
 from langchain_core.tools import tool
 
@@ -1040,7 +1040,7 @@ class SimpleAgent:
         # self.llm = ChatOllama(model="gemma3:4b", temperature=0) # haixing
         # self.llm = ChatOllama(model="qwen3:latest", temperature=0)  #
         # self.llm = ChatOllama(model="deepseek-llm:7b", temperature=0) #没有格式化输出
-        # self.llm = ChatOllama(model="lora_gemma3:latest",temperature = 1.0, top_p = 0.95, top_k = 64)
+        self.llm = ChatOllama(model="lora_gemma3:latest",temperature = 1.0, top_p = 0.95, top_k = 64)
         # self.llm = ChatOllama(model="gemma3:1b",temperature = 1.0, top_p = 0.95, top_k = 64)
         # self.llm = ChatOllama(model="llama3.2:3b")
 
@@ -1050,8 +1050,7 @@ class SimpleAgent:
         # self.llm = ChatOpenAI(model="gemini-2.0-flash", temperature=0.3)
         # self.llm = ChatOpenAI(model="gemini-2.0-flash-thinking-exp-01-21", temperature=0) #good
         # self.llm = ChatOpenAI(model="gemini-2.5-flash-preview-05-20-nothink", temperature=0) #喜欢跳过
-        # self.llm = ChatOpenAI(model="gemini-2.5-flash", temperature=0)
-        self.llm = ChatOpenAI(model="DeepSeek-V3", temperature=0.3)
+        # self.llm = ChatOpenAI(model="DeepSeek-V3", temperature=0.3)
         # self.llm = ChatOpenAI(model="deepseek-ai/deepseek-vl2", temperature=0.3) # man
         # self.llm = ChatOpenAI(model="deepseek-ai/DeepSeek-V2.5", temperature=0.3) #man
         # self.llm = ChatOpenAI(model="tngtech/DeepSeek-R1T-Chimera", temperature=0.3) # haixing man

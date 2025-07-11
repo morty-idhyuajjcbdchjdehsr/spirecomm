@@ -4,7 +4,7 @@ from collections import deque
 
 from langchain.output_parsers import ResponseSchema, StructuredOutputParser
 from langchain_community.agent_toolkits.load_tools import load_tools
-from langchain_ollama import ChatOllama
+from langchain_community.chat_models import ChatOllama
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_openai import ChatOpenAI
 from langgraph.prebuilt import ToolNode
