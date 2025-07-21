@@ -962,35 +962,9 @@ class SimpleAgent:
 
     def init_llm_env(self):
 
-        # load_dotenv()  # to do: 隐藏各个api key
+        load_dotenv(override=True)  # cnm
 
         self.deck_analysis = ''
-
-
-        # tavity
-        os.environ["TAVILY_API_KEY"] = "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"
-
-        # chatanywhere
-        # free
-        # os.environ["OPENAI_API_KEY"] = "sk-KCmRtnkbFhG5H17LiQSJ9Y76EjACuiSH0Bgjq83Ld7QiBKs4"
-        # os.environ["OPENAI_API_KEY"] = "sk-Nxr5VkCGRNruaDUzUZz3uCkKUtMvg0u3V7uiXJhJSbo0wAIp"
-        # os.environ["OPENAI_API_BASE"] = "https://api.chatanywhere.tech/v1"
-
-        # silicon
-        # os.environ["OPENAI_API_KEY"] = "sk-aqhgalcbwavbbbcjbiuikgznytxmmixcveggxfmxmrjkpxkt"
-        # os.environ["OPENAI_API_BASE"] ="https://api.siliconflow.cn/v1"
-
-        # Google
-        # os.environ["GEMINI_API_KEY"] = "AIzaSyDUhCQJYnjYpez1v_2BH03Kzw - sDLWYTyI"
-        os.environ["GOOGLE_API_KEY"] = "AIzaSyDUhCQJYnjYpez1v_2BH03Kzw-sDLWYTyI"
-
-        # AGICTO
-        # os.environ["OPENAI_API_KEY"] = "sk-dXqzgPLzOmxdo24tl4lqL8Ioh9udaG4ctTQMuDq1fDfwS4mM"
-        # os.environ["OPENAI_API_BASE"] = "https://api.agicto.cn/v1"
-
-        # aihubmix
-        os.environ["OPENAI_API_KEY"] = "sk-SkAVr59gLtLH8EOPA2AaE82bAb6c4a0e81Cd3a59C628B47e"
-        os.environ["OPENAI_API_BASE"] = "https://aihubmix.com/v1"
 
         # self.search_llm = ChatOpenAI(model="THUDM/chatglm3-6b", temperature=0)
         self.battle_thread_id = ''.join(random.choices('abcdefghijklmnopqrstuvwxyz0123456789', k=10))
@@ -1030,7 +1004,7 @@ class SimpleAgent:
         # self.llm = ChatOpenAI(model="Pro/Qwen/Qwen2.5-7B-Instruct", temperature=0)  # 20b shi
 
         # self.llm = ChatOllama(model="deepseek-r1:7b", temperature=0) # 有<think>
-        # self.llm = ChatOllama(model="mistral:7b", temperature=0) # shi
+        # self.llm = ChatOllama(model="mistral:7b") # shi
         # self.llm = ChatOllama(model="hermes3:3b", temperature=0) # 还不赖
         # self.llm = ChatOllama(model="hermes3:8b", temperature=0) # 还不赖
         # self.llm = ChatOllama(model="gemma3:12b", temperature=0)  #
@@ -1040,7 +1014,8 @@ class SimpleAgent:
         # self.llm = ChatOllama(model="gemma3:4b", temperature=0) # haixing
         # self.llm = ChatOllama(model="qwen3:latest", temperature=0)  #
         # self.llm = ChatOllama(model="deepseek-llm:7b", temperature=0) #没有格式化输出
-        self.llm = ChatOllama(model="lora_gemma3:latest",temperature = 1.0, top_p = 0.95, top_k = 64)
+        # self.llm = ChatOllama(model="lora_gemma3:latest",temperature = 1.0, top_p = 0.95, top_k = 64)
+        # self.llm = ChatOllama(model="lora_llama3.2:latest",temperature=1.5,min_p=0.1)
         # self.llm = ChatOllama(model="gemma3:1b",temperature = 1.0, top_p = 0.95, top_k = 64)
         # self.llm = ChatOllama(model="llama3.2:3b")
 
@@ -1068,6 +1043,10 @@ class SimpleAgent:
         # self.llm = ChatOpenAI(model="Baichuan4-Air", temperature=0.3) # man
         # self.llm = ChatOpenAI(model="gpt-4.1-mini", temperature=0.3)  # haixing
         # self.llm = ChatOpenAI(model="gpt-4.1-nano", temperature=0.3)  # shi
+        # self.llm = ChatOpenAI(model="kimi-k2-0711-preview", temperature=0.3)
+        # self.llm = ChatOpenAI(model="o4-mini", temperature=0.3)
+        # self.llm = ChatOpenAI(model="grok-3-mini", temperature=0.3)
+        self.llm = ChatOpenAI(model="tencent/Hunyuan-A13B-Instruct", temperature=0.3)
 
         # self.pro_llm = ChatOpenAI(model="DeepSeek-V3", temperature=0.3)  #
         # self.pro_llm = ChatOpenAI(model="deepseek-v3", temperature=0.3)  #
