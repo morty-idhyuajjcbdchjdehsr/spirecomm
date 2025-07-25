@@ -830,14 +830,15 @@ now give the response.
             item["conversations"].append(sys)
             item["conversations"].append(human)
             item["conversations"].append(ai)
+            m_name = self.llm.model_name.replace("\\","-").replace('/', '-')
             if 0<=floor<=16:
-                with open(fr'C:\Users\32685\Desktop\spirecomm\dataset\dataset_{self.llm.model_name}_act1.jsonl', 'a', encoding="utf-8") as f:
+                with open(fr'C:\Users\32685\Desktop\spirecomm\dataset\dataset_{m_name}_act1.jsonl', 'a', encoding="utf-8") as f:
                     f.write(json.dumps(item, ensure_ascii=False) + "\n")
             elif 16<floor<=33:
-                with open(fr'C:\Users\32685\Desktop\spirecomm\dataset\dataset_{self.llm.model_name}_act2.jsonl', 'a', encoding="utf-8") as f:
+                with open(fr'C:\Users\32685\Desktop\spirecomm\dataset\dataset_{m_name}_act2.jsonl', 'a', encoding="utf-8") as f:
                     f.write(json.dumps(item, ensure_ascii=False) + "\n")
             else:
-                with open(fr'C:\Users\32685\Desktop\spirecomm\dataset\dataset_{self.llm.model_name}_act3.jsonl', 'a', encoding="utf-8") as f:
+                with open(fr'C:\Users\32685\Desktop\spirecomm\dataset\dataset_{m_name}_act3.jsonl', 'a', encoding="utf-8") as f:
                     f.write(json.dumps(item, ensure_ascii=False) + "\n")
 
         return result

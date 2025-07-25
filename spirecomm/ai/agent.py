@@ -1,5 +1,7 @@
 import json
+import multiprocessing
 import os
+import threading
 import time
 import random
 from collections import deque
@@ -12,6 +14,7 @@ from langchain_community.tools import TavilySearchResults
 from langchain_core.tools import tool
 
 from spirecomm.ai.battle_agent import BattleAgent
+from spirecomm.ai.battle_agent_gui import BattleAgentGUI
 from spirecomm.ai.choose_card_agent import ChooseCardAgent
 from spirecomm.ai.event_choice_agent import EventChoiceAgent
 from spirecomm.ai.grid_choice_agent import SimpleGridChoiceAgent
@@ -37,10 +40,20 @@ from langgraph.prebuilt import create_react_agent
 from langgraph.checkpoint.memory import MemorySaver
 from dotenv import load_dotenv
 
+import tkinter as tk
+
+root = tk.Tk()
+
+
+def run_gui():
+    root.mainloop()
+    # 创建并启动GUI线程
+
 
 class SimpleAgent:
 
     def __init__(self, chosen_class=PlayerClass.THE_SILENT):
+        self.is_to_use_gui = None
         self.battle_rounds_info = None
         self.shop_select_agent = None
         self.hand_select_agent = None
@@ -95,6 +108,7 @@ class SimpleAgent:
         # raise Exception(error)
         with open(r'C:\Users\32685\Desktop\spirecomm\error_log.txt', 'a') as file:
             file.write("error occurs!!:\n" + error.__str__() + "\n\n")
+        # return self.get_next_action_in_game_new(state)
 
     def get_next_action_in_game(self, game_state):
         self.game = game_state
@@ -181,7 +195,7 @@ class SimpleAgent:
                               monster.current_hp > 0 and not monster.half_dead and not monster.is_gone]
         return len(available_monsters) > 1
 
-    def get_play_card_action(self,room):
+    def get_play_card_action(self, room):
 
         available_monsters = [monster for monster in self.game.monsters if
                               monster.current_hp > 0 and not monster.half_dead and not monster.is_gone]
@@ -205,7 +219,7 @@ class SimpleAgent:
             orbs=self.game.player.orbs,
             deck_analysis=self.deck_analysis,
             potion=self.game.get_real_potions(),
-            room = room,
+            room=room,
             config=config
         )
 
@@ -240,25 +254,25 @@ class SimpleAgent:
             file.write(self.game.__str__())
 
         card_to_play1 = None
-        if isinstance(card_Index,int) and 0 <= card_Index < len(hand_cards):
+        if isinstance(card_Index, int) and 0 <= card_Index < len(hand_cards):
             card_to_play1 = hand_cards[card_Index]
 
         potion_to_use = None
         potions = self.game.get_real_potions()
-        if isinstance(potion_index,int) and 0 <= potion_index < len(potions):
+        if isinstance(potion_index, int) and 0 <= potion_index < len(potions):
             potion_to_use = potions[potion_index]
 
         target1 = None
-        if isinstance(target_index,int) and target_index != -1 and 0 <= target_index < len(available_monsters):
+        if isinstance(target_index, int) and target_index != -1 and 0 <= target_index < len(available_monsters):
             target1 = available_monsters[target_index]
 
         if action == 'end':
             return EndTurnAction()
         elif action == 'potion':
             if target1 is None:
-                return PotionAction(True,potion=potion_to_use)
+                return PotionAction(True, potion=potion_to_use)
             else:
-                return PotionAction(True,potion=potion_to_use,target_monster=target1)
+                return PotionAction(True, potion=potion_to_use, target_monster=target1)
         elif action == 'card':
             if target1 is None:
                 if card_to_play1.has_target:
@@ -370,8 +384,8 @@ class SimpleAgent:
                     break
             if can_buy == 0:
                 return CancelAction()
-            ret =  self.make_shop_select_choice()
-            if ret is not None: # AI make correct choice
+            ret = self.make_shop_select_choice()
+            if ret is not None:  # AI make correct choice
                 return ret
 
             # Algorithm
@@ -393,20 +407,20 @@ class SimpleAgent:
                     file.write('self.game.current_action:' + str(self.game.current_action) + '\n')
                     file.write('self.game.screen.cards:' + self.get_lists_str(self.game.screen.cards) + '\n')
                     file.write('-----------------hand select end---------------\n\n')
-                if ["DiscardAction","ArmamentsAction","RetainCardsAction","BetterDiscardPileToHandAction",
-                    "PutOnDeckAction","GamblingChipAction","RecycleAction","BetterDrawPileToHandAction",
-                    "DiscardPileToTopOfDeckAction","ExhaustAction","SetupAction","DualWieldAction"].__contains__(self.game.current_action):
+                if ["DiscardAction", "ArmamentsAction", "RetainCardsAction", "BetterDiscardPileToHandAction",
+                    "PutOnDeckAction", "GamblingChipAction", "RecycleAction", "BetterDrawPileToHandAction",
+                    "DiscardPileToTopOfDeckAction", "ExhaustAction", "SetupAction", "DualWieldAction"].__contains__(
+                    self.game.current_action):
                     res = self.make_hand_select_choice()
                     if res is not None:
                         return res
 
-
             with open(r'C:\Users\32685\Desktop\spirecomm\grid.txt', 'w') as file:
                 file.write(
-                        'self.game.cards is:{}\n,self.game.screen.num_cards is:{}\n'
-                        ',self.game.screen.selected_cards is:{},self.game.current_action is {}\n\n'
-                        .format(self.get_card_list_str(self.game.screen.cards), self.game.screen.num_cards,
-                                self.game.screen.selected_cards,self.game.current_action))
+                    'self.game.cards is:{}\n,self.game.screen.num_cards is:{}\n'
+                    ',self.game.screen.selected_cards is:{},self.game.current_action is {}\n\n'
+                    .format(self.get_card_list_str(self.game.screen.cards), self.game.screen.num_cards,
+                            self.game.screen.selected_cards, self.game.current_action))
 
             # self.screen.any_number :use for Watcher to foresee
             if self.game.screen.any_number:
@@ -433,9 +447,9 @@ class SimpleAgent:
         elif self.game.screen_type == ScreenType.HAND_SELECT:
             with open(r'C:\Users\32685\Desktop\spirecomm\hand_select_situation.txt', 'a') as file:
                 file.write('-----------------hand select start---------------\n')
-                file.write('self.game.screen.num_cards:'+str(self.game.screen.num_cards)+'\n')
-                file.write('self.game.current_action:' + str(self.game.current_action)+'\n' )
-                file.write('self.game.screen.cards:'+self.get_lists_str(self.game.screen.cards)+'\n')
+                file.write('self.game.screen.num_cards:' + str(self.game.screen.num_cards) + '\n')
+                file.write('self.game.current_action:' + str(self.game.current_action) + '\n')
+                file.write('self.game.screen.cards:' + self.get_lists_str(self.game.screen.cards) + '\n')
                 file.write('-----------------hand select end---------------\n\n')
             if self.game.current_action is not None:
                 if ["DiscardAction", "ArmamentsAction", "RetainCardsAction", "BetterDiscardPileToHandAction",
@@ -491,7 +505,6 @@ class SimpleAgent:
             config=config
         )
 
-
         option_index = self.event_agent.option_index
         explanation = self.event_agent.explanation
 
@@ -515,7 +528,7 @@ class SimpleAgent:
             current_hp=self.game.current_hp,
             max_hp=self.game.max_hp,
             deck=self.game.deck,
-            c_potions = self.game.get_real_potions(),
+            c_potions=self.game.get_real_potions(),
             c_relics=self.game.relics,
             gold=self.game.gold,
             cards=self.game.screen.cards,
@@ -566,12 +579,11 @@ class SimpleAgent:
             potion=self.game.get_real_potions(),
 
             num_cards=self.game.screen.num_cards,
-            current_action = self.game.current_action,
-            available_cards = self.game.screen.cards,
+            current_action=self.game.current_action,
+            available_cards=self.game.screen.cards,
 
             config=config
         )
-
 
         chosen_cards = self.hand_select_agent.chosen_cards
         explanation = self.hand_select_agent.explanation
@@ -878,9 +890,15 @@ class SimpleAgent:
         # small_llm = ChatOpenAI(model="claude-3-haiku-20240307", temperature=0) # 似乎还挺懂 话多
         # small_llm = ChatOpenAI(model="qwen-turbo-latest", temperature=0) # good 3~4s
         # small_llm = ChatOpenAI(model="qwen-plus-latest", temperature=0) # man
+    
+        if self.is_to_use_gui:
+            agent = BattleAgentGUI(root, battle_rounds_info=self.battle_rounds_info, role=self.role)
+        else:
+            agent = BattleAgent(role=self.role, llm=self.llm, small_llm=self.llm,battle_rounds_info=self.battle_rounds_info)
 
-        agent = BattleAgent(role=self.role, llm=self.llm, small_llm=self.llm,battle_rounds_info=self.battle_rounds_info)
         self.battle_agent = agent
+        gui_process = multiprocessing.Process(target=run_gui)
+        gui_process.start()
 
     def init_choose_card_llm(self):
         self.choose_card_agent = ChooseCardAgent(role=self.role, llm=self.pro_llm, small_llm=self.pro_llm)
@@ -951,7 +969,8 @@ class SimpleAgent:
         self.simple_grid_chice_agent = agent
 
     def init_hand_select_llm(self):
-        agent = HandSelectAgent(role=self.role, llm=self.pro_llm, small_llm=self.pro_llm,battle_rounds_info=self.battle_rounds_info)
+        agent = HandSelectAgent(role=self.role, llm=self.pro_llm, small_llm=self.pro_llm,
+                                battle_rounds_info=self.battle_rounds_info)
         self.hand_select_agent = agent
 
     def init_shop_select_llm(self):
@@ -998,7 +1017,6 @@ class SimpleAgent:
         # self.llm = ChatOpenAI(model="glm-4-flashx", temperature=0) #慢
         # self.llm = ChatOpenAI(model="gemma2-9b-it", temperature=0) # 快且免费！但是会爆
         # self.llm = ChatOpenAI(model="gemma2-7b-it", temperature=0)
-
 
         # self.llm = ChatOpenAI(model="internlm/internlm2_5-7b-chat", temperature =0) #good grid选择有问题 支持工具 shi
         # self.llm = ChatOpenAI(model="THUDM/chatglm3-6b", temperature =0) # 有点烂
@@ -1054,20 +1072,21 @@ class SimpleAgent:
         # self.llm = ChatOpenAI(model="kimi-k2-0711-preview", temperature=0.3)
         # self.llm = ChatOpenAI(model="o4-mini", temperature=0.3)
         # self.llm = ChatOpenAI(model="grok-3-mini", temperature=0.3)
-        self.llm = ChatOpenAI(model="DeepSeek-V3-Fast", temperature=0.3)
+        # self.llm = ChatOpenAI(model="DeepSeek-V3-Fast", temperature=0.3)
+        self.llm = ChatOpenAI(model="ernie-4.5-turbo-128k-preview", temperature=0.3)
 
         # self.pro_llm = ChatOpenAI(model="DeepSeek-V3", temperature=0.3)  #
         # self.pro_llm = ChatOpenAI(model="deepseek-v3", temperature=0.3)  #
         # self.pro_llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.3)  #
-        self.pro_llm = ChatOpenAI(model="gemini-2.0-flash", temperature=0.3) #敲牌有点蠢
+        self.pro_llm = ChatOpenAI(model="gemini-2.0-flash", temperature=0.3)  # 敲牌有点蠢
         # self.pro_llm = ChatOpenAI(model="gemini-1.5-flash", temperature=0.3)
         # self.pro_llm = ChatOpenAI(model="gpt-4o-2024-11-20", temperature=0.3)
         # self.pro_llm = ChatOpenAI(model="gemini-2.0-flash-thinking-exp-01-21", temperature=0)
         # self.pro_llm = ChatOpenAI(model="gpt-4.1-mini", temperature=0.3)
         # self.pro_llm = ChatOpenAI(model="claude-3-haiku-20240307", temperature=0.3)  # 贵
 
-
         self.battle_rounds_info = deque(maxlen=5)
+        self.is_to_use_gui = True  # 是否启动GUI人工操作
         self.init_common_llm()
         self.init_simple_grid_choice_llm()
         self.init_battle_llm()

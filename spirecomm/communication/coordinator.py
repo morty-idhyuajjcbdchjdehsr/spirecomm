@@ -103,7 +103,7 @@ class Coordinator:
         """
         action = self.action_queue.popleft()
         with open(r'C:\Users\32685\Desktop\spirecomm\action_list.txt', 'a') as file:
-            file.write("["+action.__str__()+']\n\n')
+            file.write("["+vars(action).__str__()+']\n\n')
         action.execute(self)
 
     def execute_next_action_if_ready(self):
@@ -111,7 +111,7 @@ class Coordinator:
 
         :return: None
         """
-        if len(self.action_queue) > 0 and self.action_queue[0].can_be_executed(self):
+        if len(self.action_queue) > 0 and self.action_queue[0] is not None and self.action_queue[0].can_be_executed(self):
             self.execute_next_action()
 
     def register_state_change_callback(self, new_callback):
@@ -174,8 +174,11 @@ class Coordinator:
             if perform_callbacks:
                 if self.last_error is not None:
                     self.action_queue.clear()
+                    Action(command="state").execute(self)
+                    # m = self.get_next_raw_message(block=True)
+                    # state = json.loads(m)
                     new_action = self.error_callback(self.last_error)
-                    self.add_action_to_queue(new_action)
+                    # self.add_action_to_queue(new_action)
                 elif self.in_game:
                     if len(self.action_queue) == 0 and perform_callbacks:
                         new_action = self.state_change_callback(self.last_game_state)
