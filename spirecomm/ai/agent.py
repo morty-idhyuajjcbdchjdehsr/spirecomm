@@ -52,8 +52,7 @@ def run_gui():
 
 class SimpleAgent:
 
-    def __init__(self, chosen_class=PlayerClass.THE_SILENT):
-        self.is_to_use_gui = None
+    def __init__(self, chosen_class=PlayerClass.THE_SILENT,is_to_use_gui=False):
         self.battle_rounds_info = None
         self.shop_select_agent = None
         self.hand_select_agent = None
@@ -84,6 +83,7 @@ class SimpleAgent:
         self.priorities = Priority()
         # self.change_class(chosen_class)
         self.in_game_action_list = deque(maxlen=50)
+        self.is_to_use_gui = is_to_use_gui  # 是否启动GUI人工操作
 
     def change_class(self, new_class):
         self.chosen_class = new_class
@@ -117,7 +117,14 @@ class SimpleAgent:
             return self.handle_screen()
         if self.game.proceed_available:
             return ProceedAction()
-        if self.game.play_available or (self.game.room_phase == RoomPhase.COMBAT and self.game.potion_available):
+        if self.game.play_available or (self.game.room_phase == RoomPhase.COMBAT and self.game.hand):
+
+            if (not self.game.play_available and self.game.room_phase == RoomPhase.COMBAT
+                    and not self.game.potion_available):
+                # 不能出牌，不能喝药时
+                if not self.is_to_use_gui:
+                    return EndTurnAction()
+
 
             # discard SmokeBomb! No surrender!
             for potion in self.game.get_real_potions():
@@ -890,7 +897,7 @@ class SimpleAgent:
         # small_llm = ChatOpenAI(model="claude-3-haiku-20240307", temperature=0) # 似乎还挺懂 话多
         # small_llm = ChatOpenAI(model="qwen-turbo-latest", temperature=0) # good 3~4s
         # small_llm = ChatOpenAI(model="qwen-plus-latest", temperature=0) # man
-    
+
         if self.is_to_use_gui:
             agent = BattleAgentGUI(root, battle_rounds_info=self.battle_rounds_info, role=self.role)
         else:
@@ -901,7 +908,7 @@ class SimpleAgent:
         gui_process.start()
 
     def init_choose_card_llm(self):
-        self.choose_card_agent = ChooseCardAgent(role=self.role, llm=self.pro_llm, small_llm=self.pro_llm)
+        self.choose_card_agent = ChooseCardAgent(role=self.role, llm=self.pro_llm, small_llm=self.pro_llm,enable_suggest=False)
 
     def init_make_map_choice_llm(self):
         choice_index_schema = ResponseSchema(
@@ -1078,15 +1085,16 @@ class SimpleAgent:
         # self.pro_llm = ChatOpenAI(model="DeepSeek-V3", temperature=0.3)  #
         # self.pro_llm = ChatOpenAI(model="deepseek-v3", temperature=0.3)  #
         # self.pro_llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.3)  #
-        self.pro_llm = ChatOpenAI(model="gemini-2.0-flash", temperature=0.3)  # 敲牌有点蠢
+        # self.pro_llm = ChatOpenAI(model="gemini-2.0-flash", temperature=0.3)  # 敲牌有点蠢
         # self.pro_llm = ChatOpenAI(model="gemini-1.5-flash", temperature=0.3)
         # self.pro_llm = ChatOpenAI(model="gpt-4o-2024-11-20", temperature=0.3)
         # self.pro_llm = ChatOpenAI(model="gemini-2.0-flash-thinking-exp-01-21", temperature=0)
         # self.pro_llm = ChatOpenAI(model="gpt-4.1-mini", temperature=0.3)
         # self.pro_llm = ChatOpenAI(model="claude-3-haiku-20240307", temperature=0.3)  # 贵
+        self.pro_llm = ChatOpenAI(model="DeepSeek-V3-Fast", temperature=0.3)
 
         self.battle_rounds_info = deque(maxlen=5)
-        self.is_to_use_gui = True  # 是否启动GUI人工操作
+
         self.init_common_llm()
         self.init_simple_grid_choice_llm()
         self.init_battle_llm()

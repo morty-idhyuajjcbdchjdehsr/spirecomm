@@ -500,6 +500,7 @@ class BattleAgentGUI:
     "action":{self.action},
     "cardIndex":{self.card_Index},
     "potionIndex":{self.potion_index},
+    "targetIndex":{self.target_index},
     "explanation":{self.explanation},
 }}
 ```

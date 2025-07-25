@@ -79,7 +79,7 @@ class State(TypedDict):
 
 class ChooseCardAgent:
     def __init__(self, role="DEFECT", llm=ChatOpenAI(model="gpt-3.5-turbo-0125", temperature=0),
-                 small_llm=ChatOllama(model="mistral:7b", temperature=0)):
+                 small_llm=ChatOllama(model="mistral:7b", temperature=0),enable_suggest=False):
 
         self.strategy = None
         self.current_deck = None
@@ -92,6 +92,7 @@ class ChooseCardAgent:
         self.role = role
         self.llm = llm
         self.small_llm = small_llm
+        self.enable_suggest = enable_suggest
 
         card_name_schema = ResponseSchema(
             name="cardName",
@@ -208,6 +209,12 @@ deck Analysis:
                 "messages":[]}
 
     def suggestionAdder(self, state: State):
+
+        if not self.enable_suggest:
+            return {
+            **state,  # 保留原 state 的所有属性
+            "messages": []
+        }
 
         system_msg = """
 You are an advanced *Slay the Spire* deck-building AI assistant. Your task is to analyze the given deck 

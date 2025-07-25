@@ -4,7 +4,7 @@ import threading
 import json
 import collections
 
-from spirecomm.spire.game import Game
+from spirecomm.spire.game import Game, RoomPhase
 from spirecomm.spire.screen import ScreenType
 from spirecomm.communication.action import Action, StartGameAction
 
@@ -43,7 +43,7 @@ def write_stdout(output_queue):
 class Coordinator:
     """An object to coordinate communication with Slay the Spire"""
 
-    def __init__(self):
+    def __init__(self,is_to_use_gui=False):
         self.input_queue = queue.Queue()
         self.output_queue = queue.Queue()
         self.input_thread = threading.Thread(target=read_stdin, args=(self.input_queue,))
@@ -61,6 +61,7 @@ class Coordinator:
         self.in_game = False
         self.last_game_state = None
         self.last_error = None
+        self.is_to_use_gui = is_to_use_gui
 
     def signal_ready(self):
         """Indicate to Communication Mod that setup is complete
@@ -181,7 +182,14 @@ class Coordinator:
                     # self.add_action_to_queue(new_action)
                 elif self.in_game:
                     if len(self.action_queue) == 0 and perform_callbacks:
-                        new_action = self.state_change_callback(self.last_game_state)
+                        if self.is_to_use_gui:
+                            # 启用GUI时，只在战斗时调用agent，其他时候手打
+                            if self.last_game_state.room_phase == RoomPhase.COMBAT and self.last_game_state.hand:
+                                new_action = self.state_change_callback(self.last_game_state)
+                            else:
+                                new_action = Action(command="state")
+                        else:
+                            new_action = self.state_change_callback(self.last_game_state)
                         self.add_action_to_queue(new_action)
                 elif self.stop_after_run:
                     self.clear_actions()
