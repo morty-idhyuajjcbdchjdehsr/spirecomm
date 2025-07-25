@@ -72,7 +72,7 @@ class State(TypedDict):
 
 
 class BattleAgent:
-    def __init__(self, role="DEFECT", llm=ChatOpenAI(model="gpt-3.5-turbo-0125", temperature=0),
+    def __init__(self, battle_rounds_info,role="DEFECT", llm=ChatOpenAI(model="gpt-3.5-turbo-0125", temperature=0),
                  small_llm=ChatOllama(model="mistral:7b", temperature=0)):
         self.cnt = 0
         self.total_invoke_time = 0
@@ -144,7 +144,7 @@ class BattleAgent:
 
         self.graph = graph_builder.compile()
 
-        self.previous_rounds_info = deque(maxlen=5)
+        self.previous_rounds_info = battle_rounds_info
 
     def llm_1(self, state: State):
 

@@ -78,7 +78,7 @@ class State(TypedDict):
 
 
 class HandSelectAgent:
-    def __init__(self, role="DEFECT", llm=ChatOpenAI(model="gpt-3.5-turbo-0125", temperature=0),
+    def __init__(self,battle_rounds_info, role="DEFECT", llm=ChatOpenAI(model="gpt-3.5-turbo-0125", temperature=0),
                  small_llm=ChatOllama(model="mistral:7b", temperature=0)):
 
         self.error_invoke_cnt = 0
@@ -130,6 +130,7 @@ class HandSelectAgent:
 
         self.graph = graph_builder.compile()
 
+        self.previous_rounds_info = battle_rounds_info
 
     def llm_1(self, state: State):
 
@@ -178,6 +179,15 @@ provide situation of current battle to help you make card choice.
 - **Discard Pile**: [ Card ]
 - **Player Status**: [ player_status ]
 - **Potion**: [ Potion ] Potion format: "potion_name(is_potion_has_target)"
+
+### Previous Actions (This Turn):
+A list of prior actions during this turn:  
+[ 
+  {{ turn: int, operation: str }}, //first action in this turn
+  {{ turn: int, operation: str }} // Example: {{ turn: 3, operation: choose card 'Defend'  }}
+  .......
+  {{ turn: int, operation: str }}, // last action in this turn
+]
 
 ### Available Cards:
 list of cards to choose from
@@ -314,6 +324,17 @@ things you should be aware of
                config=None):
         start_time = time.time()  # 记录开始时间
 
+        # 获取当前turn的所有action
+        previous_rounds_info = '['
+        for item in list(self.previous_rounds_info):
+
+            tmp_turn = item['turn']
+            tmp_floor = item['floor']
+            if tmp_turn == turn and tmp_floor == floor:
+                tmp_str = f"{{ turn:{tmp_turn},operation:{item['operation']} }}"
+                previous_rounds_info += (tmp_str + '\n')
+        previous_rounds_info += ']'
+
         self.router2_cnt = 0
 
         notice = ""
@@ -350,11 +371,14 @@ Battle Situation:
         **Potion**:{potion}
         **Orbs**(if you are DEFECT): {orbs}
 
+Previous actions in this turn:
+{previous_rounds_info}
+
 Available Cards:
-        {available_cards}
+{available_cards}
 
 Notice:
-        {notice}
+{notice}
 
 now give the response.
 """
@@ -376,6 +400,7 @@ now give the response.
             potion=get_lists_str(potion),
             available_cards=get_card_lists_str(available_cards),
             notice=notice,
+            previous_rounds_info=previous_rounds_info
         )
         self.humanM = messages[0].content
         state = State(messages=messages, turn=turn, current_hp=current_hp, max_hp=max_hp,
@@ -389,6 +414,26 @@ now give the response.
 
         end_time = time.time()  # 记录结束时间
         elapsed_time = end_time - start_time  # 计算耗时
+
+
+        #添加round info
+        if self.chosen_cards is None:
+            operation = ''
+        elif len(self.chosen_cards)==1:
+            operation = f"choose Card '{self.chosen_cards[0].name}' for {current_action}"
+        else:
+            card_str = '['
+            for card in self.chosen_cards:
+                card_str += f"'{card.name}',"
+            card_str += ']'
+            operation = f"choose Cards {card_str} for {current_action}"
+
+        round_info = {
+            'floor': floor,
+            'turn': turn,
+            'operation': operation
+        }
+        self.previous_rounds_info.append(round_info)
 
         # 输出log
         with open(r'C:\Users\32685\Desktop\spirecomm\hand_select_agent.txt', 'a') as file:

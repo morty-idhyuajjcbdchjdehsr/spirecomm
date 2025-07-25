@@ -41,6 +41,7 @@ from dotenv import load_dotenv
 class SimpleAgent:
 
     def __init__(self, chosen_class=PlayerClass.THE_SILENT):
+        self.battle_rounds_info = None
         self.shop_select_agent = None
         self.hand_select_agent = None
         self.event_agent = None
@@ -878,7 +879,7 @@ class SimpleAgent:
         # small_llm = ChatOpenAI(model="qwen-turbo-latest", temperature=0) # good 3~4s
         # small_llm = ChatOpenAI(model="qwen-plus-latest", temperature=0) # man
 
-        agent = BattleAgent(role=self.role, llm=self.llm, small_llm=self.llm)
+        agent = BattleAgent(role=self.role, llm=self.llm, small_llm=self.llm,battle_rounds_info=self.battle_rounds_info)
         self.battle_agent = agent
 
     def init_choose_card_llm(self):
@@ -950,7 +951,7 @@ class SimpleAgent:
         self.simple_grid_chice_agent = agent
 
     def init_hand_select_llm(self):
-        agent = HandSelectAgent(role=self.role, llm=self.pro_llm, small_llm=self.pro_llm)
+        agent = HandSelectAgent(role=self.role, llm=self.pro_llm, small_llm=self.pro_llm,battle_rounds_info=self.battle_rounds_info)
         self.hand_select_agent = agent
 
     def init_shop_select_llm(self):
@@ -1066,6 +1067,7 @@ class SimpleAgent:
         # self.pro_llm = ChatOpenAI(model="claude-3-haiku-20240307", temperature=0.3)  # 贵
 
 
+        self.battle_rounds_info = deque(maxlen=5)
         self.init_common_llm()
         self.init_simple_grid_choice_llm()
         self.init_battle_llm()
