@@ -812,26 +812,33 @@ now give the response.
             file.write('--------------round end-------------------------\n')
 
         if self.action != 'algorithm' and isinstance(self.llm,ChatOpenAI):
-            with open(fr'C:\Users\32685\Desktop\spirecomm\dataset\dataset_{self.llm.model_name}.jsonl', 'a', encoding="utf-8") as f:
-                item = {
-                    "conversations": []
-                }
-                sys ={
-                    "role":"system",
-                    "content":self.battle_agent_sys_prompt,
-                }
-                human = {
-                    "role":"user",
-                    "content":self.humanM,
-                }
-                ai = {
-                    "role":"assistant",
-                    "content":result["messages"][-2].content
-                }
-                item["conversations"].append(sys)
-                item["conversations"].append(human)
-                item["conversations"].append(ai)
-                f.write(json.dumps(item, ensure_ascii=False) + "\n")
+            item = {
+                "conversations": []
+            }
+            sys = {
+                "role": "system",
+                "content": self.battle_agent_sys_prompt,
+            }
+            human = {
+                "role": "user",
+                "content": self.humanM,
+            }
+            ai = {
+                "role": "assistant",
+                "content": result["messages"][-2].content
+            }
+            item["conversations"].append(sys)
+            item["conversations"].append(human)
+            item["conversations"].append(ai)
+            if 0<=floor<=16:
+                with open(fr'C:\Users\32685\Desktop\spirecomm\dataset\dataset_{self.llm.model_name}_act1.jsonl', 'a', encoding="utf-8") as f:
+                    f.write(json.dumps(item, ensure_ascii=False) + "\n")
+            elif 16<floor<=33:
+                with open(fr'C:\Users\32685\Desktop\spirecomm\dataset\dataset_{self.llm.model_name}_act2.jsonl', 'a', encoding="utf-8") as f:
+                    f.write(json.dumps(item, ensure_ascii=False) + "\n")
+            else:
+                with open(fr'C:\Users\32685\Desktop\spirecomm\dataset\dataset_{self.llm.model_name}_act3.jsonl', 'a', encoding="utf-8") as f:
+                    f.write(json.dumps(item, ensure_ascii=False) + "\n")
 
         return result
 

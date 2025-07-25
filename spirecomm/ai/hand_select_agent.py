@@ -287,8 +287,8 @@ things you should be aware of
                 file.write('cnt is:' + str(self.router2_cnt) + '\n')
             if self.router2_cnt >= 2:
 
-                self.card_indices = []
-                self.chosen_cards = []
+                self.card_indices = None
+                self.chosen_cards = None
                 self.explanation = 'router2 reach recursion limit! use algorithm to choose card!'
                 return END
             return "LLM"

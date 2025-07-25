@@ -395,7 +395,9 @@ class SimpleAgent:
                 if ["DiscardAction","ArmamentsAction","RetainCardsAction","BetterDiscardPileToHandAction",
                     "PutOnDeckAction","GamblingChipAction","RecycleAction","BetterDrawPileToHandAction",
                     "DiscardPileToTopOfDeckAction","ExhaustAction","SetupAction","DualWieldAction"].__contains__(self.game.current_action):
-                    return self.make_hand_select_choice()
+                    res = self.make_hand_select_choice()
+                    if res is not None:
+                        return res
 
 
             with open(r'C:\Users\32685\Desktop\spirecomm\grid.txt', 'w') as file:
@@ -439,7 +441,9 @@ class SimpleAgent:
                     "PutOnDeckAction", "GamblingChipAction", "RecycleAction", "BetterDrawPileToHandAction",
                     "DiscardPileToTopOfDeckAction", "ExhaustAction", "SetupAction", "DualWieldAction"].__contains__(
                     self.game.current_action):
-                    return self.make_hand_select_choice()
+                    res = self.make_hand_select_choice()
+                    if res is not None:
+                        return res
 
             # 选择手牌
             if not self.game.choice_available:
@@ -581,6 +585,8 @@ class SimpleAgent:
             file.write("self.chosen_cards:" + self.get_card_list_str(chosen_cards) + "\n")
             file.write("self.explanation:" + str(explanation) + "\n")
 
+        if chosen_cards is None:
+            return None
         return CardSelectAction(chosen_cards)
 
     def make_grid_choice(self):
@@ -944,7 +950,7 @@ class SimpleAgent:
         self.simple_grid_chice_agent = agent
 
     def init_hand_select_llm(self):
-        agent = HandSelectAgent(role=self.role, llm=self.llm, small_llm=self.llm)
+        agent = HandSelectAgent(role=self.role, llm=self.pro_llm, small_llm=self.pro_llm)
         self.hand_select_agent = agent
 
     def init_shop_select_llm(self):
@@ -1018,6 +1024,7 @@ class SimpleAgent:
         # self.llm = ChatOllama(model="lora_llama3.2:latest",temperature=1.5,min_p=0.1)
         # self.llm = ChatOllama(model="gemma3:1b",temperature = 1.0, top_p = 0.95, top_k = 64)
         # self.llm = ChatOllama(model="llama3.2:3b")
+        # self.llm = ChatOllama(model="my-mistral",base_url="http://211.71.15.50:11434")
 
         # self.llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash",temperature=0,transport='rest') #有限额
 
@@ -1046,7 +1053,7 @@ class SimpleAgent:
         # self.llm = ChatOpenAI(model="kimi-k2-0711-preview", temperature=0.3)
         # self.llm = ChatOpenAI(model="o4-mini", temperature=0.3)
         # self.llm = ChatOpenAI(model="grok-3-mini", temperature=0.3)
-        self.llm = ChatOpenAI(model="tencent/Hunyuan-A13B-Instruct", temperature=0.3)
+        self.llm = ChatOpenAI(model="DeepSeek-V3-Fast", temperature=0.3)
 
         # self.pro_llm = ChatOpenAI(model="DeepSeek-V3", temperature=0.3)  #
         # self.pro_llm = ChatOpenAI(model="deepseek-v3", temperature=0.3)  #
