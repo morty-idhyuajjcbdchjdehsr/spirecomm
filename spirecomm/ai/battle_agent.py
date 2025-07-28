@@ -43,6 +43,26 @@ def get_lists_str_for_m(lists):
     ret += " \n\t]"
     return ret
 
+def get_lists_str_for_card(lists):
+    ret = "[ "
+    for index, card in enumerate(lists):
+        type = ""
+        if card.type == CardType.ATTACK:
+            type = "ATTACK"
+        if card.type == CardType.SKILL:
+            type = "SKILL"
+        if card.type == CardType.POWER:
+            type = "POWER"
+        if card.type == CardType.STATUS:
+            type = "STATUS"
+        if card.type == CardType.CURSE:
+            type = "CURSE"
+        ret += f"{card.name}({card.cost},{card.has_target},{type},{index})"
+        if index != len(lists) - 1:
+            ret += ", "
+    ret += " ]"
+    return ret
+
 def get_lists_str_with_only_name(lists):
     ret = "[ "
     for index,item in enumerate(lists):
@@ -193,11 +213,12 @@ Extra information or special effects you should be aware of (e.g., upcoming mass
 
 ### Hand Pile (Cards to Choose From):
 List of playable cards this turn:  
-[ "card_name(card_cost, is_target_required, card_type)" ]  
+[ "card_name(card_cost, is_target_required, card_type, card_index)" ]  
 Where:
 - `card_cost`: int
 - `is_target_required`: true/false
 - `card_type`: "ATTACK", "SKILL", "POWER", "CURSE", "STATUS"
+- `card_index`: int
 
 ### Response Format:
 {outputFormat}
@@ -703,8 +724,8 @@ Your explanation should briefly justify your decision using the following struct
                                    "")
 
         if len(playable_cards)==0 and len(potion)!=0:
-            suggestion_content += ("\nNow you can play no more cards,but you still can use potion.Make your choice "
-                                   "between 'end' and 'potion'.")
+            suggestion_content += ("\nNow you can play no more cards. consider end your turn or use"
+                                   "potion when critical.")
 
         template_string = """       
 {deck_analysis}        
@@ -741,7 +762,7 @@ now give the response.
             block=block,
             energy=energy,
             relics=get_lists_str(relics),
-            hand=get_lists_str(hand),
+            hand=get_lists_str_for_card(hand),
             monsters=get_lists_str_for_m(monsters),
             drawPile=get_lists_str_with_only_name(drawPile),
             discardPile=get_lists_str_with_only_name(discardPile),

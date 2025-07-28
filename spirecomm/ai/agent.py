@@ -1067,7 +1067,7 @@ class SimpleAgent:
         # self.llm = ChatOpenAI(model="Doubao-1.5-pro-32k", temperature=0.3)  # haixing
         # self.llm = ChatOpenAI(model="Doubao-lite-128k", temperature=0.3) #haixing
         # self.llm = ChatOpenAI(model="Doubao-1.5-lite-32k", temperature=0.3) #haixing
-        self.llm = ChatOpenAI(model="doubao-seed-1-6-flash-250615", temperature=0.3) #不赖
+        # self.llm = ChatOpenAI(model="doubao-seed-1-6-flash-250615", temperature=0.3) #不赖
         # self.llm = ChatOpenAI(model="THUDM/GLM-4-32B-0414", temperature=0.3) #man
         # self.llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.3) #
         # self.llm = ChatOpenAI(model="gpt-3.5-turbo-0125", temperature=0.3)
@@ -1081,7 +1081,7 @@ class SimpleAgent:
         # self.llm = ChatOpenAI(model="kimi-k2-0711-preview", temperature=0.3)
         # self.llm = ChatOpenAI(model="o4-mini", temperature=0.3)
         # self.llm = ChatOpenAI(model="grok-3-mini", temperature=0.3)
-        # self.llm = ChatOpenAI(model="DeepSeek-V3-Fast", temperature=0.3)
+        self.llm = ChatOpenAI(model="DeepSeek-V3-Fast", temperature=0.3)
         # self.llm = ChatOpenAI(model="ernie-4.5-turbo-128k-preview", temperature=0.3)
 
         # self.pro_llm = ChatOpenAI(model="DeepSeek-V3", temperature=0.3)  #
