@@ -441,6 +441,7 @@ Your explanation should briefly justify your decision using the following struct
         Cultist_flag = 0
         Strength = 0
         Artifact_flag = 0
+        playable_cards = [card for card in hand if card.is_playable]
 
 
         for power in powers:
@@ -700,6 +701,10 @@ Your explanation should briefly justify your decision using the following struct
         if room == "Elite":
             suggestion_content += ("\nYou are facing Elite enemy,make good use of your **potion** to defeat the enemy"
                                    "")
+
+        if len(playable_cards)==0 and len(potion)!=0:
+            suggestion_content += ("\nNow you can play no more cards,but you still can use potion.Make your choice "
+                                   "between 'end' and 'potion'.")
 
         template_string = """       
 {deck_analysis}        
