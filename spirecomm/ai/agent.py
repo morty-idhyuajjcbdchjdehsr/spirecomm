@@ -42,23 +42,19 @@ from dotenv import load_dotenv
 
 import tkinter as tk
 
-root = tk.Tk()
 
 
-def run_gui():
-    root.mainloop()
-    # 创建并启动GUI线程
 
 
 class SimpleAgent:
 
-    def __init__(self, chosen_class=PlayerClass.THE_SILENT,is_to_use_gui=False):
+    def __init__(self, chosen_class=PlayerClass.THE_SILENT,is_to_use_gui=False,root=None):
         self.battle_rounds_info = None
         self.shop_select_agent = None
         self.hand_select_agent = None
         self.event_agent = None
         self.pro_llm = None
-        self.simple_grid_chice_agent = None
+        self.simple_grid_choice_agent = None
         self.deck_analysis = ''
         self.search_llm = None
         self.choose_card_thread_id = None
@@ -84,6 +80,9 @@ class SimpleAgent:
         # self.change_class(chosen_class)
         self.in_game_action_list = deque(maxlen=50)
         self.is_to_use_gui = is_to_use_gui  # 是否启动GUI人工操作
+        self.root = root
+
+
 
     def change_class(self, new_class):
         self.chosen_class = new_class
@@ -290,6 +289,9 @@ class SimpleAgent:
                     return PlayCardAction(card=card_to_play1)
             else:
                 return PlayCardAction(card=card_to_play1, target_monster=target1)
+
+        elif action == 'flush':
+            return FlushAction()
         else:
             # just algorithm
             playable_cards = [card for card in self.game.hand if card.is_playable]
@@ -899,13 +901,13 @@ class SimpleAgent:
         # small_llm = ChatOpenAI(model="qwen-plus-latest", temperature=0) # man
 
         if self.is_to_use_gui:
-            agent = BattleAgentGUI(root, battle_rounds_info=self.battle_rounds_info, role=self.role)
+            agent = BattleAgentGUI(self.root, battle_rounds_info=self.battle_rounds_info, role=self.role)
         else:
             agent = BattleAgent(role=self.role, llm=self.llm, small_llm=self.llm,battle_rounds_info=self.battle_rounds_info)
 
+
         self.battle_agent = agent
-        gui_process = multiprocessing.Process(target=run_gui)
-        gui_process.start()
+
 
     def init_choose_card_llm(self):
         self.choose_card_agent = ChooseCardAgent(role=self.role, llm=self.pro_llm, small_llm=self.pro_llm,enable_suggest=False)
@@ -1065,7 +1067,7 @@ class SimpleAgent:
         # self.llm = ChatOpenAI(model="Doubao-1.5-pro-32k", temperature=0.3)  # haixing
         # self.llm = ChatOpenAI(model="Doubao-lite-128k", temperature=0.3) #haixing
         # self.llm = ChatOpenAI(model="Doubao-1.5-lite-32k", temperature=0.3) #haixing
-        # self.llm = ChatOpenAI(model="doubao-seed-1-6-flash-250615", temperature=0.3) #不赖
+        self.llm = ChatOpenAI(model="doubao-seed-1-6-flash-250615", temperature=0.3) #不赖
         # self.llm = ChatOpenAI(model="THUDM/GLM-4-32B-0414", temperature=0.3) #man
         # self.llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.3) #
         # self.llm = ChatOpenAI(model="gpt-3.5-turbo-0125", temperature=0.3)
@@ -1080,7 +1082,7 @@ class SimpleAgent:
         # self.llm = ChatOpenAI(model="o4-mini", temperature=0.3)
         # self.llm = ChatOpenAI(model="grok-3-mini", temperature=0.3)
         # self.llm = ChatOpenAI(model="DeepSeek-V3-Fast", temperature=0.3)
-        self.llm = ChatOpenAI(model="ernie-4.5-turbo-128k-preview", temperature=0.3)
+        # self.llm = ChatOpenAI(model="ernie-4.5-turbo-128k-preview", temperature=0.3)
 
         # self.pro_llm = ChatOpenAI(model="DeepSeek-V3", temperature=0.3)  #
         # self.pro_llm = ChatOpenAI(model="deepseek-v3", temperature=0.3)  #

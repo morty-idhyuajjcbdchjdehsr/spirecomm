@@ -6,7 +6,7 @@ import collections
 
 from spirecomm.spire.game import Game, RoomPhase
 from spirecomm.spire.screen import ScreenType
-from spirecomm.communication.action import Action, StartGameAction
+from spirecomm.communication.action import Action, StartGameAction, FlushAction
 
 
 def read_stdin(input_queue):
@@ -105,6 +105,8 @@ class Coordinator:
         action = self.action_queue.popleft()
         with open(r'C:\Users\32685\Desktop\spirecomm\action_list.txt', 'a') as file:
             file.write("["+vars(action).__str__()+']\n\n')
+        if isinstance(action,FlushAction):
+            self.action_queue.clear()
         action.execute(self)
 
     def execute_next_action_if_ready(self):
@@ -182,14 +184,15 @@ class Coordinator:
                     # self.add_action_to_queue(new_action)
                 elif self.in_game:
                     if len(self.action_queue) == 0 and perform_callbacks:
-                        if self.is_to_use_gui:
-                            # 启用GUI时，只在战斗时调用agent，其他时候手打
-                            if self.last_game_state.room_phase == RoomPhase.COMBAT and self.last_game_state.hand:
-                                new_action = self.state_change_callback(self.last_game_state)
-                            else:
-                                new_action = Action(command="state")
-                        else:
-                            new_action = self.state_change_callback(self.last_game_state)
+                        # if self.is_to_use_gui:
+                        #     # 启用GUI时，只在战斗时调用agent，其他时候手打
+                        #     if self.last_game_state.room_phase == RoomPhase.COMBAT and self.last_game_state.hand:
+                        #         new_action = self.state_change_callback(self.last_game_state)
+                        #     else:
+                        #         new_action = Action(command="state")
+                        # else:
+                        #     new_action = self.state_change_callback(self.last_game_state)
+                        new_action = self.state_change_callback(self.last_game_state)
                         self.add_action_to_queue(new_action)
                 elif self.stop_after_run:
                     self.clear_actions()

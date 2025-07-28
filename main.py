@@ -1,4 +1,5 @@
 import itertools
+import multiprocessing
 from datetime import datetime
 import logging
 import sys
@@ -9,7 +10,15 @@ from langchain_core.messages import HumanMessage
 from spirecomm.communication.coordinator import Coordinator
 from spirecomm.ai.agent import SimpleAgent
 from spirecomm.spire.character import PlayerClass
+import tkinter as tk
 
+is_to_use_gui = True #是否启用GUI
+if is_to_use_gui:
+    root = tk.Tk()
+else:
+    root = None
+def run_gui():
+    root.mainloop()
 
 if __name__ == "__main__":
     # 配置 logging
@@ -39,9 +48,12 @@ if __name__ == "__main__":
             file.write('--------------tracking---------------\n')
         with open(r'C:\Users\32685\Desktop\spirecomm\shop_select_agent.txt', 'w') as file:
             file.write('--------------tracking---------------\n')
+        with open(r'C:\Users\32685\Desktop\spirecomm\battle_agent_gui.txt', 'w') as file:
+            file.write('--------------tracking---------------\n')
 
-        agent = SimpleAgent()
-        coordinator = Coordinator()
+
+        agent = SimpleAgent(is_to_use_gui=is_to_use_gui,root=root)
+        coordinator = Coordinator(is_to_use_gui=is_to_use_gui)
         coordinator.signal_ready()
 
         coordinator.register_command_error_callback(agent.handle_error)
@@ -52,6 +64,9 @@ if __name__ == "__main__":
         for chosen_class in itertools.cycle(PlayerClass):
             agent.change_class(chosen_class)
             agent.init_llm_env()
+            if is_to_use_gui:
+                gui_process = multiprocessing.Process(target=run_gui)
+                gui_process.start()
 
             seed = "2ZK5PHFXAGB3X" # 重锤开，二层圆顶
             seed = "3FR420LZN9M7H" # 35层，力量战
@@ -77,37 +92,15 @@ if __name__ == "__main__":
                 else:
                     file.write(f"lose as {chosen_class} at {datetime.now()} at floor {agent.game.floor}\n")
 
-        # while True:
-        #     p_class = PlayerClass.THE_SILENT
-        #     agent.change_class(p_class)
-        #
-        #     agent.init_llm_env()
-        #
-        #     seed = "2ZK5PHFXAGB3X" # 重锤开，二层圆顶
-        #     seed = "3FR420LZN9M7H" # 35层，力量战
-        #     seed = "16G2XGIZWIVPY" # 44层，鸡煲
-        #     seed = "16QXPYKRH7U5W" # 50层，毒贼
-        #     seed = "2IEMKEY2CBQAZ" # 33层，鸡煲，鸟居钛合金棒
-        #     seed = "55DIXCQA169G8" # 33层，战士自残流, 有肉
-        #     seed = "1ASP5QUI90TT8" # 45层，毒贼，催化剂，双瓶中基米
-        #     seed = "IJGDFL933EQJ" # 肉
-        #     seed = "3UUE1ZMQ7E2T" # 45层，战士
-        #     seed = "1B2WCU633TTY6" # 换4农合开
-        #     seed = "1N8B75PKQZ018" # 41层，6费战士
-        #     seed = "3IFHAZ327DD5J" # 刀贼
-        #     seed = "4D2NVXBDGYJ9L" # 灵体运转贼
-        #
-        #     result = coordinator.play_one_game(chosen_class)
-        #     with open(r'C:\Users\32685\Desktop\spirecomm\results.txt', 'a') as file:
-        #         if result:
-        #             file.write(f"win as {chosen_class} at {datetime.now()}\n")
-        #         else:
-        #             file.write(f"lose as {chosen_class} at {datetime.now()} at floor {agent.game.floor}\n")
 
         while True:
             p_class = PlayerClass.DEFECT
             agent.change_class(p_class)
             agent.init_llm_env()
+            if is_to_use_gui:
+                gui_process = multiprocessing.Process(target=run_gui)
+                gui_process.start()
+
 
             result = coordinator.play_one_game(p_class)
             with open(r'C:\Users\32685\Desktop\spirecomm\results.txt', 'a') as file:

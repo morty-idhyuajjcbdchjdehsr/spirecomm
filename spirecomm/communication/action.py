@@ -30,6 +30,12 @@ class Action:
         """
         coordinator.send_message(self.command)
 
+class FlushAction(Action):
+    """An action to empty the action list and add a State action"""
+    def __init__(self):
+        super().__init__("state")
+        self.message = "empty the action list and add a State action"
+
 
 class PlayCardAction(Action):
     """An action to play a specified card from your hand"""
