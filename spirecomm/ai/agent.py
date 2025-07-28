@@ -753,6 +753,8 @@ class SimpleAgent:
             return CancelAction()
 
     def get_card_list_str(self, cardlist):
+        if cardlist is None:
+            return ''
         str = '['
         for card in cardlist:
             str += f"{card.name}"

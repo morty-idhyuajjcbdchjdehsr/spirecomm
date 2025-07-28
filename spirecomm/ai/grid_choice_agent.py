@@ -46,19 +46,20 @@ def get_lists_str_with_name(lists):
 def get_lists_str_for_card(lists):
     ret = "[ "
     for index,item in enumerate(lists):
-        type = ""
-        if item.type == CardType.ATTACK:
-            type = "ATTACK"
-        if item.type == CardType.SKILL:
-            type = "SKILL"
-        if item.type == CardType.POWER:
-            type = "POWER"
-        if item.type == CardType.STATUS:
-            type = "STATUS"
-        if item.type == CardType.CURSE:
-            type = "CURSE"
-
-        ret += f"{item.name}({type})"
+        rarity = ""
+        if item.rarity == CardRarity.BASIC:
+            rarity = "BASIC"
+        elif item.rarity == CardRarity.COMMON:
+            rarity = "COMMON"
+        elif item.rarity == CardRarity.UNCOMMON:
+            rarity = "UNCOMMON"
+        elif item.rarity == CardRarity.RARE:
+            rarity = "RARE"
+        elif item.rarity == CardRarity.SPECIAL:
+            rarity = "SPECIAL"
+        else:
+            rarity = "CURSE"
+        ret += f"{item.name}({rarity},{index})"
         if index != len(lists)-1:
             ret += ", "
     ret += " ]"
@@ -150,7 +151,10 @@ class SimpleGridChoiceAgent:
                         
                         ### Available Cards
                         Cards to choose from
-                         [Card]
+                         [ "card_name(card_rarity, card_index)" ]  
+                        Where:
+                        - `card_rarity`: "BASIC","COMMON","UNCOMMON","RARE","SPECIAL","CURSE" 
+                        - `card_index`: int
 
                         ### Instructions:
                         {Instruction[state["intent"]]}
@@ -178,7 +182,11 @@ class SimpleGridChoiceAgent:
 - **Relics**: [Relic],
 - **Current Deck:** [Card] 
 - **Player's Health:** 'current_hp' / 'max_hp'
-- **Available Cards**: [Card] (cards to choose from)
+- **Available Cards**: 
+ [ "card_name(card_rarity, card_index)" ]  
+    Where:
+    - `card_rarity`: "BASIC","COMMON","UNCOMMON","RARE","SPECIAL","CURSE" 
+    - `card_index`: int
 """
         msg = {
             'purge':"""
@@ -229,6 +237,7 @@ Give **top 3** recommended cards!!
   "recommended_cards": [
     {
       "card_name": "name of card",
+      "card_index" "index of card from **Available Cards**",
       "reasoning": "why you recommend this card",
     },
     ....
@@ -249,7 +258,7 @@ Give **top 3** recommended cards!!
                 - **Relics:** {get_lists_str(state["relics"])}
                 - **Current Deck:** {get_lists_str_with_name(state["deck"])}
                 - **Player's Health:** {state["current_hp"]}/{state["max_hp"]}
-                - **Available Cards**: {get_lists_str_with_name(state["available_cards"])}
+                - **Available Cards**: {get_lists_str_for_card(state["available_cards"])}
                 now give your response. """
 
         messages = [{"role": "system", "content": system_msg}] + [
@@ -348,7 +357,7 @@ Give **top 3** recommended cards!!
             relics=get_lists_str(relics),
             hp=f"{current_hp}/{max_hp}",
             deck=get_lists_str_with_name(deck),
-            available_cards=get_lists_str_with_name(available_cards),
+            available_cards=get_lists_str_for_card(available_cards),
         )
 
         self.humanM = messages[0].content

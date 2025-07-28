@@ -240,11 +240,12 @@ things you should be aware of
 
         if isinstance(self.card_indices,list):
             if num_cards!=99 and len(self.card_indices) != num_cards:
-                return {
-                    **state,  # 保留原 state 的所有属性
-                    "messages": [{"role": "user", "content": f"You should provide {num_cards} cardIndex,"
-                                                             " please regenerate your answer!"}]
-                }
+                if len(available_cards) >= num_cards:
+                    return {
+                        **state,  # 保留原 state 的所有属性
+                        "messages": [{"role": "user", "content": f"You should provide {num_cards} cardIndex,"
+                                                                 " please regenerate your answer!"}]
+                    }
             if len(self.card_indices) > len(available_cards):
                 return {
                     **state,  # 保留原 state 的所有属性

@@ -12,7 +12,7 @@ from spirecomm.ai.agent import SimpleAgent
 from spirecomm.spire.character import PlayerClass
 import tkinter as tk
 
-is_to_use_gui = True #是否启用GUI
+is_to_use_gui = False #是否启用GUI
 if is_to_use_gui:
     root = tk.Tk()
 else:
@@ -84,6 +84,8 @@ if __name__ == "__main__":
             seed = "576PMLJ8RWVQV" #金冠开
             seed = "3I0F0ZCZD9KUC" #50层，肉
             seed = "LPMPVD2QKA4C" #50层，农局
+            seed = "4N56AHZCZ1YMZ" #50层，硫磺战
+            seed = "39976S0CU4QPB" #50层，战士
 
             result = coordinator.play_one_game(chosen_class)
             with open(r'C:\Users\32685\Desktop\spirecomm\results.txt', 'a') as file:

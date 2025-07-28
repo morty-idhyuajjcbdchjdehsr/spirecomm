@@ -630,7 +630,7 @@ Your explanation should briefly justify your decision using the following struct
             suggestion_content += ("\nEnemy is in low hp,check the maximum damage you can deal to see"
                                    "if you can eliminate it.")
         if len(monsters) > 1:
-            suggestion_content += ("\nYou are facing multiply enemies,you should prioritize"
+            suggestion_content += ("\nYou are facing multiply enemies,you should prioritize "
                                    "AOE card which can affect them all.")
 
         if total_damage - block >= 7:
@@ -724,7 +724,7 @@ Your explanation should briefly justify your decision using the following struct
                                    "")
 
         if len(playable_cards)==0 and len(potion)!=0:
-            suggestion_content += ("\nNow you can play no more cards. consider end your turn or use"
+            suggestion_content += ("\nNow you can play no more cards. consider end your turn or use "
                                    "potion when critical.")
 
         template_string = """       
