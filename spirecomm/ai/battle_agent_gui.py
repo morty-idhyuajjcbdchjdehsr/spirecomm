@@ -609,7 +609,7 @@ Your explanation should briefly justify your decision using the following struct
     "cardIndex":{self.card_Index},
     "potionIndex":{self.potion_index},
     "targetIndex":{self.target_index},
-    "explanation":"{self.explanation}",
+    "explanation":"{self.explanation}"
 }}
 ```
 """
