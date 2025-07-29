@@ -218,7 +218,7 @@ def main():
             # break # 只执行一次
 
     # 保存 JSON 文件
-    with open("dataset/slay_the_spire_structured_knowledge.json", "w", encoding="utf-8") as f:
+    with open("slay_the_spire_structured_knowledge.json", "w", encoding="utf-8") as f:
         json.dump(dataset, f, indent=2, ensure_ascii=False)
 
     print(f"抓取完成，共 {len(dataset)} 条结构化数据。")

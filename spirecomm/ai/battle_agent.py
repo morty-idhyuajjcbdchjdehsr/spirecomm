@@ -406,7 +406,7 @@ Your explanation should briefly justify your decision using the following struct
         else:
             self.error_invoke_cnt += 1
             self.router2_cnt += 1
-            with open(r'C:\Users\32685\Desktop\spirecomm\battle_agent.txt', 'a') as file:
+            with open(r'C:\Users\32685\Desktop\spirecomm\output\battle_agent.txt', 'a') as file:
                 file.write('cnt is:' + str(self.router2_cnt) + '\n')
             if self.router2_cnt >= 2:
                 self.action = 'algorithm'
@@ -827,7 +827,7 @@ now give the response.
         self.previous_rounds_info.append(round_info)
 
         # 输出log
-        with open(r'C:\Users\32685\Desktop\spirecomm\battle_agent.txt', 'a') as file:
+        with open(r'C:\Users\32685\Desktop\spirecomm\output\battle_agent.txt', 'a') as file:
             file.write('--------------round start-------------------------\n')
             # file.write("System:\n" + self.battle_agent_sys_prompt + '\n')
             for response in result["messages"]:

@@ -348,7 +348,7 @@ Your response should be structured in JSON format as follows:
             return "Strategy"
         else:
             self.router2_cnt += 1
-            with open(r'C:\Users\32685\Desktop\spirecomm\choose_card_agent.txt', 'a') as file:
+            with open(r'C:\Users\32685\Desktop\spirecomm\output\choose_card_agent.txt', 'a') as file:
                 file.write('cnt is:' + str(self.router2_cnt) + '\n')
             if self.router2_cnt >= 2:
                 self.card_name = ''
@@ -396,7 +396,7 @@ Your response should be structured in JSON format as follows:
         elapsed_time = end_time - start_time  # 计算耗时
 
         # 输出log
-        with open(r'C:\Users\32685\Desktop\spirecomm\choose_card_agent.txt', 'a',encoding="utf-8") as file:
+        with open(r'C:\Users\32685\Desktop\spirecomm\output\choose_card_agent.txt', 'a',encoding="utf-8") as file:
             file.write('--------------round start-------------------------\n')
             file.write("System:\n" + self.choose_card_agent_sys_prompt + '\n')
             for response in result["messages"]:

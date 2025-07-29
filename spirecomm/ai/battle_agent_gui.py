@@ -293,7 +293,7 @@ class BattleAgentGUI:
                relics, hand, monsters, drawPile, discardPile,
                powers, orbs, deck_analysis, potion, room,config)
         if err:
-            with open(r'C:\Users\32685\Desktop\spirecomm\battle_agent_gui.txt', 'a') as file:
+            with open(r'C:\Users\32685\Desktop\spirecomm\output\battle_agent_gui.txt', 'a') as file:
                 file.write('--------------round start-------------------------\n')
                 # file.write("System:\n" + self.battle_agent_sys_prompt + '\n')
                 file.write("Error:\n" + err.__str__()+ '\n')
@@ -645,7 +645,7 @@ Your explanation should briefly justify your decision using the following struct
                       encoding="utf-8") as f:
                 f.write(json.dumps(item, ensure_ascii=False) + "\n")
 
-        with open(r'C:\Users\32685\Desktop\spirecomm\battle_agent_gui.txt', 'a') as file:
+        with open(r'C:\Users\32685\Desktop\spirecomm\output\battle_agent_gui.txt', 'a') as file:
             file.write('--------------round start-------------------------\n')
             # file.write("System:\n" + self.battle_agent_sys_prompt + '\n')
             file.write("Human:\n"+human["content"]+'\n')

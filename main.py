@@ -23,32 +23,32 @@ def run_gui():
 if __name__ == "__main__":
     # 配置 logging
     logging.basicConfig(
-        filename=r'C:\Users\32685\Desktop\spirecomm\error_log.txt',  # 输出到的文件名
+        filename=r'C:\Users\32685\Desktop\spirecomm\output\error_log.txt',  # 输出到的文件名
         level=logging.ERROR,  # 记录的最低级别
         format='%(asctime)s - %(levelname)s - %(message)s'  # 日志格式
     )
 
     try:
         # 可能引发异常的代码
-        with open(r'C:\Users\32685\Desktop\spirecomm\output.txt', 'w') as file:
+        with open(r'C:\Users\32685\Desktop\spirecomm\output\output.txt', 'w') as file:
             file.write('--------------tracking---------------\n')
-        with open(r'C:\Users\32685\Desktop\spirecomm\mapInfo.txt', 'w') as file:
+        with open(r'C:\Users\32685\Desktop\spirecomm\output\mapInfo.txt', 'w') as file:
             file.write('--------------tracking---------------\n')
-        with open(r'C:\Users\32685\Desktop\spirecomm\battle_agent.txt', 'w') as file:
+        with open(r'C:\Users\32685\Desktop\spirecomm\output\battle_agent.txt', 'w') as file:
             file.write('--------------tracking---------------\n')
-        with open(r'C:\Users\32685\Desktop\spirecomm\choose_card_agent.txt', 'w') as file:
+        with open(r'C:\Users\32685\Desktop\spirecomm\output\choose_card_agent.txt', 'w') as file:
             file.write('--------------tracking---------------\n')
-        with open(r'C:\Users\32685\Desktop\spirecomm\action_list.txt', 'w') as file:
+        with open(r'C:\Users\32685\Desktop\spirecomm\output\action_list.txt', 'w') as file:
             file.write('--------------tracking---------------\n')
-        with open(r'C:\Users\32685\Desktop\spirecomm\simple_grid_choice_agent.txt', 'w') as file:
+        with open(r'C:\Users\32685\Desktop\spirecomm\output\simple_grid_choice_agent.txt', 'w') as file:
             file.write('--------------tracking---------------\n')
-        with open(r'C:\Users\32685\Desktop\spirecomm\event_agent.txt', 'w') as file:
+        with open(r'C:\Users\32685\Desktop\spirecomm\output\event_agent.txt', 'w') as file:
             file.write('--------------tracking---------------\n')
-        with open(r'C:\Users\32685\Desktop\spirecomm\hand_select_agent.txt', 'w') as file:
+        with open(r'C:\Users\32685\Desktop\spirecomm\output\hand_select_agent.txt', 'w') as file:
             file.write('--------------tracking---------------\n')
-        with open(r'C:\Users\32685\Desktop\spirecomm\shop_select_agent.txt', 'w') as file:
+        with open(r'C:\Users\32685\Desktop\spirecomm\output\shop_select_agent.txt', 'w') as file:
             file.write('--------------tracking---------------\n')
-        with open(r'C:\Users\32685\Desktop\spirecomm\battle_agent_gui.txt', 'w') as file:
+        with open(r'C:\Users\32685\Desktop\spirecomm\output\battle_agent_gui.txt', 'w') as file:
             file.write('--------------tracking---------------\n')
 
 
@@ -88,7 +88,7 @@ if __name__ == "__main__":
             seed = "39976S0CU4QPB" #50层，战士
 
             result = coordinator.play_one_game(chosen_class)
-            with open(r'C:\Users\32685\Desktop\spirecomm\results.txt', 'a') as file:
+            with open(r'C:\Users\32685\Desktop\spirecomm\output\results.txt', 'a') as file:
                 if result:
                     file.write(f"win as {chosen_class} at {datetime.now()}\n")
                 else:
@@ -105,7 +105,7 @@ if __name__ == "__main__":
 
 
             result = coordinator.play_one_game(p_class)
-            with open(r'C:\Users\32685\Desktop\spirecomm\results.txt', 'a') as file:
+            with open(r'C:\Users\32685\Desktop\spirecomm\output\results.txt', 'a') as file:
                 if result:
                     file.write(f"win as {p_class} at {datetime.now()}\n")
                 else:

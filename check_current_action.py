@@ -42,4 +42,4 @@ def parse_log(file_path):
 
 # 用你的文件路径替换下面的路径
 # count_current_actions(r'C:\Users\32685\Desktop\spirecomm\hand_select_situation.txt')
-parse_log(r'C:\Users\32685\Desktop\spirecomm\hand_select_situation.txt')
+parse_log(r'C:\Users\32685\Desktop\spirecomm\output\hand_select_situation.txt')

@@ -31,5 +31,5 @@ def analyze_sections(file_path):
             print(f"   - {subsec}: {count}")
 
 if __name__ == "__main__":
-    analyze_sections("dataset/slay_the_spire_structured_knowledge.json")
+    analyze_sections("slay_the_spire_structured_knowledge.json")
 

@@ -90,8 +90,8 @@ def convert_to_chatml(entries):
     return data
 
 def main():
-    input_file = "dataset/slay_the_spire_structured_knowledge.json"
-    output_file = "dataset/slay_the_spire_qa_en_only.jsonl"
+    input_file = "slay_the_spire_structured_knowledge.json"
+    output_file = "slay_the_spire_qa_en_only.jsonl"
 
     with open(input_file, "r", encoding="utf-8") as f:
         entries = json.load(f)

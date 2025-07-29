@@ -48,7 +48,7 @@ def get_card_lists_str(lists):
             type = "STATUS"
         if item.type == CardType.CURSE:
             type = "CURSE"
-        ret += f"{item.name}({item.cost},{type})"
+        ret += f"{item.name}({item.cost},{type},{index})"
         if index != len(lists) - 1:
             ret += ", "
     ret += " ]"
@@ -191,7 +191,11 @@ A list of prior actions during this turn:
 
 ### Available Cards:
 list of cards to choose from
-[ Card ]
+[ "card_name(card_cost, card_type, card_index)" ]  
+Where:
+- `card_cost`: int
+- `card_type`: "ATTACK", "SKILL", "POWER", "CURSE", "STATUS"
+- `card_index`: int
 
 ### Notice:
 things you should be aware of
@@ -294,7 +298,7 @@ things you should be aware of
         else:
             self.error_invoke_cnt += 1
             self.router2_cnt += 1
-            with open(r'C:\Users\32685\Desktop\spirecomm\battle_agent.txt', 'a') as file:
+            with open(r'C:\Users\32685\Desktop\spirecomm\output\hand_select_agent.txt', 'a') as file:
                 file.write('cnt is:' + str(self.router2_cnt) + '\n')
             if self.router2_cnt >= 2:
 
@@ -437,7 +441,7 @@ now give the response.
         self.previous_rounds_info.append(round_info)
 
         # 输出log
-        with open(r'C:\Users\32685\Desktop\spirecomm\hand_select_agent.txt', 'a') as file:
+        with open(r'C:\Users\32685\Desktop\spirecomm\output\hand_select_agent.txt', 'a') as file:
             file.write('--------------round start-------------------------\n')
             file.write("System:\n" + self.sys_prompt + '\n')
             for response in result["messages"]:

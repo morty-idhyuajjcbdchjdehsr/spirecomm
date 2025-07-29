@@ -103,7 +103,7 @@ class Coordinator:
         :return: None
         """
         action = self.action_queue.popleft()
-        with open(r'C:\Users\32685\Desktop\spirecomm\action_list.txt', 'a') as file:
+        with open(r'C:\Users\32685\Desktop\spirecomm\output\action_list.txt', 'a') as file:
             file.write("["+vars(action).__str__()+']\n\n')
         if isinstance(action,FlushAction):
             self.action_queue.clear()

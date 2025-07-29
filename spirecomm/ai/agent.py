@@ -105,7 +105,7 @@ class SimpleAgent:
 
     def handle_error(self, error):
         # raise Exception(error)
-        with open(r'C:\Users\32685\Desktop\spirecomm\error_log.txt', 'a') as file:
+        with open(r'C:\Users\32685\Desktop\spirecomm\output\error_log.txt', 'a') as file:
             file.write("error occurs!!:\n" + error.__str__() + "\n\n")
         # return self.get_next_action_in_game_new(state)
 
@@ -235,7 +235,7 @@ class SimpleAgent:
         target_index = self.battle_agent.target_index
         explanation = self.battle_agent.explanation
 
-        with open(r'C:\Users\32685\Desktop\spirecomm\output.txt', 'a') as file:
+        with open(r'C:\Users\32685\Desktop\spirecomm\output\output.txt', 'a') as file:
             # file.write('--------------executing get_play_card_action---------------\n')
             # file.write(self.game.__str__())
             file.write('--------------human message--------------------------------\n')
@@ -255,7 +255,7 @@ class SimpleAgent:
             # file.write("--------------verify json file-----------------------------------\n")
             # file.write(jsonfile.__str__())
 
-        with open(r'C:\Users\32685\Desktop\spirecomm\state.txt', 'w') as file:
+        with open(r'C:\Users\32685\Desktop\spirecomm\output\state.txt', 'w') as file:
             file.write('--------------current state---------------\n')
             file.write(self.game.__str__())
 
@@ -282,7 +282,7 @@ class SimpleAgent:
         elif action == 'card':
             if target1 is None:
                 if card_to_play1.has_target:
-                    with open(r'C:\Users\32685\Desktop\spirecomm\error_log.txt', 'a') as file:
+                    with open(r'C:\Users\32685\Desktop\spirecomm\output\error_log.txt', 'a') as file:
                         file.write(f"\n the card must have a target!!!!!!!!!,targetIndex is {target_index}\n\n")
                     return PlayCardAction(card=card_to_play1, target_monster=available_monsters[0])
                 else:
@@ -410,7 +410,7 @@ class SimpleAgent:
         elif self.game.screen_type == ScreenType.GRID:
 
             if self.game.current_action is not None:
-                with open(r'C:\Users\32685\Desktop\spirecomm\hand_select_situation.txt', 'a') as file:
+                with open(r'C:\Users\32685\Desktop\spirecomm\output\hand_select_situation.txt', 'a') as file:
                     file.write('-----------------hand select start---------------\n')
                     file.write('self.game.screen.num_cards:' + str(self.game.screen.num_cards) + '\n')
                     file.write('self.game.current_action:' + str(self.game.current_action) + '\n')
@@ -424,7 +424,7 @@ class SimpleAgent:
                     if res is not None:
                         return res
 
-            with open(r'C:\Users\32685\Desktop\spirecomm\grid.txt', 'w') as file:
+            with open(r'C:\Users\32685\Desktop\spirecomm\output\grid.txt', 'w') as file:
                 file.write(
                     'self.game.cards is:{}\n,self.game.screen.num_cards is:{}\n'
                     ',self.game.screen.selected_cards is:{},self.game.current_action is {}\n\n'
@@ -454,7 +454,7 @@ class SimpleAgent:
             num_cards = self.game.screen.num_cards
             return CardSelectAction(available_cards[:num_cards])
         elif self.game.screen_type == ScreenType.HAND_SELECT:
-            with open(r'C:\Users\32685\Desktop\spirecomm\hand_select_situation.txt', 'a') as file:
+            with open(r'C:\Users\32685\Desktop\spirecomm\output\hand_select_situation.txt', 'a') as file:
                 file.write('-----------------hand select start---------------\n')
                 file.write('self.game.screen.num_cards:' + str(self.game.screen.num_cards) + '\n')
                 file.write('self.game.current_action:' + str(self.game.current_action) + '\n')
@@ -480,7 +480,7 @@ class SimpleAgent:
             return ProceedAction()
 
     def make_event_choice(self):
-        # with open(r'C:\Users\32685\Desktop\spirecomm\event_agent.txt', 'a') as file:
+        # with open(r'C:\Users\32685\Desktop\spirecomm\output\event_agent.txt', 'a') as file:
         #     file.write('--------------event start---------------\n')
         #     file.write(vars(self.game.screen).__str__() + '\n\n')
         #     file.write('options: ' + self.get_lists_str(self.game.screen.options) + '\n')
@@ -517,7 +517,7 @@ class SimpleAgent:
         option_index = self.event_agent.option_index
         explanation = self.event_agent.explanation
 
-        with open(r'C:\Users\32685\Desktop\spirecomm\output.txt', 'a', encoding="utf-8") as file:
+        with open(r'C:\Users\32685\Desktop\spirecomm\output\output.txt', 'a', encoding="utf-8") as file:
             # file.write('--------------executing get_play_card_action---------------\n')
             # file.write(self.game.__str__())
             file.write('--------------human message--------------------------------\n')
@@ -554,7 +554,7 @@ class SimpleAgent:
         ret = self.shop_select_agent.ret
         explanation = self.shop_select_agent.explanation
 
-        with open(r'C:\Users\32685\Desktop\spirecomm\output.txt', 'a', encoding="utf-8") as file:
+        with open(r'C:\Users\32685\Desktop\spirecomm\output\output.txt', 'a', encoding="utf-8") as file:
             # file.write('--------------executing get_play_card_action---------------\n')
             # file.write(self.game.__str__())
             file.write('--------------human message--------------------------------\n')
@@ -597,7 +597,7 @@ class SimpleAgent:
         chosen_cards = self.hand_select_agent.chosen_cards
         explanation = self.hand_select_agent.explanation
 
-        with open(r'C:\Users\32685\Desktop\spirecomm\output.txt', 'a', encoding="utf-8") as file:
+        with open(r'C:\Users\32685\Desktop\spirecomm\output\output.txt', 'a', encoding="utf-8") as file:
             # file.write('--------------executing get_play_card_action---------------\n')
             # file.write(self.game.__str__())
             file.write('--------------human message--------------------------------\n')
@@ -639,7 +639,7 @@ class SimpleAgent:
         card_Index = self.simple_grid_chice_agent.cardIndex
         explanation = self.simple_grid_chice_agent.explanation
 
-        with open(r'C:\Users\32685\Desktop\spirecomm\output.txt', 'a', encoding="utf-8") as file:
+        with open(r'C:\Users\32685\Desktop\spirecomm\output\output.txt', 'a', encoding="utf-8") as file:
             # file.write('--------------executing get_play_card_action---------------\n')
             # file.write(self.game.__str__())
             file.write('--------------human message--------------------------------\n')
@@ -654,7 +654,7 @@ class SimpleAgent:
 
         if len(ret) != num_cards:
             # 出bug啦！
-            with open(r'C:\Users\32685\Desktop\spirecomm\error_log.txt', 'a') as file:
+            with open(r'C:\Users\32685\Desktop\spirecomm\output\error_log.txt', 'a') as file:
                 file.write(f'wrong index list from "make_grid_choice"')
             return error_ret
         return ret
@@ -708,7 +708,7 @@ class SimpleAgent:
         explanation = self.choose_card_agent.explanation
         self.deck_analysis = self.choose_card_agent.strategy
 
-        with open(r'C:\Users\32685\Desktop\spirecomm\output.txt', 'a', encoding="utf-8") as file:
+        with open(r'C:\Users\32685\Desktop\spirecomm\output\output.txt', 'a', encoding="utf-8") as file:
             # file.write('--------------executing get_play_card_action---------------\n')
             # file.write(self.game.__str__())
             file.write('--------------human message--------------------------------\n')
@@ -788,7 +788,7 @@ class SimpleAgent:
 
     def make_map_choice(self):
 
-        with open(r'C:\Users\32685\Desktop\spirecomm\mapInfo.txt', 'a') as file:
+        with open(r'C:\Users\32685\Desktop\spirecomm\output\mapInfo.txt', 'a') as file:
             file.write('--------------next_nodes---------------\n')
             file.write(self.game.screen.next_nodes.__str__() + "\n")
             file.write('--------------game.map.nodes-----------\n')
@@ -853,14 +853,14 @@ class SimpleAgent:
             jsonfile = json.loads(json_text)
             index = jsonfile.get('index')
         except Exception as e:
-            with open(r'C:\Users\32685\Desktop\spirecomm\error_log.txt', 'a') as file:
+            with open(r'C:\Users\32685\Desktop\spirecomm\output\error_log.txt', 'a') as file:
                 file.write(f'unable to parse json_text:{json_text}\n')
 
-        with open(r'C:\Users\32685\Desktop\spirecomm\mapInfo.txt', 'a') as file:
+        with open(r'C:\Users\32685\Desktop\spirecomm\output\mapInfo.txt', 'a') as file:
             file.write('--------------tree_json----------------\n')
             file.write(tree_dict.__str__() + "\n")
 
-        with open(r'C:\Users\32685\Desktop\spirecomm\output.txt', 'a') as file:
+        with open(r'C:\Users\32685\Desktop\spirecomm\output\output.txt', 'a') as file:
             # file.write('--------------executing get_play_card_action---------------\n')
             # file.write(self.game.__str__())
             file.write('--------------human message--------------------------------\n')
