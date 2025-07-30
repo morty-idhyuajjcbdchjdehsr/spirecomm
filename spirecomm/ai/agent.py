@@ -894,7 +894,7 @@ class SimpleAgent:
         agent = EventChoiceAgent(role=self.role, llm=self.pro_llm)
         self.event_agent = agent
 
-    def init_battle_llm(self):
+    def init_battle_llm(self,enable_gen_dataset):
         # small_llm = ChatOpenAI(model="gemini-1.5-flash", temperature=0) # 4s
         # small_llm = ChatOpenAI(model="gpt-4o-mini",temperature=0) #good
         # small_llm = ChatOllama(model="mistral:7b", temperature=0) # 缺少对卡牌的理解
@@ -906,7 +906,7 @@ class SimpleAgent:
             agent = BattleAgentGUI(self.root, battle_rounds_info=self.battle_rounds_info, role=self.role)
         else:
             agent = BattleAgent(role=self.role, llm=self.llm, small_llm=self.llm,
-                                battle_rounds_info=self.battle_rounds_info,enable_gen_dataset=False)
+                                battle_rounds_info=self.battle_rounds_info,enable_gen_dataset=enable_gen_dataset)
 
 
         self.battle_agent = agent
@@ -1102,7 +1102,7 @@ class SimpleAgent:
 
         self.init_common_llm()
         self.init_simple_grid_choice_llm()
-        self.init_battle_llm()
+        self.init_battle_llm(enable_gen_dataset=True)
         self.init_choose_card_llm()
         self.init_make_map_choice_llm()
         self.init_event_llm()
