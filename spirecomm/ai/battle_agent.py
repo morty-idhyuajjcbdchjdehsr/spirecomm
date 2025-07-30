@@ -152,7 +152,7 @@ class BattleAgent:
             card_index_schema,
             potion_index_schema,
             target_index_schema,
-            explanation_schema,
+            # explanation_schema,
             thought_schema
         ]
         output_parser = StructuredOutputParser(response_schemas=response_schemas)
@@ -233,12 +233,6 @@ Where:
 ### Response Format:
 {outputFormat}
 
-### Explanation Guidelines:
-Your explanation should briefly justify your decision using the following structure:
--- State current threat or opportunity
--- Explain card/potion effect and why it's chosen
--- Mention why other options were suboptimal (if relevant)
-
 ### Thought Guidelines:
 After taking an action, reflect on:
 - whether you are continuing with the plan in the last thought.
@@ -246,7 +240,6 @@ After taking an action, reflect on:
 - What were you trying to achieve with this action?
 - What do you plan to do next turn?
 This should be a short natural-language summary of your ongoing strategy.
-
 """
 
         self.battle_agent_sys_prompt = system_msg_2
@@ -278,7 +271,7 @@ This should be a short natural-language summary of your ongoing strategy.
             self.card_Index = jsonfile.get('cardIndex')
             self.potion_index = jsonfile.get('potionIndex')
             self.target_index = jsonfile.get('targetIndex')
-            self.explanation = jsonfile.get('explanation')
+            # self.explanation = jsonfile.get('explanation')
             self.thought = jsonfile.get('thought')
         except Exception as e:
             return {
