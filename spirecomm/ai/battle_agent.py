@@ -92,8 +92,11 @@ class State(TypedDict):
 
 
 class BattleAgent:
-    def __init__(self, battle_rounds_info,role="DEFECT", llm=ChatOpenAI(model="gpt-3.5-turbo-0125", temperature=0),
+    def __init__(self, battle_rounds_info,enable_gen_dataset=False,role="DEFECT", llm=ChatOpenAI(model="gpt-3.5-turbo-0125", temperature=0),
                  small_llm=ChatOllama(model="mistral:7b", temperature=0)):
+        self.enable_gen_dataset = enable_gen_dataset
+        self.last_round_thought = None
+        self.thought = None
         self.cnt = 0
         self.total_invoke_time = 0
         self.error_invoke_cnt = 0
@@ -139,13 +142,18 @@ class BattleAgent:
             name="explanation",
             description="Explanation of why you take the action."
         )
+        thought_schema = ResponseSchema(
+            name="thought",
+            description="Reflect on the current turn’s decision."
+        )
         # 将所有 schema 添加到列表中
         response_schemas = [
             action_schema,
             card_index_schema,
             potion_index_schema,
             target_index_schema,
-            explanation_schema
+            explanation_schema,
+            thought_schema
         ]
         output_parser = StructuredOutputParser(response_schemas=response_schemas)
         self.battle_output_parser = output_parser
@@ -207,6 +215,8 @@ A list of prior actions during this turn:
   .......
   {{ turn: int, operation: str }}, // last action in this turn
 ]
+### Last Thought:
+This is what you thought after your last action. You should decide whether to continue following it or change strategy.
 
 ### Notice:
 Extra information or special effects you should be aware of (e.g., upcoming massive attacks, special relic interactions).
@@ -228,6 +238,14 @@ Your explanation should briefly justify your decision using the following struct
 -- State current threat or opportunity
 -- Explain card/potion effect and why it's chosen
 -- Mention why other options were suboptimal (if relevant)
+
+### Thought Guidelines:
+After taking an action, reflect on:
+- whether you are continuing with the plan in the last thought.
+  If not, explain why you've changed direction.
+- What were you trying to achieve with this action?
+- What do you plan to do next turn?
+This should be a short natural-language summary of your ongoing strategy.
 
 """
 
@@ -261,6 +279,7 @@ Your explanation should briefly justify your decision using the following struct
             self.potion_index = jsonfile.get('potionIndex')
             self.target_index = jsonfile.get('targetIndex')
             self.explanation = jsonfile.get('explanation')
+            self.thought = jsonfile.get('thought')
         except Exception as e:
             return {
                 **state,  # 保留原 state 的所有属性
@@ -434,6 +453,8 @@ Your explanation should briefly justify your decision using the following struct
                room:str,
                config=None):
         start_time = time.time()  # 记录开始时间
+
+
 
         # 获取当前turn的所有action
         previous_rounds_info = '['
@@ -729,6 +750,12 @@ Your explanation should briefly justify your decision using the following struct
             suggestion_content += ("\nNow you can play no more cards. consider end your turn or use "
                                    "potion when critical.")
 
+        # 获取thought：
+        thought = ''
+        if self.last_round_thought:
+            if self.last_round_thought['turn'] == turn:
+                thought = self.last_round_thought['thought']
+
         template_string = """       
 {deck_analysis}        
 
@@ -748,6 +775,9 @@ combat situation:
         
 Previous actions in this turn:
 {previous_rounds_info}
+
+Last Thought:
+{thought}
 
 {notice}  
 
@@ -774,7 +804,8 @@ now give the response.
             previous_rounds_info=previous_rounds_info,
             notice=suggestion_content,
             deck_analysis=deck_analysis,
-            potion=get_lists_str(potion)
+            potion=get_lists_str(potion),
+            thought=thought,
         )
         self.humanM = messages[0].content
         state = State(messages=messages, turn=turn, current_hp=current_hp, max_hp=max_hp,
@@ -828,6 +859,9 @@ now give the response.
         }
         self.previous_rounds_info.append(round_info)
 
+        # 更新thought信息:
+        self.last_round_thought = {'turn':turn,'thought':self.thought}
+
         # 输出log
         with open(r'C:\Users\32685\Desktop\spirecomm\output\battle_agent.txt', 'a') as file:
             file.write('--------------round start-------------------------\n')
@@ -839,7 +873,7 @@ now give the response.
             file.write(f"error rate:{(float(self.error_invoke_cnt)/self.total_invoke_cnt)*100 :.3f}%\n")
             file.write('--------------round end-------------------------\n')
 
-        if self.action != 'algorithm' and isinstance(self.llm,ChatOpenAI):
+        if self.enable_gen_dataset and self.action != 'algorithm' and isinstance(self.llm,ChatOpenAI):
             item = {
                 "conversations": []
             }
