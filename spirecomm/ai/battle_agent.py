@@ -468,9 +468,10 @@ Your explanation should briefly justify your decision using the following struct
         for power in powers:
             if power.power_name == "Strength":
                 Strength = power.amount
-                suggestion_content += (f"\nYou have Strength {power.amount}, If you want to Attack,"
-                                       f"prioritize cards with multiple hits (e.q. 'Twin Strike',"
-                                       f"'Sword Boomerang')")
+                if Strength>0:
+                    suggestion_content += (f"\nYou have Strength {power.amount}, If you want to Attack,"
+                                           f"prioritize cards with multiple hits (e.q. 'Twin Strike',"
+                                           f"'Sword Boomerang')")
             if power.power_name == "Artifact":
                 Artifact_flag = 1
 
@@ -625,10 +626,11 @@ Your explanation should briefly justify your decision using the following struct
 
         if no_attack_flag == 1:
             suggestion_content += ("\nenemies are not in attacking intention this round,"
-                                   "you should prioritize dealing damage or buffing yourself.")
+                                   "you should prioritize dealing damage or buffing yourself."
+                                   "(rather than building more blocks).")
         if low_hp_flag:
             suggestion_content += ("\nEnemy is in low hp,check the maximum damage you can deal to see"
-                                   "if you can eliminate it.")
+                                   "if you can eliminate it.consider eliminate the enemy if you can.")
         if len(monsters) > 1:
             suggestion_content += ("\nYou are facing multiply enemies,you should prioritize "
                                    "AOE card which can affect them all.")
