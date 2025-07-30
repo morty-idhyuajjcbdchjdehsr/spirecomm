@@ -75,6 +75,7 @@ class ShopSelectAgent:
     def __init__(self, role="DEFECT", llm=ChatOpenAI(model="gpt-3.5-turbo-0125", temperature=0),
                  small_llm=ChatOllama(model="mistral:7b", temperature=0)):
 
+        self.previous_buy_info = deque(maxlen=5)
         self.ret = None
         self.action = None
         self.card_index = None
@@ -161,6 +162,13 @@ You will be provided the following context.
     - **Player's Health**: 'current_hp' / 'max_hp'
     - **Current Relics**: [ Relic ]
     - **Current Potions**: [ Potion ]
+
+### Previous Buy history:
+A list of prior buy actions:  
+[ 
+  {{  operation: str }}, 
+  .......
+]
 
 ### Shop Situation:
     - **Gold**: Int (the current gold you have)
@@ -376,6 +384,15 @@ You will be provided the following context.
         start_time = time.time()  # 记录开始时间
         self.router2_cnt = 0
 
+        # 获取购买记录
+        previous_buy_info = '['
+        for item in list(self.previous_buy_info):
+            tmp_floor = item['floor']
+            if tmp_floor == floor:
+                tmp_str = f"{{ operation:{item['operation']} }}"
+                previous_buy_info += (tmp_str + '\n')
+        previous_buy_info += ']'
+
         template_string = """ 
 Player Situation:
     - **Floor**:{floor}
@@ -383,6 +400,9 @@ Player Situation:
     - **Player's Health**: {hp}
     - **Current Relics**: {c_relics}
     - **Current Potions**: {c_potions}
+    
+Previous Buy history:
+{previous_buy_info}
     
 Shop Situation:
     - **Gold**: {gold}
@@ -406,6 +426,7 @@ now give your response.
             relics = get_lists_str_shop(relics),
             potions = get_lists_str_shop(potions),
             purge_cost = purge_cost,
+            previous_buy_info = previous_buy_info,
         )
         self.humanM = messages[0].content
         state = State(messages=messages, floor=floor, current_hp=current_hp, max_hp=max_hp,
@@ -415,6 +436,26 @@ now give your response.
             result = self.graph.invoke(state, config)
         else:
             result = self.graph.invoke(state)
+
+        operation = ""
+        if self.action == 'relic':
+            chosen_relic = relics[self.relic_index]
+            operation += f"spend {chosen_relic.price} to bug relic '{chosen_relic.name}'"
+        elif self.action == 'purge':
+            operation += f"spend {purge_cost} to purge one card."
+        elif self.action == 'potion':
+            chosen_potion = potions[self.potion_index]
+            operation += f"spend {chosen_potion.price} to bug potion '{chosen_potion.name}'"
+        elif self.action == 'card':
+            chosen_card = cards[self.card_index]
+            operation += f"spend {chosen_card.price} to bug card '{chosen_card.name}'"
+
+        # round_info = f"{{ turn:{turn},operation:{operation} }}"
+        round_info = {
+            'floor': floor,
+            'operation': operation
+        }
+        self.previous_buy_info.append(round_info)
 
         end_time = time.time()  # 记录结束时间
         elapsed_time = end_time - start_time  # 计算耗时

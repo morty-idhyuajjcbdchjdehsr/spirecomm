@@ -27,21 +27,23 @@ os.environ["OPENAI_API_BASE"] = "https://api.chatanywhere.tech/v1"
 
 def get_lists_str(lists):
     ret = "[ "
-    for index,item in enumerate(lists):
+    for index, item in enumerate(lists):
         ret += (item.__str__())
-        if index != len(lists)-1:
+        if index != len(lists) - 1:
             ret += ", "
     ret += " ]"
     return ret
 
+
 def get_lists_str_for_m(lists):
     ret = "[ \n\t"
-    for index,item in enumerate(lists):
+    for index, item in enumerate(lists):
         ret += (item.__str__())
-        if index != len(lists)-1:
+        if index != len(lists) - 1:
             ret += ",\n\t"
     ret += " \n\t]"
     return ret
+
 
 def get_lists_str_for_card(lists):
     ret = "[ "
@@ -63,14 +65,313 @@ def get_lists_str_for_card(lists):
     ret += " ]"
     return ret
 
+
 def get_lists_str_with_only_name(lists):
     ret = "[ "
-    for index,item in enumerate(lists):
+    for index, item in enumerate(lists):
         ret += item.name
-        if index != len(lists)-1:
+        if index != len(lists) - 1:
             ret += ", "
     ret += " ]"
     return ret
+
+
+def get_suggestion(floor: int, turn: int,
+                   current_hp: int,
+                   max_hp: int,
+                   block: int,
+                   energy: int,
+                   relics: list,
+                   hand: list,
+                   monsters: list,
+                   drawPile: list,
+                   discardPile: list,
+                   powers: list,
+                   orbs: list,
+                   deck_analysis: str,
+                   potion: list,
+                   room: str,
+                   config=None):
+
+    # 人工添加建议：
+    suggestion_content = ''
+    suggestion_content += 'Notice:'
+
+    no_attack_flag = 1
+    total_damage = 0
+    low_hp_flag = 0
+    low_hp_m_list = []
+    Sentry_flag = 0
+    Cultist_flag = 0
+    Strength = 0
+    Artifact_flag = 0
+    playable_cards = [card for card in hand if card.is_playable]
+
+    for power in powers:
+        if power.power_name == "Strength":
+            Strength = power.amount
+            if Strength > 0:
+                suggestion_content += (f"\nYou have Strength {power.amount}, If you want to Attack,"
+                                       f"prioritize cards with multiple hits (e.q. 'Twin Strike',"
+                                       f"'Sword Boomerang')")
+        if power.power_name == "Artifact":
+            Artifact_flag = 1
+
+        if power.power_name == "Confusion":
+            suggestion_content += (f"\nYou have status 'Confusion', now the costs of your cards are "
+                                   f"randomized on draw, from 0 to 3.")
+
+    for relic in relics:
+        if relic.name == "Runic Dome":
+            suggestion_content += ("\nYou have the Runic Dome relic, which provides energy each turn "
+                                   "but prevents you from seeing enemy intents. This means you won't "
+                                   "know whether enemies will attack, defend, or use debuffs.")
+
+    for index, monster in enumerate(monsters):
+
+        for power in monster.powers:
+            # poison
+            if power.power_name == "Poison":
+                poison = power.amount
+                if poison >= monster.current_hp:
+                    suggestion_content += ("\n{}'s poison is greater than its HP,you could focus on other"
+                                           "enemies.".format(
+                        monster.monster_id + '(target_index=' + str(index) + ')'))
+
+            if power.power_name == "Thorns":
+                suggestion_content += ("\n{} has power 'Thorns'.when attacked, it will deal {} damage back.so "
+                                       "be careful using multiple hits attack towards it.".format(
+                    monster.monster_id + '(target_index=' + str(index) + ')', power.amount))
+
+        if (monster.intent == Intent.ATTACK or monster.intent == Intent.ATTACK_BUFF or
+                monster.intent == Intent.ATTACK_DEBUFF or monster.intent == Intent.ATTACK_DEFEND or
+                monster.intent == Intent.NONE):
+            no_attack_flag = 0
+
+        if (floor <= 16 and monster.current_hp < 10) or (floor > 16 and monster.current_hp < 20):
+            low_hp_flag = 1
+            low_hp_m_list.append(monster)
+
+        total_damage += monster.move_hits * monster.move_adjusted_damage
+
+        if monster.monster_id == "Cultist" and Cultist_flag == 0:
+            suggestion_content += ("\nYou are facing enemy Cultist,who gains Strength after each turn,so it is"
+                                   "crucial to eliminating it quickly.")
+            Cultist_flag = 1
+
+        if monster.monster_id == "AcidSlime_L":
+            suggestion_content += ("\nYou are facing enemy AcidSlime_L,When its HP falls below 50%, it splits into "
+                                   "two "
+                                   "smaller slimes, each with its remaining HP.It is crucial to lower as much "
+                                   "HP before it splits."
+                                   )
+
+        if monster.monster_id == "GremlinNob":
+            suggestion_content += ("\nYou are facing Elite enemy GremlinNob,With the exception of the first turn, "
+                                   "where it has yet to apply  Enrage, playing Skills will make the Gremlin Nob "
+                                   "much more threatening. Since most  Block-granting cards are also Skills, "
+                                   "it can be worth more to not play them and take the damage instead. "
+                                   "Before using a Skill to mitigate damage, "
+                                   "consider how much longer the fight might take.")
+
+        if monster.monster_id == "Sentry" and len(monsters) == 3 and Sentry_flag == 0:
+            suggestion_content += ("\n You are facing Elite enemies Sentry*3.You should prioritize killing  "
+                                   "*the first or third* sentry(instead of the second one), to ensure that you never"
+                                   " need to block for more than one sentry's damage."
+                                   )
+            Sentry_flag = 1
+
+        if monster.monster_id == "Lagavulin":
+            suggestion_content += ("\nYou are facing Elite enemy Lagavulin,The Lagavulin will awake at the "
+                                   "end of its 3rd turn or when any HP damage is taken through the  Block,"
+                                   "Use the three turns before the Lagavulin wakes up to prepare for the "
+                                   "fight by using Powers, or Bash as the Ironclad.")
+        if monster.monster_id == "GremlinLeader":
+            suggestion_content += (
+                "\nYou are facing Elite enemy Gremlin Leader and their minions.Any minion from this "
+                "fight (i.e. spawned gremlins or gremlins that come in the fight) will retreat "
+                "and be defeated if the Gremlin Leader is defeated.If you lack considerable damage"
+                " to burst down the Gremlin Leader, killing the gremlins spawned will increase "
+                "the likelyhood of her not attacking (Rallying and Encouraging instead), "
+                "hence giving you turns to continue chipping her health"
+            )
+        if monster.monster_id == "BookOfStabbing":
+            suggestion_content += ("\nYou are facing Elite enemy Book of Stabbing,It is important to try and kill"
+                                   " the Book as quickly as possible, because its attacks will only get worse "
+                                   "and can become overwhelming.The Book suffers greatly against  Weak,  Thorns, "
+                                   "and  Strength reduction due to its scaling being solely said multi-hit attacks "
+                                   "and its lack of ability to apply any kind of debuff on the player to reduce "
+                                   "their ability to  Block.")
+
+        if monster.monster_id == "TheGuardian":
+            suggestion_content += ("\nYou are facing Boss The Guardian.The Guardian is a defensive-oriented boss"
+                                   ", known for its Mode Shift ability. After taking 30 damage, it switches from "
+                                   "Offensive Mode to Defensive Mode, changing its attack patterns. "
+                                   "In Defensive Mode, it gains Block and thorns damage when attacked. "
+                                   "In Offensive Mode, it deals high damage with multi-hit attacks."
+                                   "Effective strategies include dealing burst damage to trigger Mode Shift quickly"
+                                   ", avoiding excessive attacks during Sharp Hide, and using block to mitigate "
+                                   "its high-damage attacks. Plan ahead to exploit its transition phases and "
+                                   "minimize incoming damage.\n")
+            for power in monster.powers:
+                if power.power_name == "Mode Shift":
+                    suggestion_content += """The Guardian is in Offensive Mode now, after taking {} damage,
+                            it switches to Defensive Mode,consider dealing damage to trigger the switch""".format(
+                        power.amount)
+
+                if power.power_name == "Sharp Hide":
+                    suggestion_content += """The Guardian is in Defensive Mode now,it will thorns 3 damage when attacked."""
+
+        if monster.monster_id == "SlimeBoss":
+            suggestion_content += ("\nYou are facing Boss Slime Boss.The Slime Boss is an Act 1 boss"
+                                   " with a unique Split mechanic. When its HP falls below 50%, it splits into two "
+                                   "smaller slimes, each with its remaining HP. It uses Goop Spray to "
+                                   "weaken the player and follows up with heavy attacks. The key strategy is to "
+                                   "time your damage output carefully—avoid triggering the split when the boss "
+                                   "has too much HP left, or you’ll face two strong slimes instead of weaker ones."
+                                   " Use area-of-effect (AoE) attacks to handle the split slimes efficiently.")
+        if monster.monster_id == "Hexaghost":
+            suggestion_content += ("\nYou are facing Boss Hexaghost.Hexaghost is a boss with a unique Burning Hex "
+                                   "attack pattern. On its first turn, it unleashes a devastating Inferno attack, "
+                                   "dealing six hits based on the player's HP (lower HP means less damage). "
+                                   "After that, its attacks follow a six-turn cycle, alternating between weak hits,"
+                                   " burns, and another big attack.Prioritize damage output to shorten the fight "
+                                   "and manage burn cards efficiently.")
+        if monster.monster_id == "TheCollector":
+            suggestion_content += ("\nYou are facing Boss The Collector. Prioritize eliminating its minions---"
+                                   "TorchHead*2, "
+                                   "as leaving the Torch Heads alive can lead to overwhelming "
+                                   "damage.")
+
+        if monster.monster_id == "TheChamp":
+            suggestion_content += ("\nYou are facing Boss The Champ.The Champ is an Act 2 boss with two distinct "
+                                   "phases. In the first phase, it alternates between attacking, blocking, and "
+                                   "debuffing the player with Weak and Vulnerable. When its HP drops below 50%, "
+                                   "it enters the second phase, immediately purging all debuffs and gaining "
+                                   "Strength. In this phase, it becomes significantly more aggressive, "
+                                   "using heavy attacks and a powerful Execute, which deals massive damage. "
+                                   "Generally, you need to spend the first half of the fight setting up, and then "
+                                   "you need to very quickly kill the Champ once his HP drops below half.")
+
+        if monster.monster_id == "BronzeAutomaton":
+            suggestion_content += ("\nYou are facing Boss Bronze Automaton.Bronze Automaton is an Act 2 boss that "
+                                   "starts the fight by summoning two Orbs, which can steal your card, attack you "
+                                   "and provide blocks to The Automaton."
+                                   "The Automaton cycles between strong attacks, a multi-hit attack, "
+                                   "and Hyper Beam,"
+                                   " a devastating attack that deals massive damage but leaves it "
+                                   "Stunned (does nothing) the next turn. The Automaton also has Artifact charges, "
+                                   "preventing debuffs like Weak and Vulnerable until removed. "
+                                   "Its Orbs can be dangerous if left unchecked, and managing them while "
+                                   "preparing for Hyper Beam is key to survival. The fight demands balancing "
+                                   "offense and defense to outlast its high-damage patterns.")
+
+    if no_attack_flag == 1:
+        suggestion_content += ("\nenemies are not in attacking intention this round,"
+                               "you should prioritize dealing damage or buffing yourself."
+                               "(rather than building more blocks).")
+    if low_hp_flag:
+        suggestion_content += ("\nEnemy is in low hp,check the maximum damage you can deal to see"
+                               "if you can eliminate it.consider eliminate the enemy if you can.")
+    if len(monsters) > 1:
+        suggestion_content += ("\nYou are facing multiply enemies,you should prioritize "
+                               "AOE card which can affect them all.")
+
+    if total_damage - block >= 7:
+        suggestion_content += (
+            f"\nYou are facing huge incoming damage, which will make you lose {total_damage - block} hp."
+            f"you should consider mitigate the damage by:"
+            f"1. build block, 2.weaken enemy 3.eliminate enemy 4.using potion")
+    if 0 < total_damage <= block:
+        # to do: 考虑壁垒等情况..
+        suggestion_content += (f"\nnow your block is greater than incoming damage,there is no need to "
+                               f"build more blocks.")
+
+    zero_cost_card_flag = 0
+    status_flag = 0
+    for card in hand:
+        if card.cost == 0:
+            zero_cost_card_flag = 1
+
+        if card.type == CardType.STATUS:
+            status_flag = 1
+
+        if card.name == "Body Slam" or card.name == "Body Slam+":
+            suggestion_content += ("\nYou have 'Body Slam' in your Hand Pile,"
+                                   "this card deals damage based on your current block,DO build block first before"
+                                   "playing it. now it can deal {} damage"
+                                   .format(block))
+        if card.name == "Feed":
+            suggestion_content += ("\nYou have 'Feed' in your Hand Pile,which deals 10 damage and exhaust."
+                                   "you should use it to **eliminate** the enemy to raise 3 max hp")
+        if card.name == "Feed+":
+            suggestion_content += ("\nYou have 'Feed' in your Hand Pile,which deals 12 damage and exhaust."
+                                   "you should use it to **eliminate** the enemy to raise 4 max hp")
+        if card.name == "Self Repair":
+            suggestion_content += ("\nYou have 'Self Repair' in your Hand Pile,don't forget to "
+                                   "play it to heal 7 HP after combat.")
+        if card.name == "Auto-Shields" or card.name == "Auto-Shields+":
+            suggestion_content += ("\nYou have 'Auto-Shields' in your Hand Pile,remember it build block "
+                                   "only when you have **no block** now.")
+
+        if card.name == "Limit Break" or card.name == "Limit Break+":
+            suggestion_content += ("\nYou have 'Limit Break' in your Hand Pile,remember it double your Strength.("
+                                   "so don't use it when Strength is 0 ) "
+                                   "You current Strength is " + str(Strength))
+        if card.name == "Bludgeon":
+            suggestion_content += "\nYou have 'Bludgeon' in your Hand Pile,which could deal 32 damage "
+        if card.name == "Bludgeon+":
+            suggestion_content += "\nYou have 'Bludgeon+' in your Hand Pile,which could deal 42 damage "
+
+        if card.name == "Biased Cognition":
+            if Artifact_flag == 0:
+                suggestion_content += ("\nYou have 'Biased Cognition' in your Hand Pile,which gain 4 focus but also"
+                                       "cause continuous Focus loss. it is not favorable to use it in the early "
+                                       "turns "
+                                       "of long fights like bosses and some elites. ")
+            else:
+                suggestion_content += ("\nYou have 'Biased Cognition' in your Hand Pile.Meanwhile, you have "
+                                       "'Artifact' buff which Negates its Debuff.So, prioritize playing the "
+                                       "'Biased Cognition'.")
+
+        if card.name == "Biased Cognition+":
+            if Artifact_flag == 0:
+                suggestion_content += ("\nYou have 'Biased Cognition+' in your Hand Pile,which gain 5 focus but "
+                                       "also"
+                                       "cause continuous Focus loss. it is not favorable to use it in the early "
+                                       "turns "
+                                       "of long fights like bosses and some elites. ")
+            else:
+                suggestion_content += ("\nYou have 'Biased Cognition+' in your Hand Pile.Meanwhile, you have "
+                                       "'Artifact' buff which Negates its Debuff.So, prioritize playing the "
+                                       "'Biased Cognition'.")
+        if card.name == "Flex" or card.name == "Flex+":
+            suggestion_content += "\n 'Flex' can give temporary Strength.Before you attack,consider using it."
+
+    # if zero_cost_card_flag == 1:
+    #     suggestion_content += "\nYou have 0 cost cards in your Hand Pile."
+
+    if status_flag == 1:
+        suggestion_content += ("\nYou have STATUS card in your hand pile,consider exhausting it when"
+                               "having low defence pressure.")
+
+    # if len(potion)>0:
+    #     potion_list = get_lists_str(potion)
+    #     suggestion_content += (f"\nNow you have these potions:{potion_list},don't forget to use them"
+    #                            f"when: 1.facing Boss or Elite 2.facing great damage. ")
+
+    if room == "Boss":
+        suggestion_content += ("\nYou are facing Boss enemy,make good use of your **potion** to defeat the enemy"
+                               "")
+    if room == "Elite":
+        suggestion_content += ("\nYou are facing Elite enemy,make good use of your **potion** to defeat the enemy"
+                               "")
+
+    if len(playable_cards) == 0 and len(potion) != 0:
+        suggestion_content += ("\nNow you can play no more cards. consider end your turn or use "
+                               "potion when critical.")
+
+    return suggestion_content
 
 
 class State(TypedDict):
@@ -88,11 +389,11 @@ class State(TypedDict):
     discardPile: list
     powers: list
     orbs: list
-    potion:list
+    potion: list
 
 
 class BattleAgent:
-    def __init__(self, battle_rounds_info,role="DEFECT", llm=ChatOpenAI(model="gpt-3.5-turbo-0125", temperature=0),
+    def __init__(self, battle_rounds_info, role="DEFECT", llm=ChatOpenAI(model="gpt-3.5-turbo-0125", temperature=0),
                  small_llm=ChatOllama(model="mistral:7b", temperature=0)):
         self.cnt = 0
         self.total_invoke_time = 0
@@ -280,7 +581,7 @@ Your explanation should briefly justify your decision using the following struct
             if card.cost == 0:
                 zero_cost_card = 1
 
-        #------check action ----------
+        # ------check action ----------
         if self.action == 'end':
             # end turn
             self.end_turn_cnt += 1
@@ -312,15 +613,16 @@ Your explanation should briefly justify your decision using the following struct
 
         elif self.action == 'card':
             # play card
-            if isinstance(self.card_Index,int) and 0 <= self.card_Index < len(hand_cards):
+            if isinstance(self.card_Index, int) and 0 <= self.card_Index < len(hand_cards):
                 card_to_play1 = hand_cards[self.card_Index]
                 if not card_to_play1.is_playable:
                     if card_to_play1.cost > state["energy"]:
                         return {
                             **state,  # 保留原 state 的所有属性
                             "messages": [
-                                {"role": "user", "content": f"Your chosen card's cost({card_to_play1.cost}) is greater than your energy({state["energy"]})!,"
-                                                            " please regenerate your answer!"}]
+                                {"role": "user",
+                                 "content": f"Your chosen card's cost({card_to_play1.cost}) is greater than your energy({state["energy"]})!,"
+                                            " please regenerate your answer!"}]
                         }
 
                     return {
@@ -331,12 +633,13 @@ Your explanation should briefly justify your decision using the following struct
             else:
                 return {
                     **state,  # 保留原 state 的所有属性
-                    "messages": [{"role": "user", "content": f"Your card_Index is out of range(index ranging from 0 to {len(hand_cards)-1}),"
-                                                             " please regenerate your answer!"}]
+                    "messages": [{"role": "user",
+                                  "content": f"Your card_Index is out of range(index ranging from 0 to {len(hand_cards) - 1}),"
+                                             " please regenerate your answer!"}]
                 }
         elif self.action == 'potion':
             # use potion
-            if isinstance(self.potion_index,int) and 0 <= self.potion_index < len(potions):
+            if isinstance(self.potion_index, int) and 0 <= self.potion_index < len(potions):
                 potion_to_use = potions[self.potion_index]
                 if not potion_to_use.can_use:
                     return {
@@ -347,8 +650,9 @@ Your explanation should briefly justify your decision using the following struct
             else:
                 return {
                     **state,  # 保留原 state 的所有属性
-                    "messages": [{"role": "user", "content": f"Your potion_index is out of range(index ranging from 0 to {len(potions)}),"
-                                                             " please regenerate your answer!"}]
+                    "messages": [{"role": "user",
+                                  "content": f"Your potion_index is out of range(index ranging from 0 to {len(potions)}),"
+                                             " please regenerate your answer!"}]
                 }
         else:
             return {
@@ -357,9 +661,8 @@ Your explanation should briefly justify your decision using the following struct
                                                          " please regenerate your answer!"}]
             }
 
-
         target1 = None
-        if isinstance(self.target_index,int) and 0 <= self.target_index < len(
+        if isinstance(self.target_index, int) and 0 <= self.target_index < len(
                 available_monsters):
             target1 = available_monsters[self.target_index]
         elif self.target_index == -1:
@@ -367,8 +670,9 @@ Your explanation should briefly justify your decision using the following struct
         else:
             return {
                 **state,  # 保留原 state 的所有属性
-                "messages": [{"role": "user", "content": f"Your target_index is out of range(index ranging from 0 to {len(available_monsters)-1}),"
-                                                         " please regenerate your answer!"}]
+                "messages": [{"role": "user",
+                              "content": f"Your target_index is out of range(index ranging from 0 to {len(available_monsters) - 1}),"
+                                         " please regenerate your answer!"}]
             }
 
         if card_to_play1 is not None:
@@ -377,19 +681,20 @@ Your explanation should briefly justify your decision using the following struct
                     if self.target_index == -1:
                         return {
                             **state,  # 保留原 state 的所有属性
-                            "messages": [{"role": "user", "content": "Your chosen card must have a target(targetIndex can't be -1),"
-                                                                     " please regenerate your answer!"}]
+                            "messages": [{"role": "user",
+                                          "content": "Your chosen card must have a target(targetIndex can't be -1),"
+                                                     " please regenerate your answer!"}]
                         }
 
         if potion_to_use is not None:
             if target1 is None:
                 if potion_to_use.requires_target:
                     return {
-                            **state,  # 保留原 state 的所有属性
-                            "messages": [{"role": "user", "content": "Your chosen potion must have a target(targetIndex can't be -1),"
-                                                                     " please regenerate your answer!"}]
-                        }
-
+                        **state,  # 保留原 state 的所有属性
+                        "messages": [{"role": "user",
+                                      "content": "Your chosen potion must have a target(targetIndex can't be -1),"
+                                                 " please regenerate your answer!"}]
+                    }
 
         # check pass!
         return {
@@ -430,8 +735,8 @@ Your explanation should briefly justify your decision using the following struct
                powers: list,
                orbs: list,
                deck_analysis: str,
-               potion:list,
-               room:str,
+               potion: list,
+               room: str,
                config=None):
         start_time = time.time()  # 记录开始时间
 
@@ -450,284 +755,8 @@ Your explanation should briefly justify your decision using the following struct
         self.end_turn_cnt = 0
         self.deck_analysis = deck_analysis
 
-        # 人工添加建议：
-        suggestion_content = ''
-        suggestion_content += 'Notice:'
-
-        no_attack_flag = 1
-        total_damage = 0
-        low_hp_flag = 0
-        low_hp_m_list = []
-        Sentry_flag = 0
-        Cultist_flag = 0
-        Strength = 0
-        Artifact_flag = 0
-        playable_cards = [card for card in hand if card.is_playable]
-
-
-        for power in powers:
-            if power.power_name == "Strength":
-                Strength = power.amount
-                if Strength>0:
-                    suggestion_content += (f"\nYou have Strength {power.amount}, If you want to Attack,"
-                                           f"prioritize cards with multiple hits (e.q. 'Twin Strike',"
-                                           f"'Sword Boomerang')")
-            if power.power_name == "Artifact":
-                Artifact_flag = 1
-
-            if power.power_name == "Confusion":
-                suggestion_content += (f"\nYou have status 'Confusion', now the costs of your cards are "
-                                       f"randomized on draw, from 0 to 3.")
-
-        for relic in relics:
-            if relic.name == "Runic Dome":
-                suggestion_content += ("\nYou have the Runic Dome relic, which provides energy each turn "
-                                       "but prevents you from seeing enemy intents. This means you won't "
-                                       "know whether enemies will attack, defend, or use debuffs.")
-
-        for index, monster in enumerate(monsters):
-
-            for power in monster.powers:
-                # poison
-                if power.power_name == "Poison":
-                    poison = power.amount
-                    if poison >= monster.current_hp:
-                        suggestion_content += ("\n{}'s poison is greater than its HP,you could focus on other"
-                                               "enemies.".format(
-                            monster.monster_id + '(target_index=' + str(index) + ')'))
-
-                if power.power_name == "Thorns":
-                    suggestion_content += ("\n{} has power 'Thorns'.when attacked, it will deal {} damage back.so "
-                                           "be careful using multiple hits attack towards it.".format(
-                        monster.monster_id + '(target_index=' + str(index) + ')', power.amount))
-
-            if (monster.intent == Intent.ATTACK or monster.intent == Intent.ATTACK_BUFF or
-                    monster.intent == Intent.ATTACK_DEBUFF or monster.intent == Intent.ATTACK_DEFEND or
-                    monster.intent == Intent.NONE):
-                no_attack_flag = 0
-
-            if (floor <= 16 and monster.current_hp < 10) or (floor > 16 and monster.current_hp < 20):
-                low_hp_flag = 1
-                low_hp_m_list.append(monster)
-
-            total_damage += monster.move_hits * monster.move_adjusted_damage
-
-            if monster.monster_id == "Cultist" and Cultist_flag == 0:
-                suggestion_content += ("\nYou are facing enemy Cultist,who gains Strength after each turn,so it is"
-                                       "crucial to eliminating it quickly.")
-                Cultist_flag =1
-
-            if monster.monster_id == "AcidSlime_L":
-                suggestion_content += ("\nYou are facing enemy AcidSlime_L,When its HP falls below 50%, it splits into "
-                                       "two "
-                                       "smaller slimes, each with its remaining HP.It is crucial to lower as much "
-                                       "HP before it splits."
-                                       )
-
-            if monster.monster_id == "GremlinNob":
-                suggestion_content += ("\nYou are facing Elite enemy GremlinNob,With the exception of the first turn, "
-                                       "where it has yet to apply  Enrage, playing Skills will make the Gremlin Nob "
-                                       "much more threatening. Since most  Block-granting cards are also Skills, "
-                                       "it can be worth more to not play them and take the damage instead. "
-                                       "Before using a Skill to mitigate damage, "
-                                       "consider how much longer the fight might take.")
-
-            if monster.monster_id == "Sentry" and len(monsters) == 3 and Sentry_flag == 0:
-                suggestion_content += ("\n You are facing Elite enemies Sentry*3.You should prioritize killing  "
-                                       "*the first or third* sentry(instead of the second one), to ensure that you never"
-                                       " need to block for more than one sentry's damage."
-                                       )
-                Sentry_flag = 1
-
-            if monster.monster_id == "Lagavulin":
-                suggestion_content += ("\nYou are facing Elite enemy Lagavulin,The Lagavulin will awake at the "
-                                       "end of its 3rd turn or when any HP damage is taken through the  Block,"
-                                       "Use the three turns before the Lagavulin wakes up to prepare for the "
-                                       "fight by using Powers, or Bash as the Ironclad.")
-            if monster.monster_id == "GremlinLeader":
-                suggestion_content += (
-                    "\nYou are facing Elite enemy Gremlin Leader and their minions.Any minion from this "
-                    "fight (i.e. spawned gremlins or gremlins that come in the fight) will retreat "
-                    "and be defeated if the Gremlin Leader is defeated.If you lack considerable damage"
-                    " to burst down the Gremlin Leader, killing the gremlins spawned will increase "
-                    "the likelyhood of her not attacking (Rallying and Encouraging instead), "
-                    "hence giving you turns to continue chipping her health"
-                )
-            if monster.monster_id == "BookOfStabbing":
-                suggestion_content += ("\nYou are facing Elite enemy Book of Stabbing,It is important to try and kill"
-                                       " the Book as quickly as possible, because its attacks will only get worse "
-                                       "and can become overwhelming.The Book suffers greatly against  Weak,  Thorns, "
-                                       "and  Strength reduction due to its scaling being solely said multi-hit attacks "
-                                       "and its lack of ability to apply any kind of debuff on the player to reduce "
-                                       "their ability to  Block.")
-
-            if monster.monster_id == "TheGuardian":
-                suggestion_content += ("\nYou are facing Boss The Guardian.The Guardian is a defensive-oriented boss"
-                                       ", known for its Mode Shift ability. After taking 30 damage, it switches from "
-                                       "Offensive Mode to Defensive Mode, changing its attack patterns. "
-                                       "In Defensive Mode, it gains Block and thorns damage when attacked. "
-                                       "In Offensive Mode, it deals high damage with multi-hit attacks."
-                                       "Effective strategies include dealing burst damage to trigger Mode Shift quickly"
-                                       ", avoiding excessive attacks during Sharp Hide, and using block to mitigate "
-                                       "its high-damage attacks. Plan ahead to exploit its transition phases and "
-                                       "minimize incoming damage.\n")
-                for power in monster.powers:
-                    if power.power_name == "Mode Shift":
-                        suggestion_content += """The Guardian is in Offensive Mode now, after taking {} damage,
-                        it switches to Defensive Mode,consider dealing damage to trigger the switch""".format(
-                            power.amount)
-
-                    if power.power_name == "Sharp Hide":
-                        suggestion_content += """The Guardian is in Defensive Mode now,it will thorns 3 damage when attacked."""
-
-            if monster.monster_id == "SlimeBoss":
-                suggestion_content += ("\nYou are facing Boss Slime Boss.The Slime Boss is an Act 1 boss"
-                                       " with a unique Split mechanic. When its HP falls below 50%, it splits into two "
-                                       "smaller slimes, each with its remaining HP. It uses Goop Spray to "
-                                       "weaken the player and follows up with heavy attacks. The key strategy is to "
-                                       "time your damage output carefully—avoid triggering the split when the boss "
-                                       "has too much HP left, or you’ll face two strong slimes instead of weaker ones."
-                                       " Use area-of-effect (AoE) attacks to handle the split slimes efficiently.")
-            if monster.monster_id == "Hexaghost":
-                suggestion_content += ("\nYou are facing Boss Hexaghost.Hexaghost is a boss with a unique Burning Hex "
-                                       "attack pattern. On its first turn, it unleashes a devastating Inferno attack, "
-                                       "dealing six hits based on the player's HP (lower HP means less damage). "
-                                       "After that, its attacks follow a six-turn cycle, alternating between weak hits,"
-                                       " burns, and another big attack.Prioritize damage output to shorten the fight "
-                                       "and manage burn cards efficiently.")
-            if monster.monster_id == "TheCollector":
-                suggestion_content += ("\nYou are facing Boss The Collector. Prioritize eliminating its minions---"
-                                       "TorchHead*2, "
-                                       "as leaving the Torch Heads alive can lead to overwhelming "
-                                       "damage.")
-
-            if monster.monster_id == "TheChamp":
-                suggestion_content += ("\nYou are facing Boss The Champ.The Champ is an Act 2 boss with two distinct "
-                                       "phases. In the first phase, it alternates between attacking, blocking, and "
-                                       "debuffing the player with Weak and Vulnerable. When its HP drops below 50%, "
-                                       "it enters the second phase, immediately purging all debuffs and gaining "
-                                       "Strength. In this phase, it becomes significantly more aggressive, "
-                                       "using heavy attacks and a powerful Execute, which deals massive damage. "
-                                       "Generally, you need to spend the first half of the fight setting up, and then "
-                                       "you need to very quickly kill the Champ once his HP drops below half.")
-
-            if monster.monster_id == "BronzeAutomaton":
-                suggestion_content += ("\nYou are facing Boss Bronze Automaton.Bronze Automaton is an Act 2 boss that "
-                                       "starts the fight by summoning two Orbs, which can steal your card, attack you "
-                                       "and provide blocks to The Automaton."
-                                       "The Automaton cycles between strong attacks, a multi-hit attack, "
-                                       "and Hyper Beam,"
-                                       " a devastating attack that deals massive damage but leaves it "
-                                       "Stunned (does nothing) the next turn. The Automaton also has Artifact charges, "
-                                       "preventing debuffs like Weak and Vulnerable until removed. "
-                                       "Its Orbs can be dangerous if left unchecked, and managing them while "
-                                       "preparing for Hyper Beam is key to survival. The fight demands balancing "
-                                       "offense and defense to outlast its high-damage patterns.")
-
-        if no_attack_flag == 1:
-            suggestion_content += ("\nenemies are not in attacking intention this round,"
-                                   "you should prioritize dealing damage or buffing yourself."
-                                   "(rather than building more blocks).")
-        if low_hp_flag:
-            suggestion_content += ("\nEnemy is in low hp,check the maximum damage you can deal to see"
-                                   "if you can eliminate it.consider eliminate the enemy if you can.")
-        if len(monsters) > 1:
-            suggestion_content += ("\nYou are facing multiply enemies,you should prioritize "
-                                   "AOE card which can affect them all.")
-
-        if total_damage - block >= 7:
-            suggestion_content += (
-                f"\nYou are facing huge incoming damage, which will make you lose {total_damage - block} hp."
-                f"you should consider mitigate the damage by:"
-                f"1. build block, 2.weaken enemy 3.eliminate enemy 4.using potion")
-        if 0 < total_damage <= block:
-            # to do: 考虑壁垒等情况..
-            suggestion_content += (f"\nnow your block is greater than incoming damage,there is no need to "
-                                   f"build more blocks.")
-
-        zero_cost_card_flag = 0
-        status_flag = 0
-        for card in hand:
-            if card.cost == 0:
-                zero_cost_card_flag = 1
-
-            if card.type == CardType.STATUS:
-                status_flag = 1
-
-            if card.name == "Body Slam" or card.name == "Body Slam+":
-                suggestion_content += ("\nYou have 'Body Slam' in your Hand Pile,"
-                                       "this card deals damage based on your current block,DO build block first before"
-                                       "playing it. now it can deal {} damage"
-                                       .format(block))
-            if card.name == "Feed":
-                suggestion_content += ("\nYou have 'Feed' in your Hand Pile,which deals 10 damage and exhaust."
-                                       "you should use it to **eliminate** the enemy to raise 3 max hp")
-            if card.name == "Feed+":
-                suggestion_content += ("\nYou have 'Feed' in your Hand Pile,which deals 12 damage and exhaust."
-                                       "you should use it to **eliminate** the enemy to raise 4 max hp")
-            if card.name == "Self Repair":
-                suggestion_content += ("\nYou have 'Self Repair' in your Hand Pile,don't forget to "
-                                       "play it to heal 7 HP after combat.")
-            if card.name == "Auto-Shields" or card.name == "Auto-Shields+":
-                suggestion_content += ("\nYou have 'Auto-Shields' in your Hand Pile,remember it build block "
-                                       "only when you have **no block** now.")
-
-            if card.name == "Limit Break" or card.name == "Limit Break+":
-                suggestion_content += ("\nYou have 'Limit Break' in your Hand Pile,remember it double your Strength.("
-                                       "so don't use it when Strength is 0 ) "
-                                       "You current Strength is " + str(Strength))
-            if card.name == "Bludgeon":
-                suggestion_content += "\nYou have 'Bludgeon' in your Hand Pile,which could deal 32 damage "
-            if card.name == "Bludgeon+":
-                suggestion_content += "\nYou have 'Bludgeon+' in your Hand Pile,which could deal 42 damage "
-
-            if card.name == "Biased Cognition":
-                if Artifact_flag == 0:
-                    suggestion_content += ("\nYou have 'Biased Cognition' in your Hand Pile,which gain 4 focus but also"
-                                           "cause continuous Focus loss. it is not favorable to use it in the early "
-                                           "turns "
-                                           "of long fights like bosses and some elites. ")
-                else:
-                    suggestion_content += ("\nYou have 'Biased Cognition' in your Hand Pile.Meanwhile, you have "
-                                           "'Artifact' buff which Negates its Debuff.So, prioritize playing the "
-                                           "'Biased Cognition'.")
-
-            if card.name == "Biased Cognition+":
-                if Artifact_flag == 0:
-                    suggestion_content += ("\nYou have 'Biased Cognition+' in your Hand Pile,which gain 5 focus but "
-                                           "also"
-                                           "cause continuous Focus loss. it is not favorable to use it in the early "
-                                           "turns "
-                                           "of long fights like bosses and some elites. ")
-                else:
-                    suggestion_content += ("\nYou have 'Biased Cognition+' in your Hand Pile.Meanwhile, you have "
-                                           "'Artifact' buff which Negates its Debuff.So, prioritize playing the "
-                                           "'Biased Cognition'.")
-            if card.name == "Flex" or card.name == "Flex+":
-                suggestion_content += "\n 'Flex' can give temporary Strength.Before you attack,consider using it."
-
-        # if zero_cost_card_flag == 1:
-        #     suggestion_content += "\nYou have 0 cost cards in your Hand Pile."
-
-        if status_flag == 1:
-            suggestion_content += ("\nYou have STATUS card in your hand pile,consider exhausting it when"
-                                   "having low defence pressure.")
-
-        # if len(potion)>0:
-        #     potion_list = get_lists_str(potion)
-        #     suggestion_content += (f"\nNow you have these potions:{potion_list},don't forget to use them"
-        #                            f"when: 1.facing Boss or Elite 2.facing great damage. ")
-
-        if room == "Boss":
-            suggestion_content += ("\nYou are facing Boss enemy,make good use of your **potion** to defeat the enemy"
-                                   "")
-        if room == "Elite":
-            suggestion_content += ("\nYou are facing Elite enemy,make good use of your **potion** to defeat the enemy"
-                                   "")
-
-        if len(playable_cards)==0 and len(potion)!=0:
-            suggestion_content += ("\nNow you can play no more cards. consider end your turn or use "
-                                   "potion when critical.")
+        suggestion_content = get_suggestion(floor, turn, current_hp, max_hp, block, energy, relics, hand, monsters,
+                                            drawPile, discardPile, powers, orbs, deck_analysis, potion, room, config)
 
         template_string = """       
 {deck_analysis}        
@@ -780,7 +809,7 @@ now give the response.
         state = State(messages=messages, turn=turn, current_hp=current_hp, max_hp=max_hp,
                       block=block, energy=energy, relics=relics, hand=hand,
                       monsters=monsters, drawPile=drawPile, discardPile=discardPile,
-                      powers=powers, orbs=orbs,potion=potion,floor=floor)
+                      powers=powers, orbs=orbs, potion=potion, floor=floor)
         if config is not None:
             result = self.graph.invoke(state, config)
         else:
@@ -789,19 +818,18 @@ now give the response.
         end_time = time.time()  # 记录结束时间
         elapsed_time = end_time - start_time  # 计算耗时
         self.total_invoke_time += elapsed_time
-        self.cnt +=1
+        self.cnt += 1
 
         # 添加round信息到队列
         available_monsters = [monster for monster in monsters if
                               monster.current_hp > 0 and not monster.half_dead and not monster.is_gone]
 
         card_to_play = None
-        if isinstance(self.card_Index,int) and 0 <= self.card_Index < len(hand):
+        if isinstance(self.card_Index, int) and 0 <= self.card_Index < len(hand):
             card_to_play = hand[self.card_Index]
         potion_to_use = None
-        if isinstance(self.potion_index,int) and 0 <= self.potion_index <len(potion):
+        if isinstance(self.potion_index, int) and 0 <= self.potion_index < len(potion):
             potion_to_use = potion[self.potion_index]
-
 
         target1 = None
         if self.target_index is not None and self.target_index != -1 and 0 <= self.target_index < len(
@@ -835,11 +863,11 @@ now give the response.
             for response in result["messages"]:
                 file.write(type(response).__name__ + ":\n" + response.content.__str__() + '\n')
             file.write(f"invoke time: {elapsed_time:.6f} s\n")
-            file.write(f"average invoke time: {float(self.total_invoke_time)/self.cnt:.6f} s\n")
-            file.write(f"error rate:{(float(self.error_invoke_cnt)/self.total_invoke_cnt)*100 :.3f}%\n")
+            file.write(f"average invoke time: {float(self.total_invoke_time) / self.cnt:.6f} s\n")
+            file.write(f"error rate:{(float(self.error_invoke_cnt) / self.total_invoke_cnt) * 100 :.3f}%\n")
             file.write('--------------round end-------------------------\n')
 
-        if self.action != 'algorithm' and isinstance(self.llm,ChatOpenAI):
+        if self.action != 'algorithm' and isinstance(self.llm, ChatOpenAI):
             item = {
                 "conversations": []
             }
@@ -858,15 +886,18 @@ now give the response.
             item["conversations"].append(sys)
             item["conversations"].append(human)
             item["conversations"].append(ai)
-            m_name = self.llm.model_name.replace("\\","-").replace('/', '-')
-            if 0<=floor<=16:
-                with open(fr'C:\Users\32685\Desktop\spirecomm\dataset\dataset_{m_name}_act1.jsonl', 'a', encoding="utf-8") as f:
+            m_name = self.llm.model_name.replace("\\", "-").replace('/', '-')
+            if 0 <= floor <= 16:
+                with open(fr'C:\Users\32685\Desktop\spirecomm\dataset\dataset_{m_name}_act1.jsonl', 'a',
+                          encoding="utf-8") as f:
                     f.write(json.dumps(item, ensure_ascii=False) + "\n")
-            elif 16<floor<=33:
-                with open(fr'C:\Users\32685\Desktop\spirecomm\dataset\dataset_{m_name}_act2.jsonl', 'a', encoding="utf-8") as f:
+            elif 16 < floor <= 33:
+                with open(fr'C:\Users\32685\Desktop\spirecomm\dataset\dataset_{m_name}_act2.jsonl', 'a',
+                          encoding="utf-8") as f:
                     f.write(json.dumps(item, ensure_ascii=False) + "\n")
             else:
-                with open(fr'C:\Users\32685\Desktop\spirecomm\dataset\dataset_{m_name}_act3.jsonl', 'a', encoding="utf-8") as f:
+                with open(fr'C:\Users\32685\Desktop\spirecomm\dataset\dataset_{m_name}_act3.jsonl', 'a',
+                          encoding="utf-8") as f:
                     f.write(json.dumps(item, ensure_ascii=False) + "\n")
 
         return result

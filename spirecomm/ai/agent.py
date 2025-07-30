@@ -1054,7 +1054,7 @@ class SimpleAgent:
         # self.llm = ChatOllama(model="lora_llama3.2:latest",temperature=1.5,min_p=0.1)
         # self.llm = ChatOllama(model="gemma3:1b",temperature = 1.0, top_p = 0.95, top_k = 64)
         # self.llm = ChatOllama(model="llama3.2:3b")
-        self.llm = ChatOllama(model="my-mistral-22b-2",base_url="http://211.71.15.50:11434")
+        # self.llm = ChatOllama(model="my-mistral-22b-2",base_url="http://211.71.15.50:11434")
 
         # self.llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash",temperature=0,transport='rest') #有限额
 
@@ -1079,7 +1079,7 @@ class SimpleAgent:
         # self.llm = ChatOpenAI(model="grok-3-mini-beta", temperature=0.3) #goushi
         # self.llm = ChatOpenAI(model="Baichuan4-Air", temperature=0.3) # man
         # self.llm = ChatOpenAI(model="gpt-4.1-mini", temperature=0.3)  # haixing
-        # self.llm = ChatOpenAI(model="gpt-4.1-nano", temperature=0.3)  # shi
+        self.llm = ChatOpenAI(model="gpt-4.1", temperature=0.3)  # shi
         # self.llm = ChatOpenAI(model="kimi-k2-0711-preview", temperature=0.3)
         # self.llm = ChatOpenAI(model="o4-mini", temperature=0.3)
         # self.llm = ChatOpenAI(model="grok-3-mini", temperature=0.3)
