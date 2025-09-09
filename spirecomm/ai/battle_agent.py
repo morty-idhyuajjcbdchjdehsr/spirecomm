@@ -215,9 +215,9 @@ def get_suggestion(floor: int, turn: int,
                                    "minimize incoming damage.\n")
             for power in monster.powers:
                 if power.power_name == "Mode Shift":
-                    suggestion_content += """The Guardian is in Offensive Mode now, after taking {} damage,
-                            it switches to Defensive Mode,consider dealing damage to trigger the switch""".format(
-                        power.amount)
+                    suggestion_content += ("The Guardian is in Offensive Mode now, after taking {} damage,it switches"
+                                               " to Defensive Mode,consider dealing damage to trigger the switch").format(
+                            power.amount)
 
                 if power.power_name == "Sharp Hide":
                     suggestion_content += """The Guardian is in Defensive Mode now,it will thorns 3 damage when attacked."""
@@ -277,11 +277,17 @@ def get_suggestion(floor: int, turn: int,
         suggestion_content += ("\nYou are facing multiply enemies,you should prioritize "
                                "AOE card which can affect them all.")
 
-    if total_damage - block >= 7:
-        suggestion_content += (
-            f"\nYou are facing huge incoming damage, which will make you lose {total_damage - block} hp."
-            f"you should consider mitigate the damage by:"
-            f"1. build block, 2.weaken enemy 3.eliminate enemy 4.using potion")
+    # if total_damage - block >= 7:
+    #     suggestion_content += (
+    #         f"\nYou are facing huge incoming damage, which will make you lose {total_damage - block} hp."
+    #         f"you should consider mitigate the damage by:"
+    #         f"1. build block, 2.weaken enemy 3.eliminate enemy 4.using potion")
+    if total_damage - block >= current_hp:
+            suggestion_content += (
+                f"\nYou are facing fatal incoming damage({total_damage - block}),"
+                f"you should prioritize mitigating the damage by:"
+                f"1. build block, 2.weaken attacking enemy 3.eliminate attacking enemy 4.using potion")
+
     if 0 < total_damage <= block:
         # to do: 考虑壁垒等情况..
         suggestion_content += (f"\nnow your block is greater than incoming damage,there is no need to "
@@ -526,7 +532,7 @@ Where:
 
 ### Explanation Guidelines:
 Your explanation should briefly justify your decision using the following structure:
--- State current threat or opportunity
+-- State your choice with [],e.q: [I choose card 'Strike'], [I choose to end turn],[I choose to use potion 'xxPotion']
 -- Explain card/potion effect and why it's chosen
 -- Mention why other options were suboptimal (if relevant)
 
@@ -857,7 +863,7 @@ now give the response.
         self.previous_rounds_info.append(round_info)
 
         # 输出log
-        with open(r'C:\Users\32685\Desktop\spirecomm\output\battle_agent.txt', 'a') as file:
+        with open(r'C:\Users\32685\Desktop\spirecomm\output\battle_agent.txt', 'a',encoding="utf-8") as file:
             file.write('--------------round start-------------------------\n')
             # file.write("System:\n" + self.battle_agent_sys_prompt + '\n')
             for response in result["messages"]:
