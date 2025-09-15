@@ -50,6 +50,10 @@ if __name__ == "__main__":
             file.write('--------------tracking---------------\n')
         with open(r'C:\Users\32685\Desktop\spirecomm\output\battle_agent_gui.txt', 'w') as file:
             file.write('--------------tracking---------------\n')
+        with open(r'C:\Users\32685\Desktop\spirecomm\dataset\dataset_buffer_act1.jsonl','w') as file:
+            pass
+        with open(r'C:\Users\32685\Desktop\spirecomm\dataset\dataset_buffer_act2.jsonl','w') as file:
+            pass
 
 
         agent = SimpleAgent(is_to_use_gui=is_to_use_gui,root=root)

@@ -25,6 +25,65 @@ os.environ["OPENAI_API_KEY"] = "sk-Nxr5VkCGRNruaDUzUZz3uCkKUtMvg0u3V7uiXJhJSbo0w
 os.environ["OPENAI_API_BASE"] = "https://api.chatanywhere.tech/v1"
 
 
+def is_file_empty(file_path):
+    """
+    判断文件是否为空
+    :param file_path: 文件路径
+    :return: 如果文件为空返回True，否则返回False
+    """
+    # 方法1: 检查文件大小
+    # if os.path.getsize(file_path) == 0:
+    #     return True
+
+    # 方法2: 尝试读取文件内容
+    with open(file_path, 'r', encoding='utf-8') as file:
+        content = file.read()
+        if not content.strip():  # 去除空白字符后检查是否为空
+            return True
+
+    return False
+
+
+def copy_file_content(source_path, destination_path):
+    """
+    将源文件内容复制到目标文件
+    :param source_path: 源文件路径
+    :param destination_path: 目标文件路径
+    """
+    try:
+        with open(source_path, 'r', encoding='utf-8') as source_file:
+            content = source_file.read()
+
+        with open(destination_path, 'a', encoding='utf-8') as dest_file:
+            dest_file.write(content)
+
+        # print(f"文件内容已从 '{source_path}' 复制到 '{destination_path}'")
+
+    except FileNotFoundError:
+        # print("文件不存在")
+        pass
+    except Exception as e:
+        # print(f"复制文件时发生错误: {e}")
+        pass
+
+
+def clear_file(file_path):
+    """
+    清空文件内容
+    :param file_path: 文件路径
+    """
+    try:
+        # 以写入模式打开文件，这会自动清空文件内容
+        with open(file_path, 'w', encoding='utf-8') as file:
+            pass  # 不写入任何内容
+
+        # print(f"文件 '{file_path}' 已清空")
+        return True
+
+    except Exception as e:
+        # print(f"清空文件时发生错误: {e}")
+        return False
+
 def get_lists_str(lists):
     ret = "[ "
     for index, item in enumerate(lists):
@@ -893,18 +952,34 @@ now give the response.
             item["conversations"].append(human)
             item["conversations"].append(ai)
             m_name = self.llm.model_name.replace("\\", "-").replace('/', '-')
+            buffer_act1 = fr'C:\Users\32685\Desktop\spirecomm\dataset\dataset_buffer_act1.jsonl'
+            buffer_act2 = fr'C:\Users\32685\Desktop\spirecomm\dataset\dataset_buffer_act2.jsonl'
+
             if 0 <= floor <= 16:
-                with open(fr'C:\Users\32685\Desktop\spirecomm\dataset\dataset_{m_name}_act1.jsonl', 'a',
-                          encoding="utf-8") as f:
+                # 往buffer里面写，如果过了一层再写入数据集
+                with open(buffer_act1, 'a',encoding="utf-8") as f:
                     f.write(json.dumps(item, ensure_ascii=False) + "\n")
+
             elif 16 < floor <= 33:
-                with open(fr'C:\Users\32685\Desktop\spirecomm\dataset\dataset_{m_name}_act2.jsonl', 'a',
-                          encoding="utf-8") as f:
+                # 如果buffer不为空，写入数据集
+                if not is_file_empty(buffer_act1):
+                    copy_file_content(buffer_act1,fr'C:\Users\32685\Desktop\spirecomm\dataset\dataset_{m_name}_{self.role}_act1.jsonl')
+                    clear_file(buffer_act1)
+
+                # 往buffer里面写，如果过了二层再写入数据集
+                with open(buffer_act2, 'a',encoding="utf-8") as f:
                     f.write(json.dumps(item, ensure_ascii=False) + "\n")
+
             else:
-                with open(fr'C:\Users\32685\Desktop\spirecomm\dataset\dataset_{m_name}_act3.jsonl', 'a',
+                # 写入数据集
+                if not is_file_empty(buffer_act2):
+                    copy_file_content(buffer_act2,fr'C:\Users\32685\Desktop\spirecomm\dataset\dataset_{m_name}_{self.role}_act2.jsonl')
+                    clear_file(buffer_act2)
+
+                with open(fr'C:\Users\32685\Desktop\spirecomm\dataset\dataset_{m_name}_{self.role}_act3.jsonl', 'a',
                           encoding="utf-8") as f:
                     f.write(json.dumps(item, ensure_ascii=False) + "\n")
+
 
         return result
 
