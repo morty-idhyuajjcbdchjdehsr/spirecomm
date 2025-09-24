@@ -118,11 +118,11 @@ class Monster(Character):
         move_adjusted_damage = json_object.get("move_adjusted_damage", 0)
         move_hits = json_object.get("move_hits", 0)
 
-        if intent == Intent.DEBUG:
-            if move_adjusted_damage > 0:
-                intent = Intent.ATTACK
-            else:
-                intent = Intent.NON_ATTACK
+        # if intent == Intent.DEBUG:
+        #     if move_adjusted_damage > 0:
+        #         intent = Intent.ATTACK
+        #     else:
+        #         intent = Intent.NON_ATTACK
 
         monster = cls(name, monster_id, max_hp, current_hp, block, intent, half_dead, is_gone, move_id, last_move_id, second_last_move_id, move_base_damage, move_adjusted_damage, move_hits)
         monster.powers = [Power.from_json(json_power) for json_power in json_object["powers"]]

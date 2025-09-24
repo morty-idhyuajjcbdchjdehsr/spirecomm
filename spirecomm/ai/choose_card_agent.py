@@ -20,6 +20,7 @@ from langchain_core.messages import AIMessage, BaseMessage, HumanMessage
 from spirecomm.spire.card import Card, CardRarity
 from spirecomm.spire.character import Monster, Intent
 from spirecomm.spire.relic import Relic
+from utilities.dataset_utils import export_dataset_item
 
 os.environ["OPENAI_API_KEY"] = "sk-Nxr5VkCGRNruaDUzUZz3uCkKUtMvg0u3V7uiXJhJSbo0wAIp"
 os.environ["OPENAI_API_BASE"] = "https://api.chatanywhere.tech/v1"
@@ -81,6 +82,7 @@ class ChooseCardAgent:
     def __init__(self, role="DEFECT", llm=ChatOpenAI(model="gpt-3.5-turbo-0125", temperature=0),
                  small_llm=ChatOllama(model="mistral:7b", temperature=0),enable_suggest=False):
 
+        self.output = None
         self.strategy = None
         self.current_deck = None
         self.router2_cnt = 0
@@ -137,8 +139,7 @@ class ChooseCardAgent:
                         You are an expert at playing Slay the Spire, and now you need to play Slay the Spire 
                         as the role {self.role}.now you need to assist in choosing card rewards.
                          Your goal is to maximize the player's chances of success by selecting the most beneficial cards 
-                         based on the current context. Before choosing, please invoke the tool to search the content of 
-                         cards on wikipedia.
+                         based on the current context. 
 
                         ### Context:
                         - **Floor**: 'floor'
@@ -205,6 +206,14 @@ deck Analysis:
             HumanMessage(content=human_msg)]
         response = self.small_llm.invoke(messages)
         self.strategy = response.content
+
+        export_dataset_item(
+            dataset_name=f"dataset_choose_strategy_{self.role}",
+            llm=self.llm,
+            sys_prompt=system_msg,
+            user_prompt=human_msg,
+            assistant_prompt=response.content,
+        )
         return {**state,
                 "messages":[]}
 
@@ -298,6 +307,7 @@ Your response should be structured in JSON format as follows:
         start = response_text.rfind('```json') + len('```json\n')
         end = response_text.rfind('```')
         json_text = response_text[start:end].strip()
+        self.output = response_text
 
         # 得到最终的 json格式文件
         try:
@@ -404,6 +414,18 @@ Your response should be structured in JSON format as follows:
             file.write("strategy:\n"+self.strategy+'\n')
             file.write(f"invoke time: {elapsed_time:.6f} s\n")
             file.write('--------------round end-------------------------\n')
+
+
+        if not self.explanation.startswith('router2'):
+            export_dataset_item(
+                dataset_name=f"dataset_choose_{self.role}",
+                llm=self.llm,
+                sys_prompt=self.choose_card_agent_sys_prompt,
+                user_prompt=self.humanM,
+                assistant_prompt=self.output,
+            )
+
+
         return result
 
 

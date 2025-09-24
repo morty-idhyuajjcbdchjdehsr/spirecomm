@@ -441,7 +441,7 @@ now give the response.
         self.previous_rounds_info.append(round_info)
 
         # 输出log
-        with open(r'C:\Users\32685\Desktop\spirecomm\output\hand_select_agent.txt', 'a') as file:
+        with open(r'C:\Users\32685\Desktop\spirecomm\output\hand_select_agent.txt', 'a',encoding="utf-8") as file:
             file.write('--------------round start-------------------------\n')
             file.write("System:\n" + self.sys_prompt + '\n')
             for response in result["messages"]:

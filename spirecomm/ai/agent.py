@@ -203,6 +203,10 @@ class SimpleAgent:
 
     def get_play_card_action(self, room):
 
+        # fix debug
+        if self.game.monsters[0].intent == Intent.DEBUG:
+            return Action(command="state")
+
         available_monsters = [monster for monster in self.game.monsters if
                               monster.current_hp > 0 and not monster.half_dead and not monster.is_gone]
         playable_cards = [card for card in self.game.hand if card.is_playable]
@@ -860,7 +864,7 @@ class SimpleAgent:
             file.write('--------------tree_json----------------\n')
             file.write(tree_dict.__str__() + "\n")
 
-        with open(r'C:\Users\32685\Desktop\spirecomm\output\output.txt', 'a') as file:
+        with open(r'C:\Users\32685\Desktop\spirecomm\output\output.txt', 'a',encoding="utf-8") as file:
             # file.write('--------------executing get_play_card_action---------------\n')
             # file.write(self.game.__str__())
             file.write('--------------human message--------------------------------\n')
@@ -1054,7 +1058,7 @@ class SimpleAgent:
         # self.llm = ChatOllama(model="lora_llama3.2:latest",temperature=1.5,min_p=0.1)
         # self.llm = ChatOllama(model="gemma3:1b",temperature = 1.0, top_p = 0.95, top_k = 64)
         # self.llm = ChatOllama(model="llama3.2:3b")
-        self.llm = ChatOllama(model="my-mistral-cpt-gpt5",base_url="http://211.71.15.50:11434")
+        self.llm = ChatOllama(model="my-mistral-ironclad",base_url="http://211.71.15.50:11434")
 
         # self.llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash",temperature=0,transport='rest') #有限额
 
@@ -1081,14 +1085,14 @@ class SimpleAgent:
         # self.llm = ChatOpenAI(model="gpt-4.1", temperature=0.3)  # haixing
         # self.llm = ChatOpenAI(model="gpt-4.1-nano", temperature=0.3)  # shi
         # self.llm = ChatOpenAI(model="kimi-k2-0711-preview", temperature=0.3)
-        # self.llm = ChatOpenAI(model="o4-mini", temperature=0.3)
-        # self.llm = ChatOpenAI(model="grok-3-mini", temperature=0.3)
+        # self.llm = ChatOpenAI(model="ernie-x1.1-preview", temperature=0.3)
+        # self.llm = ChatOpenAI(model="GLM-4.5V", temperature=0.3) #shi
         # self.llm = ChatOpenAI(model="DeepSeek-V3-Fast", temperature=0.3)
         # self.llm = ChatOpenAI(model="ernie-4.5-turbo-128k-preview", temperature=0.3)
         # self.llm = ChatOpenAI(model="gpt-5-chat", temperature=0.3)
         # self.llm = ChatOpenAI(model="DeepSeek-V3.1", temperature=0.3)
         # self.llm = ChatOpenAI(model="LongCat-Flash-Chat", temperature=0.3)
-        # self.llm = ChatOpenAI(model="gpt-5-mini", temperature=0.3)
+        self.llm = ChatOpenAI(model="gpt-5-mini", temperature=0.3)
 
         # self.pro_llm = ChatOpenAI(model="DeepSeek-V3", temperature=0.3)  #
         # self.pro_llm = ChatOpenAI(model="deepseek-v3", temperature=0.3)  #
@@ -1102,7 +1106,8 @@ class SimpleAgent:
         # self.pro_llm = ChatOpenAI(model="claude-3-haiku-20240307", temperature=0.3)  # 贵
         # self.pro_llm = ChatOpenAI(model="DeepSeek-V3-Fast", temperature=0.3)
         # self.pro_llm = ChatOpenAI(model="gemini-2.5-pro-nothinking", temperature=0.3)
-        self.pro_llm = ChatOpenAI(model="gemini-2.5-flash-nothinking", temperature=0.3)
+        # self.pro_llm = ChatOpenAI(model="gemini-2.5-flash-nothinking", temperature=0.3)
+        self.pro_llm = ChatOpenAI(model="gpt-5-chat", temperature=0.3)
 
         self.battle_rounds_info = deque(maxlen=5)
 
